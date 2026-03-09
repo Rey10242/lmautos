@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,33 +10,25 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
-import { Save, ArrowLeft, Upload, X, Loader2 } from "lucide-react";
+import { Save, ArrowLeft, Upload, X, Loader2, GripVertical, ExternalLink } from "lucide-react";
 
 const marcas = ["Chevrolet", "Renault", "Mazda", "Toyota", "Nissan", "Hyundai", "Kia", "Ford", "Volkswagen", "BMW", "Mercedes-Benz", "Audi", "Honda", "Suzuki", "Mitsubishi", "Jeep", "Dodge", "Fiat", "Peugeot", "Citroën"];
 const combustibles = ["Gasolina", "Diesel", "Híbrido", "Eléctrico", "Gas"];
 const transmisiones = ["Automática", "Manual", "Automática secuencial"];
 const tracciones = ["4x2", "4x4", "AWD"];
 const estados = ["Nuevo", "Usado", "Certificado"];
-const statuses = ["disponible", "vendido", "reservado", "oculto"];
+const statuses = [
+  { value: "disponible", label: "Disponible", class: "bg-emerald-500/15 text-emerald-700" },
+  { value: "vendido", label: "Vendido", class: "bg-red-500/15 text-red-700" },
+  { value: "reservado", label: "Reservado", class: "bg-amber-500/15 text-amber-700" },
+  { value: "oculto", label: "Oculto", class: "bg-muted text-muted-foreground" },
+];
 
 interface FormData {
-  marca: string;
-  modelo: string;
-  version: string;
-  year: string;
-  price: string;
-  kilometraje: string;
-  combustible: string;
-  transmision: string;
-  color: string;
-  cilindrada: string;
-  num_puertas: string;
-  traccion: string;
-  estado_vehiculo: string;
-  descripcion: string;
-  status: string;
-  destacado: boolean;
-  recien_ingresado: boolean;
+  marca: string; modelo: string; version: string; year: string; price: string;
+  kilometraje: string; combustible: string; transmision: string; color: string;
+  cilindrada: string; num_puertas: string; traccion: string; estado_vehiculo: string;
+  descripcion: string; status: string; destacado: boolean; recien_ingresado: boolean;
 }
 
 const defaultForm: FormData = {
@@ -57,8 +49,9 @@ const VehiculoForm = () => {
   const [form, setForm] = useState<FormData>(defaultForm);
   const [images, setImages] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
-  // Load existing vehicle
   const { data: vehicle } = useQuery({
     queryKey: ["admin-vehicle", id],
     queryFn: async () => {
@@ -87,7 +80,6 @@ const VehiculoForm = () => {
 
   const update = (key: keyof FormData, value: string | boolean) => setForm(prev => ({ ...prev, [key]: value }));
 
-  // Image upload
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -109,35 +101,38 @@ const VehiculoForm = () => {
     e.target.value = "";
   };
 
-  const removeImage = (index: number) => {
-    setImages(prev => prev.filter((_, i) => i !== index));
-  };
+  const removeImage = (index: number) => setImages(prev => prev.filter((_, i) => i !== index));
 
-  // Save
+  // Drag & drop reorder
+  const handleDragStart = (index: number) => setDragIndex(index);
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    setDragOverIndex(index);
+  };
+  const handleDrop = (index: number) => {
+    if (dragIndex === null || dragIndex === index) return;
+    setImages(prev => {
+      const next = [...prev];
+      const [moved] = next.splice(dragIndex, 1);
+      next.splice(index, 0, moved);
+      return next;
+    });
+    setDragIndex(null);
+    setDragOverIndex(null);
+  };
+  const handleDragEnd = () => { setDragIndex(null); setDragOverIndex(null); };
+
   const saveMutation = useMutation({
     mutationFn: async () => {
       const payload = {
-        marca: form.marca,
-        modelo: form.modelo,
-        version: form.version || null,
-        year: parseInt(form.year),
-        price: parseInt(form.price),
-        kilometraje: parseInt(form.kilometraje),
-        combustible: form.combustible,
-        transmision: form.transmision,
-        color: form.color || null,
-        cilindrada: form.cilindrada || null,
-        num_puertas: parseInt(form.num_puertas) || null,
-        traccion: form.traccion || null,
-        estado_vehiculo: form.estado_vehiculo || null,
-        descripcion: form.descripcion || null,
-        status: form.status,
-        destacado: form.destacado,
-        recien_ingresado: form.recien_ingresado,
-        images: images,
-        user_id: user!.id,
+        marca: form.marca, modelo: form.modelo, version: form.version || null,
+        year: parseInt(form.year), price: parseInt(form.price), kilometraje: parseInt(form.kilometraje),
+        combustible: form.combustible, transmision: form.transmision, color: form.color || null,
+        cilindrada: form.cilindrada || null, num_puertas: parseInt(form.num_puertas) || null,
+        traccion: form.traccion || null, estado_vehiculo: form.estado_vehiculo || null,
+        descripcion: form.descripcion || null, status: form.status, destacado: form.destacado,
+        recien_ingresado: form.recien_ingresado, images: images, user_id: user!.id,
       };
-
       if (isEdit) {
         const { error } = await supabase.from("vehicles").update(payload).eq("id", id);
         if (error) throw error;
@@ -165,27 +160,56 @@ const VehiculoForm = () => {
     saveMutation.mutate();
   };
 
+  const currentStatus = statuses.find(s => s.value === form.status) || statuses[0];
+
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate("/admin/vehiculos")}>
-          <ArrowLeft className="h-5 w-5" />
-        </Button>
-        <div>
-          <h1 className="text-2xl font-black uppercase tracking-wide text-foreground" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-            {isEdit ? "Editar Vehículo" : "Nuevo Vehículo"}
-          </h1>
+      {/* Header */}
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <Button variant="ghost" size="icon" onClick={() => navigate("/admin/vehiculos")}>
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div>
+            <h1 className="text-2xl font-black uppercase tracking-wide text-foreground" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+              {isEdit ? "Editar Vehículo" : "Nuevo Vehículo"}
+            </h1>
+            {isEdit && form.marca && (
+              <p className="text-sm text-muted-foreground">{form.marca} {form.modelo} {form.version} {form.year}</p>
+            )}
+          </div>
         </div>
+        {isEdit && (
+          <Button variant="outline" size="sm" asChild>
+            <a href={`/vehiculo/${id}`} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="h-4 w-4 mr-1" /> Ver en sitio
+            </a>
+          </Button>
+        )}
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Images */}
+        {/* Images with drag reorder */}
         <div className="bg-card border border-border rounded-xl p-6">
-          <h2 className="font-bold text-sm uppercase tracking-wide text-foreground mb-4">Fotografías</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-bold text-sm uppercase tracking-wide text-foreground">Fotografías</h2>
+            <span className="text-xs text-muted-foreground">{images.length} foto(s) · Arrastra para reordenar</span>
+          </div>
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 mb-4">
             {images.map((img, i) => (
-              <div key={i} className="relative aspect-[4/3] rounded-lg overflow-hidden bg-muted group">
+              <div
+                key={i}
+                draggable
+                onDragStart={() => handleDragStart(i)}
+                onDragOver={(e) => handleDragOver(e, i)}
+                onDrop={() => handleDrop(i)}
+                onDragEnd={handleDragEnd}
+                className={`relative aspect-[4/3] rounded-lg overflow-hidden bg-muted group cursor-grab active:cursor-grabbing transition-all ${
+                  dragOverIndex === i ? 'ring-2 ring-primary scale-105' : ''
+                } ${dragIndex === i ? 'opacity-50' : ''}`}
+              >
                 <img src={img} alt="" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
                 <button
                   type="button"
                   onClick={() => removeImage(i)}
@@ -193,6 +217,9 @@ const VehiculoForm = () => {
                 >
                   <X className="h-3 w-3" />
                 </button>
+                <div className="absolute top-1 left-1 opacity-0 group-hover:opacity-70 transition-opacity">
+                  <GripVertical className="h-4 w-4 text-white drop-shadow" />
+                </div>
                 {i === 0 && (
                   <span className="absolute bottom-1 left-1 bg-primary text-primary-foreground text-[9px] font-bold uppercase px-1.5 py-0.5 rounded">
                     Principal
@@ -206,7 +233,7 @@ const VehiculoForm = () => {
               ) : (
                 <>
                   <Upload className="h-6 w-6 text-muted-foreground mb-1" />
-                  <span className="text-[10px] text-muted-foreground">Subir</span>
+                  <span className="text-[10px] text-muted-foreground">Subir fotos</span>
                 </>
               )}
               <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" disabled={uploading} />
@@ -304,6 +331,7 @@ const VehiculoForm = () => {
             placeholder="Describe el vehículo, equipamiento, historial de mantenimiento..."
             rows={5}
           />
+          <p className="text-xs text-muted-foreground mt-2">{form.descripcion.length} caracteres</p>
         </div>
 
         {/* Status & Flags */}
@@ -314,27 +342,47 @@ const VehiculoForm = () => {
               <Label className="text-xs uppercase text-muted-foreground font-semibold">Estado de publicación</Label>
               <Select value={form.status} onValueChange={(v) => update("status", v)}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{statuses.map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}</SelectContent>
+                <SelectContent>
+                  {statuses.map(s => (
+                    <SelectItem key={s.value} value={s.value}>
+                      <span className="flex items-center gap-2">
+                        <span className={`w-2 h-2 rounded-full ${s.value === 'disponible' ? 'bg-emerald-500' : s.value === 'vendido' ? 'bg-red-500' : s.value === 'reservado' ? 'bg-amber-500' : 'bg-muted-foreground'}`} />
+                        {s.label}
+                      </span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
               </Select>
             </div>
             <div className="flex items-center justify-between md:flex-col md:items-start gap-2">
-              <Label className="text-xs uppercase text-muted-foreground font-semibold">Destacado</Label>
+              <div>
+                <Label className="text-xs uppercase text-muted-foreground font-semibold">Destacado</Label>
+                <p className="text-[10px] text-muted-foreground">Aparece en la sección principal</p>
+              </div>
               <Switch checked={form.destacado} onCheckedChange={(v) => update("destacado", v)} />
             </div>
             <div className="flex items-center justify-between md:flex-col md:items-start gap-2">
-              <Label className="text-xs uppercase text-muted-foreground font-semibold">Recién Ingresado</Label>
+              <div>
+                <Label className="text-xs uppercase text-muted-foreground font-semibold">Recién Ingresado</Label>
+                <p className="text-[10px] text-muted-foreground">Muestra badge "Nuevo"</p>
+              </div>
               <Switch checked={form.recien_ingresado} onCheckedChange={(v) => update("recien_ingresado", v)} />
             </div>
           </div>
         </div>
 
         {/* Submit */}
-        <div className="flex gap-3 justify-end">
-          <Button type="button" variant="outline" onClick={() => navigate("/admin/vehiculos")}>Cancelar</Button>
-          <Button type="submit" disabled={saveMutation.isPending} className="font-bold uppercase tracking-wide">
-            {saveMutation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
-            {isEdit ? "Guardar Cambios" : "Crear Vehículo"}
-          </Button>
+        <div className="flex gap-3 justify-between items-center bg-card border border-border rounded-xl p-4">
+          <div className="text-xs text-muted-foreground">
+            {isEdit && vehicle && <>Última actualización: {new Date(vehicle.updated_at).toLocaleString('es-CO')}</>}
+          </div>
+          <div className="flex gap-3">
+            <Button type="button" variant="outline" onClick={() => navigate("/admin/vehiculos")}>Cancelar</Button>
+            <Button type="submit" disabled={saveMutation.isPending} className="font-bold uppercase tracking-wide">
+              {saveMutation.isPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
+              {isEdit ? "Guardar Cambios" : "Crear Vehículo"}
+            </Button>
+          </div>
         </div>
       </form>
     </div>
