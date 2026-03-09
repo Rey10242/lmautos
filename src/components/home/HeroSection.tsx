@@ -34,7 +34,7 @@ const HeroSection = () => {
             Consignataria de vehículos usados en Cartagena - Colombia
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary-foreground leading-tight mb-6 animate-fade-up-delay-1">
-            Vehículos Usados y Seminuevos en <span className="text-primary">Cartagena, Colombia</span>
+            Encuentra tu <span className="text-primary">vehículo ideal</span> al mejor precio
           </h1>
           <p className="text-secondary-foreground/80 text-lg mb-8 leading-relaxed max-w-lg animate-fade-up-delay-2">
             Compra, vende o consigna tu vehículo con total confianza. Los mejores autos usados y seminuevos en Colombia.
