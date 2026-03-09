@@ -1,16 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Search, Car, ShieldCheck, Clock, ThumbsUp } from "lucide-react";
+import { Search, Car } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 
 const marcas = ["Chevrolet", "Renault", "Mazda", "Toyota", "Nissan", "Hyundai", "Kia", "Ford", "Volkswagen", "BMW", "Mercedes-Benz", "Audi"];
-
-const stats = [
-  { icon: Car, value: "500+", label: "Vehículos vendidos" },
-  { icon: Clock, value: "10+", label: "Años de experiencia" },
-  { icon: ThumbsUp, value: "98%", label: "Clientes satisfechos" },
-];
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -23,7 +17,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative bg-secondary min-h-[600px] flex items-center overflow-hidden">
+    <section className="relative bg-secondary min-h-[540px] flex items-center overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-secondary via-secondary/95 to-secondary/70" />
       <div
         className="absolute inset-0 opacity-20"
@@ -37,10 +31,10 @@ const HeroSection = () => {
       <div className="relative container py-16 md:py-20">
         <div className="max-w-2xl">
           <span className="inline-block bg-primary text-primary-foreground text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded mb-6 animate-fade-up">
-            Consignataria de Vehículos
+            Consignataria de vehículos usados en Cartagena - Colombia
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary-foreground leading-tight mb-6 animate-fade-up-delay-1">
-            Encuentra tu <span className="text-primary">vehículo ideal</span>
+            Vehículos Usados y Seminuevos en <span className="text-primary">Cartagena, Colombia</span>
           </h1>
           <p className="text-secondary-foreground/80 text-lg mb-8 leading-relaxed max-w-lg animate-fade-up-delay-2">
             Compra, vende o consigna tu vehículo con total confianza. Los mejores autos usados y seminuevos en Colombia.
@@ -64,7 +58,7 @@ const HeroSection = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-4 mb-12">
+          <div className="flex flex-wrap gap-4">
             <Button asChild size="lg" className="text-base font-bold uppercase tracking-wide">
               <Link to="/catalogo">
                 <Search className="mr-2 h-5 w-5" />
@@ -77,19 +71,6 @@ const HeroSection = () => {
                 Vender mi Vehículo
               </Link>
             </Button>
-          </div>
-
-          {/* Trust stats */}
-          <div className="grid grid-cols-3 gap-4 max-w-lg">
-            {stats.map((stat, i) => (
-              <div key={i} className="text-center">
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary/20 mb-2">
-                  <stat.icon className="h-5 w-5 text-primary" />
-                </div>
-                <div className="text-2xl font-black text-secondary-foreground">{stat.value}</div>
-                <div className="text-xs text-secondary-foreground/60">{stat.label}</div>
-              </div>
-            ))}
           </div>
         </div>
       </div>
