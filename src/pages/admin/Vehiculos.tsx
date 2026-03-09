@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { formatPrice, formatKm } from "@/lib/formatPrice";
-import { Plus, Search, Trash2, Edit, Star, Sparkles, Eye, EyeOff } from "lucide-react";
+import { Plus, Search, Trash2, Edit, Star, Sparkles, Eye, EyeOff, Car } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   AlertDialog,
