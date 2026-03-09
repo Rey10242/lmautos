@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Mail, Phone, Menu, X } from "lucide-react";
+import { Mail, Phone, Menu, X, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navLinks = [
+  { label: "Inicio", path: "/" },
   { label: "Sobre Nosotros", path: "/sobre-nosotros" },
   { label: "Servicios", path: "/servicios" },
   { label: "Catálogo", path: "/catalogo" },
@@ -13,12 +14,23 @@ const navLinks = [
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
+
   return (
-    <header className="w-full">
+    <header className="w-full sticky top-0 z-50">
       {/* Top bar */}
-      <div className="bg-secondary text-secondary-foreground">
+      <div className={`bg-secondary text-secondary-foreground transition-all duration-300 ${scrolled ? "hidden" : ""}`}>
         <div className="container flex items-center justify-between py-2 text-sm">
           <div className="flex items-center gap-6">
             <a href="mailto:autos.luismejia@gmail.com" className="flex items-center gap-2 hover:text-primary transition-colors">
@@ -45,32 +57,44 @@ const Navbar = () => {
       </div>
 
       {/* Main nav */}
-      <div className="bg-background border-b border-border shadow-sm">
+      <div className={`bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-300 ${scrolled ? "shadow-md" : "shadow-sm"}`}>
         <div className="container flex items-center justify-between py-3">
           <Link to="/" className="flex items-center gap-2">
-            <div className="flex items-center">
-              <span className="text-3xl font-black tracking-tight" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-                <span className="text-primary">LM</span>
-                <span className="text-foreground text-lg font-semibold ml-1">autos</span>
-              </span>
-            </div>
+            <span className="text-3xl font-black tracking-tight">
+              <span className="text-primary">LM</span>
+              <span className="text-foreground text-lg font-semibold ml-1">autos</span>
+            </span>
           </Link>
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`px-4 py-2 text-sm font-semibold uppercase tracking-wide transition-colors hover:text-primary ${
-                  location.pathname === link.path ? "text-primary" : "text-foreground"
-                }`}
-                style={{ fontFamily: 'Montserrat, sans-serif' }}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = link.path === "/" ? location.pathname === "/" : location.pathname.startsWith(link.path);
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`relative px-4 py-2 text-sm font-semibold uppercase tracking-wide transition-colors hover:text-primary ${
+                    isActive ? "text-primary" : "text-foreground"
+                  }`}
+                >
+                  {link.label}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-primary rounded-full" />
+                  )}
+                </Link>
+              );
+            })}
           </nav>
+
+          <div className="hidden lg:flex items-center gap-3">
+            <Button asChild size="sm" className="font-bold uppercase text-xs tracking-wide">
+              <a href="https://wa.me/573150000990" target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="mr-1.5 h-4 w-4" />
+                WhatsApp
+              </a>
+            </Button>
+          </div>
 
           {/* Mobile toggle */}
           <Button
@@ -85,23 +109,36 @@ const Navbar = () => {
         </div>
 
         {/* Mobile nav */}
-        {mobileOpen && (
-          <nav className="lg:hidden border-t border-border bg-background pb-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`block px-6 py-3 text-sm font-semibold uppercase tracking-wide transition-colors hover:text-primary hover:bg-accent ${
-                  location.pathname === link.path ? "text-primary bg-accent" : "text-foreground"
-                }`}
-                style={{ fontFamily: 'Montserrat, sans-serif' }}
-                onClick={() => setMobileOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+        <div
+          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            mobileOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
+          <nav className="border-t border-border bg-background pb-4">
+            {navLinks.map((link) => {
+              const isActive = link.path === "/" ? location.pathname === "/" : location.pathname.startsWith(link.path);
+              return (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`block px-6 py-3 text-sm font-semibold uppercase tracking-wide transition-colors hover:text-primary hover:bg-accent ${
+                    isActive ? "text-primary bg-accent border-l-4 border-primary" : "text-foreground"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+            <div className="px-6 pt-3">
+              <Button asChild size="sm" className="w-full font-bold uppercase text-xs tracking-wide">
+                <a href="https://wa.me/573150000990" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="mr-1.5 h-4 w-4" />
+                  WhatsApp
+                </a>
+              </Button>
+            </div>
           </nav>
-        )}
+        </div>
       </div>
     </header>
   );

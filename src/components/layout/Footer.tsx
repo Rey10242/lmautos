@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Clock } from "lucide-react";
 
 const Footer = () => {
   return (
     <footer className="bg-secondary text-secondary-foreground">
       <div className="container py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
-            <span className="text-2xl font-black" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+            <span className="text-2xl font-black">
               <span className="text-primary">LM</span>
               <span className="text-secondary-foreground text-base font-semibold ml-1">autos</span>
             </span>
@@ -19,7 +19,7 @@ const Footer = () => {
 
           {/* Links */}
           <div>
-            <h4 className="font-bold text-sm uppercase tracking-wider mb-4" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+            <h4 className="font-bold text-sm uppercase tracking-wider mb-4">
               Enlaces
             </h4>
             <ul className="space-y-2 text-sm">
@@ -33,7 +33,7 @@ const Footer = () => {
 
           {/* Contact */}
           <div>
-            <h4 className="font-bold text-sm uppercase tracking-wider mb-4" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+            <h4 className="font-bold text-sm uppercase tracking-wider mb-4">
               Contacto
             </h4>
             <ul className="space-y-3 text-sm">
@@ -48,6 +48,29 @@ const Footer = () => {
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 text-primary mt-0.5" />
                 <span>Colombia</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Hours */}
+          <div>
+            <h4 className="font-bold text-sm uppercase tracking-wider mb-4">
+              Horario de Atención
+            </h4>
+            <ul className="space-y-2 text-sm text-secondary-foreground/70">
+              <li className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-primary" />
+                <div>
+                  <div>Lunes a Viernes</div>
+                  <div className="text-secondary-foreground font-semibold">8:00 AM - 6:00 PM</div>
+                </div>
+              </li>
+              <li className="flex items-center gap-2">
+                <Clock className="h-4 w-4 text-primary" />
+                <div>
+                  <div>Sábados</div>
+                  <div className="text-secondary-foreground font-semibold">9:00 AM - 2:00 PM</div>
+                </div>
               </li>
             </ul>
           </div>
