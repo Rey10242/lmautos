@@ -1,9 +1,9 @@
-import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, RotateCcw } from "lucide-react";
+import { Search, RotateCcw, X } from "lucide-react";
 
 export interface VehicleFilterValues {
   marca: string;
@@ -13,6 +13,7 @@ export interface VehicleFilterValues {
   yearMax: string;
   priceMin: string;
   priceMax: string;
+  search: string;
 }
 
 const defaultFilters: VehicleFilterValues = {
@@ -23,6 +24,7 @@ const defaultFilters: VehicleFilterValues = {
   yearMax: "",
   priceMin: "",
   priceMax: "",
+  search: "",
 };
 
 const marcas = ["Chevrolet", "Renault", "Mazda", "Toyota", "Nissan", "Hyundai", "Kia", "Ford", "Volkswagen", "BMW", "Mercedes-Benz", "Audi"];
@@ -39,12 +41,53 @@ const VehicleFilters = ({ filters, onFiltersChange }: Props) => {
     onFiltersChange({ ...filters, [key]: value });
   };
 
+  const clear = (key: keyof VehicleFilterValues) => {
+    onFiltersChange({ ...filters, [key]: "" });
+  };
+
+  // Active filter chips
+  const activeFilters: { key: keyof VehicleFilterValues; label: string }[] = [];
+  if (filters.marca) activeFilters.push({ key: "marca", label: filters.marca });
+  if (filters.combustible) activeFilters.push({ key: "combustible", label: filters.combustible });
+  if (filters.transmision) activeFilters.push({ key: "transmision", label: filters.transmision });
+  if (filters.yearMin) activeFilters.push({ key: "yearMin", label: `Desde ${filters.yearMin}` });
+  if (filters.yearMax) activeFilters.push({ key: "yearMax", label: `Hasta ${filters.yearMax}` });
+  if (filters.priceMin) activeFilters.push({ key: "priceMin", label: `Min $${Number(filters.priceMin).toLocaleString()}` });
+  if (filters.priceMax) activeFilters.push({ key: "priceMax", label: `Max $${Number(filters.priceMax).toLocaleString()}` });
+
   return (
-    <div className="bg-card border border-border rounded-lg p-5 space-y-5">
-      <h3 className="font-bold text-foreground uppercase tracking-wide text-sm flex items-center gap-2" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+    <div className="bg-card border border-border rounded-xl p-5 space-y-5">
+      <h3 className="font-bold text-foreground uppercase tracking-wide text-sm flex items-center gap-2">
         <Search className="h-4 w-4 text-primary" />
         Encuentra tu carro ideal
       </h3>
+
+      {/* Text search */}
+      <div>
+        <Input
+          placeholder="Buscar marca, modelo..."
+          value={filters.search}
+          onChange={(e) => update("search", e.target.value)}
+          className="bg-muted"
+        />
+      </div>
+
+      {/* Active filter chips */}
+      {activeFilters.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {activeFilters.map((f) => (
+            <Badge
+              key={f.key}
+              variant="secondary"
+              className="cursor-pointer hover:bg-destructive hover:text-destructive-foreground transition-colors text-xs gap-1"
+              onClick={() => clear(f.key)}
+            >
+              {f.label}
+              <X className="h-3 w-3" />
+            </Badge>
+          ))}
+        </div>
+      )}
 
       <div className="space-y-4">
         <div>

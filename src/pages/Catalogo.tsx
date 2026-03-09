@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import usePageTitle from "@/hooks/usePageTitle";
 import PageBanner from "@/components/layout/PageBanner";
 import VehicleCard from "@/components/vehicles/VehicleCard";
 import VehicleFilters, { defaultFilters, type VehicleFilterValues } from "@/components/vehicles/VehicleFilters";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Catalogo = () => {
-  const [filters, setFilters] = useState<VehicleFilterValues>(defaultFilters);
+  usePageTitle("Catálogo de Vehículos");
+  const [searchParams] = useSearchParams();
+  const [filters, setFilters] = useState<VehicleFilterValues>(() => ({
+    ...defaultFilters,
+    marca: searchParams.get("marca") || "",
+  }));
   const [sort, setSort] = useState("recientes");
 
   const { data: vehicles, isLoading } = useQuery({
@@ -22,6 +29,11 @@ const Catalogo = () => {
       if (filters.yearMax) query = query.lte("year", parseInt(filters.yearMax));
       if (filters.priceMin) query = query.gte("price", parseInt(filters.priceMin));
       if (filters.priceMax) query = query.lte("price", parseInt(filters.priceMax));
+
+      // Text search across marca + modelo
+      if (filters.search) {
+        query = query.or(`marca.ilike.%${filters.search}%,modelo.ilike.%${filters.search}%`);
+      }
 
       if (sort === "precio-asc") query = query.order("price", { ascending: true });
       else if (sort === "precio-desc") query = query.order("price", { ascending: false });
@@ -47,14 +59,11 @@ const Catalogo = () => {
 
       <div className="container py-10">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar */}
           <aside className="w-full lg:w-72 shrink-0">
             <VehicleFilters filters={filters} onFiltersChange={setFilters} />
           </aside>
 
-          {/* Main */}
           <div className="flex-1">
-            {/* Top bar */}
             <div className="flex items-center justify-between mb-6">
               <p className="text-sm text-muted-foreground">
                 {vehicles ? `${vehicles.length} vehículo(s) encontrado(s)` : "Cargando..."}
@@ -76,7 +85,7 @@ const Catalogo = () => {
             {isLoading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {[...Array(6)].map((_, i) => (
-                  <div key={i} className="bg-card rounded-lg h-80 animate-pulse border border-border" />
+                  <div key={i} className="bg-card rounded-xl h-80 animate-pulse border border-border" />
                 ))}
               </div>
             ) : vehicles && vehicles.length > 0 ? (

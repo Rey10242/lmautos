@@ -1,61 +1,80 @@
 import { Link } from "react-router-dom";
-import { Fuel, Gauge, Calendar, Settings2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice, formatKm } from "@/lib/formatPrice";
+import { Fuel, Gauge, Calendar, Settings2, Eye } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
-interface VehicleCardProps {
+interface Props {
   vehicle: Tables<"vehicles">;
 }
 
-const VehicleCard = ({ vehicle }: VehicleCardProps) => {
+const VehicleCard = ({ vehicle }: Props) => {
   const images = (vehicle.images as string[]) || [];
   const mainImage = images[0] || "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=80";
+  const title = `${vehicle.marca} ${vehicle.modelo} ${vehicle.year}`;
 
   return (
-    <Link to={`/vehiculo/${vehicle.id}`} className="group block bg-card rounded-lg border border-border overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <Link
+      to={`/vehiculo/${vehicle.id}`}
+      className="group bg-card border border-border rounded-xl overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all duration-300"
+    >
       {/* Image */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+      <div className="relative aspect-[16/10] overflow-hidden">
         <img
           src={mainImage}
-          alt={`${vehicle.marca} ${vehicle.modelo} ${vehicle.year}`}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          alt={title}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
         />
-        {vehicle.recien_ingresado && (
-          <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground font-bold text-xs">
-            Recién Ingresado
-          </Badge>
-        )}
-        {vehicle.destacado && (
-          <Badge className="absolute top-3 right-3 bg-secondary text-secondary-foreground font-bold text-xs">
-            Destacado
-          </Badge>
-        )}
+        {/* Hover overlay */}
+        <div className="absolute inset-0 bg-secondary/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+          <span className="bg-primary text-primary-foreground font-bold text-sm uppercase tracking-wide px-5 py-2.5 rounded-lg flex items-center gap-2">
+            <Eye className="h-4 w-4" />
+            Ver Detalles
+          </span>
+        </div>
+        {/* Badges */}
+        <div className="absolute top-3 left-3 flex gap-2">
+          {vehicle.recien_ingresado && (
+            <Badge className="bg-primary text-primary-foreground text-xs font-bold">Nuevo Ingreso</Badge>
+          )}
+          {vehicle.destacado && (
+            <Badge className="bg-secondary text-secondary-foreground text-xs font-bold">Destacado</Badge>
+          )}
+        </div>
       </div>
 
-      {/* Tags */}
-      <div className="px-4 pt-3 flex flex-wrap gap-1">
-        <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">{vehicle.transmision}</span>
-        <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">{vehicle.combustible}</span>
-        {vehicle.traccion && <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">{vehicle.traccion}</span>}
-      </div>
-
-      {/* Info */}
-      <div className="p-4 pt-2">
-        <h3 className="font-bold text-foreground text-lg leading-tight" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-          {vehicle.marca} {vehicle.modelo} {vehicle.version || ""}
+      {/* Content */}
+      <div className="p-4">
+        <h3 className="font-bold text-foreground text-lg leading-tight group-hover:text-primary transition-colors">
+          {title}
         </h3>
-        <div className="text-2xl font-black text-primary mt-1" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+        {vehicle.version && (
+          <p className="text-xs text-muted-foreground mt-0.5">{vehicle.version}</p>
+        )}
+
+        <div className="text-2xl font-black text-primary mt-2">
           {formatPrice(vehicle.price)}
         </div>
 
-        {/* Specs row */}
-        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1"><Gauge className="h-3.5 w-3.5" />{formatKm(vehicle.kilometraje)}</span>
-          <span className="flex items-center gap-1"><Fuel className="h-3.5 w-3.5" />{vehicle.combustible}</span>
-          <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" />{vehicle.year}</span>
-          <span className="flex items-center gap-1"><Settings2 className="h-3.5 w-3.5" />{vehicle.transmision}</span>
+        {/* Specs */}
+        <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-border">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Calendar className="h-3.5 w-3.5 text-primary/70" />
+            <span>{vehicle.year}</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Gauge className="h-3.5 w-3.5 text-primary/70" />
+            <span>{formatKm(vehicle.kilometraje)}</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Fuel className="h-3.5 w-3.5 text-primary/70" />
+            <span>{vehicle.combustible}</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <Settings2 className="h-3.5 w-3.5 text-primary/70" />
+            <span>{vehicle.transmision}</span>
+          </div>
         </div>
       </div>
     </Link>
