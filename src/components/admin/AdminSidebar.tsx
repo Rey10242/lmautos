@@ -1,32 +1,45 @@
 import { Car, LayoutDashboard, MessageSquare, FileText, LogOut, Home } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarFooter,
-  useSidebar,
+  Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
+  SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarFooter, useSidebar,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
-
-const navItems = [
-  { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
-  { title: "Vehículos", url: "/admin/vehiculos", icon: Car },
-  { title: "Consignaciones", url: "/admin/consignaciones", icon: FileText },
-  { title: "Mensajes", url: "/admin/mensajes", icon: MessageSquare },
-];
 
 const AdminSidebar = () => {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const location = useLocation();
   const { signOut } = useAuth();
+
+  // Badge counts
+  const { data: pendingConsignments } = useQuery({
+    queryKey: ["sidebar-pending-consignments"],
+    queryFn: async () => {
+      const { count } = await supabase.from("consignment_requests").select("*", { count: "exact", head: true }).eq("status", "pendiente");
+      return count || 0;
+    },
+    refetchInterval: 30000,
+  });
+
+  const { data: newMessages } = useQuery({
+    queryKey: ["sidebar-new-messages"],
+    queryFn: async () => {
+      const { count } = await supabase.from("contact_messages").select("*", { count: "exact", head: true }).eq("status", "nuevo");
+      return count || 0;
+    },
+    refetchInterval: 30000,
+  });
+
+  const navItems = [
+    { title: "Dashboard", url: "/admin", icon: LayoutDashboard, badge: 0 },
+    { title: "Vehículos", url: "/admin/vehiculos", icon: Car, badge: 0 },
+    { title: "Consignaciones", url: "/admin/consignaciones", icon: FileText, badge: pendingConsignments || 0 },
+    { title: "Mensajes", url: "/admin/mensajes", icon: MessageSquare, badge: newMessages || 0 },
+  ];
 
   const isActive = (url: string) => {
     if (url === "/admin") return location.pathname === "/admin";
@@ -36,7 +49,6 @@ const AdminSidebar = () => {
   return (
     <Sidebar collapsible="icon" className="border-r border-sidebar-border">
       <SidebarContent>
-        {/* Brand */}
         <div className="px-4 py-5 flex items-center gap-3">
           <div className="w-9 h-9 rounded-lg bg-sidebar-primary flex items-center justify-center shrink-0">
             <Car className="h-5 w-5 text-sidebar-primary-foreground" />
@@ -44,7 +56,7 @@ const AdminSidebar = () => {
           {!collapsed && (
             <div>
               <span className="text-sm font-black text-sidebar-foreground uppercase tracking-wider">LM Autos</span>
-              <p className="text-[10px] text-sidebar-foreground/50 uppercase tracking-widest">Admin</p>
+              <p className="text-[10px] text-sidebar-foreground/50 uppercase tracking-widest">Admin Panel</p>
             </div>
           )}
         </div>
@@ -59,14 +71,22 @@ const AdminSidebar = () => {
                     <Link
                       to={item.url}
                       className={cn(
-                        "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors",
+                        "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors relative",
                         isActive(item.url)
                           ? "bg-sidebar-primary text-sidebar-primary-foreground font-semibold"
                           : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
                       )}
                     >
                       <item.icon className="h-4 w-4 shrink-0" />
-                      {!collapsed && <span className="text-sm">{item.title}</span>}
+                      {!collapsed && <span className="text-sm flex-1">{item.title}</span>}
+                      {item.badge > 0 && (
+                        <span className={cn(
+                          "bg-destructive text-destructive-foreground text-[10px] font-bold rounded-full flex items-center justify-center",
+                          collapsed ? "absolute -top-1 -right-1 w-4 h-4" : "w-5 h-5"
+                        )}>
+                          {item.badge > 9 ? "9+" : item.badge}
+                        </span>
+                      )}
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
