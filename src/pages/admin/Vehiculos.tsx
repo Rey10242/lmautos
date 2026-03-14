@@ -27,8 +27,10 @@ type SortDir = "asc" | "desc";
 
 const statusConfig: Record<string, { label: string; class: string }> = {
   disponible: { label: "Disponible", class: "bg-emerald-500/15 text-emerald-700 border-emerald-200" },
-  vendido: { label: "Vendido", class: "bg-red-500/15 text-red-700 border-red-200" },
+  consignado: { label: "Consignado", class: "bg-blue-500/15 text-blue-700 border-blue-200" },
   reservado: { label: "Reservado", class: "bg-amber-500/15 text-amber-700 border-amber-200" },
+  vendido: { label: "Vendido", class: "bg-red-500/15 text-red-700 border-red-200" },
+  en_tramite: { label: "En Trámite", class: "bg-purple-500/15 text-purple-700 border-purple-200" },
   oculto: { label: "Oculto", class: "bg-muted text-muted-foreground border-border" },
 };
 

@@ -378,6 +378,12 @@ const VehiculoForm = () => {
               </div>
               <Switch checked={form.recien_ingresado} onCheckedChange={(v) => update("recien_ingresado", v)} />
             </div>
+            {(form.status === "vendido" || form.status === "en_tramite") && (
+              <div>
+                <Label className="text-xs uppercase text-muted-foreground font-semibold">Fecha de Venta</Label>
+                <Input type="date" value={form.fecha_venta} onChange={e => update("fecha_venta", e.target.value)} />
+              </div>
+            )}
           </div>
         </div>
 

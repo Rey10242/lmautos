@@ -85,6 +85,7 @@ const VehiculoDetalle = () => {
     { icon: Car, label: "Tracción", value: vehicle.traccion || "N/A" },
     { icon: Palette, label: "Color", value: vehicle.color || "N/A" },
     { icon: DoorOpen, label: "Puertas", value: vehicle.num_puertas || "N/A" },
+    ...((vehicle as any).transito ? [{ icon: MapPin, label: "Tránsito", value: (vehicle as any).transito }] : []),
   ];
 
   const handleCopyLink = () => {
