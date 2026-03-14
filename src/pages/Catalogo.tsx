@@ -69,7 +69,19 @@ const Catalogo = () => {
 
       <div className="container py-10">
         <div className="flex flex-col lg:flex-row gap-8">
-          <aside className="w-full lg:w-72 shrink-0">
+          {/* Mobile filter toggle */}
+          <div className="lg:hidden mb-4">
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => setShowFilters(!showFilters)}
+            >
+              {showFilters ? <X className="mr-2 h-4 w-4" /> : <SlidersHorizontal className="mr-2 h-4 w-4" />}
+              {showFilters ? "Cerrar Filtros" : "Filtrar Vehículos"}
+            </Button>
+          </div>
+
+          <aside className={`w-full lg:w-72 shrink-0 ${showFilters ? "block" : "hidden lg:block"}`}>
             <VehicleFilters filters={filters} onFiltersChange={setFilters} />
           </aside>
 
