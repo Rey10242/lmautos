@@ -10,19 +10,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-                <Car className="h-6 w-6 text-primary-foreground" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-2xl font-black tracking-tight leading-none">
-                  <span className="text-primary">LM</span>
-                  <span className="text-secondary-foreground">autos</span>
-                </span>
-                <span className="text-[10px] text-secondary-foreground/60 uppercase tracking-wider">
-                  Consignataria de Vehículos
-                </span>
-              </div>
+            <Link to="/" className="inline-block mb-4">
+              <img src={logoWhite} alt="LM Autos" className="h-10 w-auto" />
             </Link>
             <p className="text-sm text-secondary-foreground/70 leading-relaxed mb-4">
               Tu aliado de confianza en la compra y venta de vehículos usados y seminuevos en Colombia.
