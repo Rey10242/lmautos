@@ -136,6 +136,8 @@ const VehiculoForm = () => {
         traccion: form.traccion || null, estado_vehiculo: form.estado_vehiculo || null,
         descripcion: form.descripcion || null, status: form.status, destacado: form.destacado,
         recien_ingresado: form.recien_ingresado, images: images, user_id: user!.id,
+        transito: form.transito || null,
+        fecha_venta: (form.status === "vendido" || form.status === "en_tramite") && form.fecha_venta ? form.fecha_venta : null,
       };
       if (isEdit) {
         const { error } = await supabase.from("vehicles").update(payload).eq("id", id);
