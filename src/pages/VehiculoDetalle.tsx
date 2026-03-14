@@ -11,6 +11,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { formatPrice, formatKm } from "@/lib/formatPrice";
 import { Fuel, Gauge, Calendar, Settings2, Car, Palette, DoorOpen, Cog, MessageCircle, Share2, Copy, ChevronLeft, ChevronRight, X, MapPin } from "lucide-react";
 import { useState } from "react";
+import { SITE_URL } from "@/lib/constants";
 import { useToast } from "@/hooks/use-toast";
 
 const VehiculoDetalle = () => {
@@ -53,7 +54,7 @@ const VehiculoDetalle = () => {
   const images = vehicle ? ((vehicle.images as string[]) || []) : [];
   const displayImages = images.length > 0 ? images : ["https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80"];
   const shareUrl = typeof window !== "undefined" ? window.location.href : "";
-  const canonicalUrl = vehicle ? `https://lmautos.lovable.app/vehiculo/${vehicle.slug || vehicle.id}` : undefined;
+  const canonicalUrl = vehicle ? `${SITE_URL}/vehiculo/${vehicle.slug || vehicle.id}` : undefined;
 
   if (isLoading) {
     return (
@@ -140,7 +141,7 @@ const VehiculoDetalle = () => {
       seller: {
         "@type": "AutoDealer",
         name: "LM Autos",
-        url: "https://lmautos.lovable.app",
+        url: SITE_URL,
       },
     },
     url: canonicalUrl,

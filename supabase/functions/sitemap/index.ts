@@ -5,7 +5,7 @@ const corsHeaders = {
   "Cache-Control": "public, max-age=3600, s-maxage=3600",
 };
 
-const BASE_URL = "https://lmautos.lovable.app";
+const BASE_URL = "https://lmautos.com";
 
 const staticPages = [
   { loc: "/", priority: "1.0", changefreq: "daily" },

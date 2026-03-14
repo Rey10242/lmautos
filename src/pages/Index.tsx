@@ -1,4 +1,5 @@
 import SEOHead from "@/components/shared/SEOHead";
+import { SITE_URL } from "@/lib/constants";
 import HeroSection from "@/components/home/HeroSection";
 import FeaturedVehicles from "@/components/home/FeaturedVehicles";
 import WhyUs from "@/components/home/WhyUs";
@@ -15,7 +16,7 @@ const Index = () => {
     "@type": "AutoDealer",
     name: "LM Autos",
     description: "Consignataria de vehículos usados y seminuevos en Cartagena, Colombia",
-    url: "https://lmautos.lovable.app",
+    url: SITE_URL,
     address: { "@type": "PostalAddress", addressLocality: "Cartagena", addressCountry: "CO" },
     telephone: "+573157525555",
     email: "autos.luismejia@gmail.com",
@@ -26,7 +27,7 @@ const Index = () => {
       <SEOHead
         title="Compra y Venta de Vehículos Usados en Cartagena"
         description="Consignataria de vehículos usados y seminuevos en Cartagena, Colombia. Compra, vende o consigna tu carro con total confianza."
-        canonical="https://lmautos.lovable.app/"
+        canonical={`${SITE_URL}/`}
         jsonLd={jsonLd}
       />
       <HeroSection />

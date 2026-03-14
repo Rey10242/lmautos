@@ -33,6 +33,10 @@ const SEOHead = ({ title, description, canonical, ogImage, ogType = "website", j
     setMeta("twitter:title", title);
     setMeta("twitter:description", description);
 
+    if (canonical) {
+      setMeta("og:url", canonical, true);
+    }
+
     if (ogImage) {
       setMeta("og:image", ogImage, true);
       setMeta("twitter:image", ogImage);
