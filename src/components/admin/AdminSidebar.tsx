@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import logoWhite from "@/assets/logo-white-horizontal.png";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
   SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarFooter, useSidebar,
@@ -50,14 +51,12 @@ const AdminSidebar = () => {
     <Sidebar collapsible="icon" className="border-r border-sidebar-border">
       <SidebarContent>
         <div className="px-4 py-5 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-sidebar-primary flex items-center justify-center shrink-0">
-            <Car className="h-5 w-5 text-sidebar-primary-foreground" />
-          </div>
-          {!collapsed && (
-            <div>
-              <span className="text-sm font-black text-sidebar-foreground uppercase tracking-wider">LM Autos</span>
-              <p className="text-[10px] text-sidebar-foreground/50 uppercase tracking-widest">Admin Panel</p>
+          {collapsed ? (
+            <div className="w-9 h-9 rounded-lg bg-sidebar-primary flex items-center justify-center shrink-0">
+              <Car className="h-5 w-5 text-sidebar-primary-foreground" />
             </div>
+          ) : (
+            <img src={logoWhite} alt="LM Autos" className="h-8 w-auto" />
           )}
         </div>
 
