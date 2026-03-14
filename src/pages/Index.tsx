@@ -1,4 +1,5 @@
 import SEOHead from "@/components/shared/SEOHead";
+import { SITE_URL } from "@/lib/constants";
 import HeroSection from "@/components/home/HeroSection";
 import FeaturedVehicles from "@/components/home/FeaturedVehicles";
 import WhyUs from "@/components/home/WhyUs";

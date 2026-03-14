@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import usePageTitle from "@/hooks/usePageTitle";
 import SEOHead from "@/components/shared/SEOHead";
+import { SITE_URL } from "@/lib/constants";
 import PageBanner from "@/components/layout/PageBanner";
 import VehicleCard from "@/components/vehicles/VehicleCard";
 import VehicleFilters, { defaultFilters, type VehicleFilterValues } from "@/components/vehicles/VehicleFilters";
