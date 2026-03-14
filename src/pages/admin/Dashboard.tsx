@@ -1,32 +1,65 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Car, FileText, MessageSquare, TrendingUp, Eye, Clock, ShoppingCart, CalendarPlus, Layers, Plus } from "lucide-react";
+import { Car, FileText, MessageSquare, TrendingUp, Eye, Clock, ShoppingCart, CalendarPlus, Layers, Plus, Handshake, FileCheck, CalendarRange } from "lucide-react";
 import { Link } from "react-router-dom";
 import { formatPrice } from "@/lib/formatPrice";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-const COLORS = {
+const COLORS: Record<string, string> = {
   disponible: "hsl(160, 60%, 45%)",
   vendido: "hsl(0, 70%, 55%)",
   reservado: "hsl(40, 90%, 50%)",
+  consignado: "hsl(210, 70%, 55%)",
+  en_tramite: "hsl(270, 60%, 55%)",
   oculto: "hsl(220, 10%, 60%)",
 };
 
+const STATUS_LABELS: Record<string, string> = {
+  disponible: "Disponible",
+  vendido: "Vendido",
+  reservado: "Reservado",
+  consignado: "Consignado",
+  en_tramite: "En Trámite",
+  oculto: "Oculto",
+};
+
+type DateRange = "all" | "this_week" | "this_month" | "last_3_months" | "this_year";
+
+const getDateFilter = (range: DateRange): Date | null => {
+  const now = new Date();
+  switch (range) {
+    case "this_week": {
+      const d = new Date(now);
+      d.setDate(d.getDate() - 7);
+      return d;
+    }
+    case "this_month": {
+      return new Date(now.getFullYear(), now.getMonth(), 1);
+    }
+    case "last_3_months": {
+      const d = new Date(now);
+      d.setMonth(d.getMonth() - 3);
+      return d;
+    }
+    case "this_year": {
+      return new Date(now.getFullYear(), 0, 1);
+    }
+    default:
+      return null;
+  }
+};
+
 const Dashboard = () => {
+  const [dateRange, setDateRange] = useState<DateRange>("all");
+
   const { data: vehicles } = useQuery({
     queryKey: ["admin-all-vehicles"],
     queryFn: async () => {
       const { data } = await supabase.from("vehicles").select("*");
       return data || [];
-    },
-  });
-
-  const { data: consignmentCount } = useQuery({
-    queryKey: ["admin-consignment-count"],
-    queryFn: async () => {
-      const { count } = await supabase.from("consignment_requests").select("*", { count: "exact", head: true });
-      return count || 0;
     },
   });
 
@@ -38,28 +71,39 @@ const Dashboard = () => {
     },
   });
 
-  const { data: messageCount } = useQuery({
-    queryKey: ["admin-message-count"],
+  const { data: newMessages } = useQuery({
+    queryKey: ["admin-new-messages"],
     queryFn: async () => {
       const { count } = await supabase.from("contact_messages").select("*", { count: "exact", head: true }).eq("status", "nuevo");
       return count || 0;
     },
   });
 
-  // Computed stats
-  const disponibles = vehicles?.filter(v => v.status === "disponible") || [];
-  const vendidos = vehicles?.filter(v => v.status === "vendido").length || 0;
+  const dateFilter = getDateFilter(dateRange);
+
+  // Filtered vehicles by date
+  const filteredVehicles = vehicles?.filter(v => {
+    if (!dateFilter) return true;
+    const created = new Date(v.created_at);
+    return created >= dateFilter;
+  }) || [];
+
+  // All-time counts for inventory
+  const inventarioTotal = vehicles?.filter(v => ["disponible", "consignado", "reservado"].includes(v.status || "")).length || 0;
+  const disponibles = vehicles?.filter(v => v.status === "disponible").length || 0;
+  const consignados = vehicles?.filter(v => v.status === "consignado").length || 0;
+  const vendidos = filteredVehicles.filter(v => v.status === "vendido").length;
+  const enTramite = vehicles?.filter(v => v.status === "en_tramite").length || 0;
   const reservados = vehicles?.filter(v => v.status === "reservado").length || 0;
-  const recentCount = vehicles?.filter(v => {
-    const d = new Date(v.created_at);
-    return (Date.now() - d.getTime()) < 7 * 24 * 60 * 60 * 1000;
-  }).length || 0;
+  const agregados = filteredVehicles.length;
 
   // Charts data
   const statusData = vehicles ? [
     { name: "Disponible", value: vehicles.filter(v => v.status === "disponible").length, color: COLORS.disponible },
     { name: "Vendido", value: vehicles.filter(v => v.status === "vendido").length, color: COLORS.vendido },
     { name: "Reservado", value: vehicles.filter(v => v.status === "reservado").length, color: COLORS.reservado },
+    { name: "Consignado", value: vehicles.filter(v => v.status === "consignado").length, color: COLORS.consignado },
+    { name: "En Trámite", value: vehicles.filter(v => v.status === "en_tramite").length, color: COLORS.en_tramite },
     { name: "Oculto", value: vehicles.filter(v => v.status === "oculto").length, color: COLORS.oculto },
   ].filter(d => d.value > 0) : [];
 
@@ -78,32 +122,62 @@ const Dashboard = () => {
     ?.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
     .slice(0, 5) || [];
 
-  const stats = [
-    { label: "Total Vehículos", value: vehicles?.length ?? "—", icon: Car, color: "bg-primary/10 text-primary", link: "/admin/vehiculos" },
-    { label: "Disponibles", value: disponibles.length, icon: Eye, color: "bg-emerald-500/10 text-emerald-600", link: "/admin/vehiculos" },
-    { label: "Consignaciones Pendientes", value: pendingConsignments ?? "—", icon: FileText, color: "bg-blue-500/10 text-blue-600", link: "/admin/consignaciones" },
-    { label: "Mensajes Nuevos", value: messageCount ?? "—", icon: MessageSquare, color: "bg-amber-500/10 text-amber-600", link: "/admin/mensajes" },
+  const mainStats = [
+    { label: "Total Inventario", value: inventarioTotal, icon: Car, color: "bg-primary/10 text-primary", link: "/admin/vehiculos" },
+    { label: "Disponibles", value: disponibles, icon: Eye, color: "bg-emerald-500/10 text-emerald-600", link: "/admin/vehiculos" },
+    { label: "Consignados", value: consignados, icon: Handshake, color: "bg-blue-500/10 text-blue-600", link: "/admin/vehiculos" },
+    { label: "Vendidos", value: vendidos, icon: ShoppingCart, color: "bg-red-500/10 text-red-600", link: "/admin/vehiculos" },
   ];
+
+  const secondaryStats = [
+    { label: "En Trámite", value: enTramite, icon: FileCheck, color: "bg-purple-500/10 text-purple-600", link: "/admin/vehiculos" },
+    { label: "Reservados", value: reservados, icon: Clock, color: "bg-amber-500/10 text-amber-600", link: "/admin/vehiculos" },
+    { label: "Consignaciones Pendientes", value: pendingConsignments ?? "—", icon: FileText, color: "bg-orange-500/10 text-orange-600", link: "/admin/consignaciones" },
+    { label: "Mensajes Nuevos", value: newMessages ?? "—", icon: MessageSquare, color: "bg-cyan-500/10 text-cyan-600", link: "/admin/mensajes" },
+  ];
+
+  const dateRangeLabel: Record<DateRange, string> = {
+    all: "Todo el tiempo",
+    this_week: "Esta semana",
+    this_month: "Este mes",
+    last_3_months: "Últimos 3 meses",
+    this_year: "Este año",
+  };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
           <h1 className="text-2xl font-black uppercase tracking-wide text-foreground" style={{ fontFamily: 'Montserrat, sans-serif' }}>
             Dashboard
           </h1>
           <p className="text-muted-foreground text-sm mt-1">Resumen general del inventario y actividad</p>
         </div>
-        <Button asChild>
-          <Link to="/admin/vehiculos/nuevo">
-            <Plus className="mr-2 h-4 w-4" /> Nuevo Vehículo
-          </Link>
-        </Button>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <CalendarRange className="h-4 w-4 text-muted-foreground" />
+            <Select value={dateRange} onValueChange={(v) => setDateRange(v as DateRange)}>
+              <SelectTrigger className="w-[180px] h-9 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.entries(dateRangeLabel).map(([key, label]) => (
+                  <SelectItem key={key} value={key}>{label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <Button asChild>
+            <Link to="/admin/vehiculos/nuevo">
+              <Plus className="mr-2 h-4 w-4" /> Nuevo Vehículo
+            </Link>
+          </Button>
+        </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat) => (
+      {/* Main Stats */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {mainStats.map((stat) => (
           <Link
             key={stat.label}
             to={stat.link}
@@ -121,41 +195,27 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* Summary cards */}
+      {/* Secondary Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-gradient-to-br from-primary to-primary/80 rounded-xl p-5 text-primary-foreground">
-          <div className="flex items-center gap-2 mb-2 opacity-80">
-            <ShoppingCart className="h-4 w-4" />
-            <span className="text-[10px] uppercase tracking-wide font-semibold">Vendidos</span>
-          </div>
-          <p className="text-3xl font-black">{vendidos}</p>
-        </div>
-        <div className="bg-card border border-border rounded-xl p-5">
-          <div className="flex items-center gap-2 mb-2 text-muted-foreground">
-            <Clock className="h-4 w-4" />
-            <span className="text-[10px] uppercase tracking-wide font-semibold">Reservados</span>
-          </div>
-          <p className="text-3xl font-black text-foreground">{reservados}</p>
-        </div>
-        <div className="bg-card border border-border rounded-xl p-5">
-          <div className="flex items-center gap-2 mb-2 text-muted-foreground">
-            <CalendarPlus className="h-4 w-4" />
-            <span className="text-[10px] uppercase tracking-wide font-semibold">Esta Semana</span>
-          </div>
-          <p className="text-3xl font-black text-foreground">{recentCount}</p>
-        </div>
-        <div className="bg-card border border-border rounded-xl p-5">
-          <div className="flex items-center gap-2 mb-2 text-muted-foreground">
-            <Layers className="h-4 w-4" />
-            <span className="text-[10px] uppercase tracking-wide font-semibold">Consignaciones</span>
-          </div>
-          <p className="text-3xl font-black text-foreground">{consignmentCount ?? "—"}</p>
-        </div>
+        {secondaryStats.map((stat) => (
+          <Link
+            key={stat.label}
+            to={stat.link}
+            className="bg-card border border-border rounded-xl p-4 hover:shadow-md hover:border-primary/20 transition-all"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${stat.color}`}>
+                <stat.icon className="h-4 w-4" />
+              </div>
+              <span className="text-[10px] uppercase tracking-wide font-semibold text-muted-foreground">{stat.label}</span>
+            </div>
+            <p className="text-2xl font-black text-foreground">{stat.value}</p>
+          </Link>
+        ))}
       </div>
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Status Pie */}
         <div className="bg-card border border-border rounded-xl p-6">
           <h2 className="font-bold text-foreground uppercase tracking-wide text-sm mb-4">Distribución por Estado</h2>
           {statusData.length > 0 ? (
@@ -186,7 +246,6 @@ const Dashboard = () => {
           )}
         </div>
 
-        {/* Brand Bar */}
         <div className="bg-card border border-border rounded-xl p-6">
           <h2 className="font-bold text-foreground uppercase tracking-wide text-sm mb-4">Top Marcas</h2>
           {brandData.length > 0 ? (
@@ -194,9 +253,7 @@ const Dashboard = () => {
               <BarChart data={brandData} layout="vertical" margin={{ left: 0, right: 10 }}>
                 <XAxis type="number" hide />
                 <YAxis type="category" dataKey="name" width={80} tick={{ fontSize: 11, fill: 'hsl(220, 10%, 46%)' }} axisLine={false} tickLine={false} />
-                <Tooltip
-                  contentStyle={{ background: 'hsl(0, 0%, 100%)', border: '1px solid hsl(220, 13%, 91%)', borderRadius: 8, fontSize: 12 }}
-                />
+                <Tooltip contentStyle={{ background: 'hsl(0, 0%, 100%)', border: '1px solid hsl(220, 13%, 91%)', borderRadius: 8, fontSize: 12 }} />
                 <Bar dataKey="value" fill="hsl(40, 95%, 50%)" radius={[0, 4, 4, 0]} barSize={16} />
               </BarChart>
             </ResponsiveContainer>
@@ -220,9 +277,8 @@ const Dashboard = () => {
         <div className="divide-y divide-border">
           {recentVehicles.map((v) => {
             const images = (v.images as string[]) || [];
-            const sc = v.status === 'disponible' ? 'bg-emerald-500/15 text-emerald-700' :
-                       v.status === 'vendido' ? 'bg-red-500/15 text-red-700' :
-                       v.status === 'reservado' ? 'bg-amber-500/15 text-amber-700' : 'bg-muted text-muted-foreground';
+            const statusColor = COLORS[v.status || "disponible"] || COLORS.oculto;
+            const statusLabel = STATUS_LABELS[v.status || "disponible"] || v.status;
             return (
               <Link key={v.id} to={`/admin/vehiculos/${v.id}`} className="flex items-center gap-4 p-4 hover:bg-muted/50 transition-colors">
                 <div className="w-16 h-12 rounded-lg overflow-hidden bg-muted shrink-0">
@@ -234,8 +290,11 @@ const Dashboard = () => {
                 </div>
                 <div className="text-right shrink-0">
                   <p className="font-bold text-foreground text-sm">{formatPrice(v.price)}</p>
-                  <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${sc}`}>
-                    {v.status}
+                  <span
+                    className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full inline-block"
+                    style={{ backgroundColor: `${statusColor}20`, color: statusColor }}
+                  >
+                    {statusLabel}
                   </span>
                 </div>
               </Link>

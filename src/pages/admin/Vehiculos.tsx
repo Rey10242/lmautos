@@ -27,8 +27,10 @@ type SortDir = "asc" | "desc";
 
 const statusConfig: Record<string, { label: string; class: string }> = {
   disponible: { label: "Disponible", class: "bg-emerald-500/15 text-emerald-700 border-emerald-200" },
-  vendido: { label: "Vendido", class: "bg-red-500/15 text-red-700 border-red-200" },
+  consignado: { label: "Consignado", class: "bg-blue-500/15 text-blue-700 border-blue-200" },
   reservado: { label: "Reservado", class: "bg-amber-500/15 text-amber-700 border-amber-200" },
+  vendido: { label: "Vendido", class: "bg-red-500/15 text-red-700 border-red-200" },
+  en_tramite: { label: "En Trámite", class: "bg-purple-500/15 text-purple-700 border-purple-200" },
   oculto: { label: "Oculto", class: "bg-muted text-muted-foreground border-border" },
 };
 
@@ -142,8 +144,10 @@ const Vehiculos = () => {
   // Stats
   const totalVehicles = vehicles?.length || 0;
   const disponibles = vehicles?.filter(v => v.status === "disponible").length || 0;
+  const consignados = vehicles?.filter(v => v.status === "consignado").length || 0;
   const vendidos = vehicles?.filter(v => v.status === "vendido").length || 0;
   const reservados = vehicles?.filter(v => v.status === "reservado").length || 0;
+  const enTramite = vehicles?.filter(v => v.status === "en_tramite").length || 0;
 
   return (
     <div className="space-y-6">
@@ -154,7 +158,7 @@ const Vehiculos = () => {
             Inventario de Vehículos
           </h1>
           <p className="text-muted-foreground text-sm mt-1">
-            {totalVehicles} total · {disponibles} disponibles · {vendidos} vendidos · {reservados} reservados
+            {totalVehicles} total · {disponibles} disponibles · {consignados} consignados · {vendidos} vendidos · {enTramite} en trámite · {reservados} reservados
           </p>
         </div>
         <Button asChild className="font-bold uppercase tracking-wide">
@@ -170,7 +174,9 @@ const Vehiculos = () => {
         {[
           { key: "todos", label: "Todos", count: totalVehicles },
           { key: "disponible", label: "Disponibles", count: disponibles },
+          { key: "consignado", label: "Consignados", count: consignados },
           { key: "vendido", label: "Vendidos", count: vendidos },
+          { key: "en_tramite", label: "En Trámite", count: enTramite },
           { key: "reservado", label: "Reservados", count: reservados },
         ].map(s => (
           <button
@@ -211,8 +217,14 @@ const Vehiculos = () => {
                 <DropdownMenuItem onClick={() => bulkStatusMutation.mutate({ ids: [...selectedIds], status: "disponible" })}>
                   Marcar Disponible
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => bulkStatusMutation.mutate({ ids: [...selectedIds], status: "consignado" })}>
+                  Marcar Consignado
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => bulkStatusMutation.mutate({ ids: [...selectedIds], status: "vendido" })}>
                   Marcar Vendido
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => bulkStatusMutation.mutate({ ids: [...selectedIds], status: "en_tramite" })}>
+                  Marcar En Trámite
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => bulkStatusMutation.mutate({ ids: [...selectedIds], status: "reservado" })}>
                   Marcar Reservado
@@ -310,7 +322,7 @@ const Vehiculos = () => {
                                 onClick={() => changeStatus.mutate({ id: v.id, status: key })}
                                 className={v.status === key ? "font-bold" : ""}
                               >
-                                <span className={`w-2 h-2 rounded-full mr-2 ${key === 'disponible' ? 'bg-emerald-500' : key === 'vendido' ? 'bg-red-500' : key === 'reservado' ? 'bg-amber-500' : 'bg-muted-foreground'}`} />
+                                <span className={`w-2 h-2 rounded-full mr-2 ${key === 'disponible' ? 'bg-emerald-500' : key === 'vendido' ? 'bg-red-500' : key === 'reservado' ? 'bg-amber-500' : key === 'consignado' ? 'bg-blue-500' : key === 'en_tramite' ? 'bg-purple-500' : 'bg-muted-foreground'}`} />
                                 {cfg.label}
                               </DropdownMenuItem>
                             ))}

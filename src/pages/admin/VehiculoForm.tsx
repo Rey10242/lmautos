@@ -19,8 +19,10 @@ const tracciones = ["4x2", "4x4", "AWD"];
 const estados = ["Nuevo", "Usado", "Certificado"];
 const statuses = [
   { value: "disponible", label: "Disponible", class: "bg-emerald-500/15 text-emerald-700" },
-  { value: "vendido", label: "Vendido", class: "bg-red-500/15 text-red-700" },
+  { value: "consignado", label: "Consignado", class: "bg-blue-500/15 text-blue-700" },
   { value: "reservado", label: "Reservado", class: "bg-amber-500/15 text-amber-700" },
+  { value: "vendido", label: "Vendido", class: "bg-red-500/15 text-red-700" },
+  { value: "en_tramite", label: "En Trámite", class: "bg-purple-500/15 text-purple-700" },
   { value: "oculto", label: "Oculto", class: "bg-muted text-muted-foreground" },
 ];
 
@@ -29,13 +31,14 @@ interface FormData {
   kilometraje: string; combustible: string; transmision: string; color: string;
   cilindrada: string; num_puertas: string; traccion: string; estado_vehiculo: string;
   descripcion: string; status: string; destacado: boolean; recien_ingresado: boolean;
+  transito: string; fecha_venta: string;
 }
 
 const defaultForm: FormData = {
   marca: "", modelo: "", version: "", year: "", price: "", kilometraje: "",
   combustible: "", transmision: "", color: "", cilindrada: "", num_puertas: "4",
   traccion: "", estado_vehiculo: "", descripcion: "", status: "disponible",
-  destacado: false, recien_ingresado: false,
+  destacado: false, recien_ingresado: false, transito: "", fecha_venta: "",
 };
 
 const VehiculoForm = () => {
@@ -73,6 +76,7 @@ const VehiculoForm = () => {
         traccion: vehicle.traccion || "", estado_vehiculo: vehicle.estado_vehiculo || "",
         descripcion: vehicle.descripcion || "", status: vehicle.status || "disponible",
         destacado: vehicle.destacado || false, recien_ingresado: vehicle.recien_ingresado || false,
+        transito: (vehicle as any).transito || "", fecha_venta: (vehicle as any).fecha_venta ? new Date((vehicle as any).fecha_venta).toISOString().split("T")[0] : "",
       });
       setImages((vehicle.images as string[]) || []);
     }
@@ -132,6 +136,8 @@ const VehiculoForm = () => {
         traccion: form.traccion || null, estado_vehiculo: form.estado_vehiculo || null,
         descripcion: form.descripcion || null, status: form.status, destacado: form.destacado,
         recien_ingresado: form.recien_ingresado, images: images, user_id: user!.id,
+        transito: form.transito || null,
+        fecha_venta: (form.status === "vendido" || form.status === "en_tramite") && form.fecha_venta ? form.fecha_venta : null,
       };
       if (isEdit) {
         const { error } = await supabase.from("vehicles").update(payload).eq("id", id);
@@ -272,6 +278,10 @@ const VehiculoForm = () => {
               <Label className="text-xs uppercase text-muted-foreground font-semibold">Kilometraje *</Label>
               <Input type="number" value={form.kilometraje} onChange={e => update("kilometraje", e.target.value)} placeholder="15000" />
             </div>
+            <div>
+              <Label className="text-xs uppercase text-muted-foreground font-semibold">Tránsito</Label>
+              <Input value={form.transito} onChange={e => update("transito", e.target.value)} placeholder="Ej: Bogotá, Medellín" />
+            </div>
           </div>
         </div>
 
@@ -346,7 +356,7 @@ const VehiculoForm = () => {
                   {statuses.map(s => (
                     <SelectItem key={s.value} value={s.value}>
                       <span className="flex items-center gap-2">
-                        <span className={`w-2 h-2 rounded-full ${s.value === 'disponible' ? 'bg-emerald-500' : s.value === 'vendido' ? 'bg-red-500' : s.value === 'reservado' ? 'bg-amber-500' : 'bg-muted-foreground'}`} />
+                        <span className={`w-2 h-2 rounded-full ${s.value === 'disponible' ? 'bg-emerald-500' : s.value === 'vendido' ? 'bg-red-500' : s.value === 'reservado' ? 'bg-amber-500' : s.value === 'consignado' ? 'bg-blue-500' : s.value === 'en_tramite' ? 'bg-purple-500' : 'bg-muted-foreground'}`} />
                         {s.label}
                       </span>
                     </SelectItem>
@@ -368,6 +378,12 @@ const VehiculoForm = () => {
               </div>
               <Switch checked={form.recien_ingresado} onCheckedChange={(v) => update("recien_ingresado", v)} />
             </div>
+            {(form.status === "vendido" || form.status === "en_tramite") && (
+              <div>
+                <Label className="text-xs uppercase text-muted-foreground font-semibold">Fecha de Venta</Label>
+                <Input type="date" value={form.fecha_venta} onChange={e => update("fecha_venta", e.target.value)} />
+              </div>
+            )}
           </div>
         </div>
 

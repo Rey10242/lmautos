@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { formatPrice, formatKm } from "@/lib/formatPrice";
-import { Fuel, Gauge, Calendar, Settings2, Car, Palette, DoorOpen, Cog, MessageCircle, Share2, Copy, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { Fuel, Gauge, Calendar, Settings2, Car, Palette, DoorOpen, Cog, MessageCircle, Share2, Copy, ChevronLeft, ChevronRight, X, MapPin } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import usePageTitle from "@/hooks/usePageTitle";
@@ -85,6 +85,7 @@ const VehiculoDetalle = () => {
     { icon: Car, label: "Tracción", value: vehicle.traccion || "N/A" },
     { icon: Palette, label: "Color", value: vehicle.color || "N/A" },
     { icon: DoorOpen, label: "Puertas", value: vehicle.num_puertas || "N/A" },
+    ...((vehicle as any).transito ? [{ icon: MapPin, label: "Tránsito", value: (vehicle as any).transito }] : []),
   ];
 
   const handleCopyLink = () => {
