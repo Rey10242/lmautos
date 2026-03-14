@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { generateSlug } from "@/lib/slugify";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -128,7 +129,8 @@ const VehiculoForm = () => {
 
   const saveMutation = useMutation({
     mutationFn: async () => {
-      const payload = {
+      const slug = generateSlug(form.marca, form.modelo, form.version, form.year);
+      const payload: Record<string, any> = {
         marca: form.marca, modelo: form.modelo, version: form.version || null,
         year: parseInt(form.year), price: parseInt(form.price), kilometraje: parseInt(form.kilometraje),
         combustible: form.combustible, transmision: form.transmision, color: form.color || null,
@@ -138,12 +140,13 @@ const VehiculoForm = () => {
         recien_ingresado: form.recien_ingresado, images: images, user_id: user!.id,
         transito: form.transito || null,
         fecha_venta: (form.status === "vendido" || form.status === "en_tramite") && form.fecha_venta ? form.fecha_venta : null,
+        slug,
       };
       if (isEdit) {
-        const { error } = await supabase.from("vehicles").update(payload).eq("id", id);
+        const { error } = await supabase.from("vehicles").update(payload as any).eq("id", id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("vehicles").insert(payload);
+        const { error } = await supabase.from("vehicles").insert(payload as any);
         if (error) throw error;
       }
     },
@@ -187,7 +190,7 @@ const VehiculoForm = () => {
         </div>
         {isEdit && (
           <Button variant="outline" size="sm" asChild>
-            <a href={`/vehiculo/${id}`} target="_blank" rel="noopener noreferrer">
+            <a href={`/vehiculo/${(vehicle as any)?.slug || id}`} target="_blank" rel="noopener noreferrer">
               <ExternalLink className="h-4 w-4 mr-1" /> Ver en sitio
             </a>
           </Button>

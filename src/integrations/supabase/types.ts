@@ -114,6 +114,7 @@ export type Database = {
           num_puertas: number | null
           price: number
           recien_ingresado: boolean | null
+          slug: string
           status: string | null
           traccion: string | null
           transito: string | null
@@ -141,6 +142,7 @@ export type Database = {
           num_puertas?: number | null
           price: number
           recien_ingresado?: boolean | null
+          slug: string
           status?: string | null
           traccion?: string | null
           transito?: string | null
@@ -168,6 +170,7 @@ export type Database = {
           num_puertas?: number | null
           price?: number
           recien_ingresado?: boolean | null
+          slug?: string
           status?: string | null
           traccion?: string | null
           transito?: string | null
