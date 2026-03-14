@@ -356,7 +356,7 @@ const VehiculoForm = () => {
                   {statuses.map(s => (
                     <SelectItem key={s.value} value={s.value}>
                       <span className="flex items-center gap-2">
-                        <span className={`w-2 h-2 rounded-full ${s.value === 'disponible' ? 'bg-emerald-500' : s.value === 'vendido' ? 'bg-red-500' : s.value === 'reservado' ? 'bg-amber-500' : 'bg-muted-foreground'}`} />
+                        <span className={`w-2 h-2 rounded-full ${s.value === 'disponible' ? 'bg-emerald-500' : s.value === 'vendido' ? 'bg-red-500' : s.value === 'reservado' ? 'bg-amber-500' : s.value === 'consignado' ? 'bg-blue-500' : s.value === 'en_tramite' ? 'bg-purple-500' : 'bg-muted-foreground'}`} />
                         {s.label}
                       </span>
                     </SelectItem>
