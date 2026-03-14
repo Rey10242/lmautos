@@ -189,8 +189,8 @@ const Dashboard = () => {
               </div>
               <TrendingUp className="h-4 w-4 text-muted-foreground/30 group-hover:text-primary transition-colors" />
             </div>
-            <div className="text-3xl font-black text-foreground">{stat.value}</div>
-            <div className="text-xs text-muted-foreground uppercase tracking-wide mt-1">{stat.label}</div>
+            <div className="text-2xl sm:text-3xl font-black text-foreground">{stat.value}</div>
+            <div className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wide mt-1">{stat.label}</div>
           </Link>
         ))}
       </div>
