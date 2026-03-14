@@ -278,6 +278,10 @@ const VehiculoForm = () => {
               <Label className="text-xs uppercase text-muted-foreground font-semibold">Kilometraje *</Label>
               <Input type="number" value={form.kilometraje} onChange={e => update("kilometraje", e.target.value)} placeholder="15000" />
             </div>
+            <div>
+              <Label className="text-xs uppercase text-muted-foreground font-semibold">Tránsito</Label>
+              <Input value={form.transito} onChange={e => update("transito", e.target.value)} placeholder="Ej: Bogotá, Medellín" />
+            </div>
           </div>
         </div>
 
