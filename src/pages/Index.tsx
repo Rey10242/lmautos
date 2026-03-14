@@ -17,7 +17,7 @@ const Index = () => {
     description: "Consignataria de vehículos usados y seminuevos en Cartagena, Colombia",
     url: "https://lmautos.lovable.app",
     address: { "@type": "PostalAddress", addressLocality: "Cartagena", addressCountry: "CO" },
-    telephone: "+573150000990",
+    telephone: "+573157525555",
     email: "autos.luismejia@gmail.com",
   };
 

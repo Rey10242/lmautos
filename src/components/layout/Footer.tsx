@@ -89,7 +89,7 @@ const Footer = () => {
               </li>
             </ul>
             <Button asChild size="sm" className="mt-4 w-full font-bold uppercase text-xs">
-              <a href="https://wa.me/573150000990" target="_blank" rel="noopener noreferrer">
+              <a href="https://wa.me/573157525555" target="_blank" rel="noopener noreferrer">
                 Escríbenos
               </a>
             </Button>
