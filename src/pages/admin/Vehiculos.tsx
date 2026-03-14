@@ -174,7 +174,9 @@ const Vehiculos = () => {
         {[
           { key: "todos", label: "Todos", count: totalVehicles },
           { key: "disponible", label: "Disponibles", count: disponibles },
+          { key: "consignado", label: "Consignados", count: consignados },
           { key: "vendido", label: "Vendidos", count: vendidos },
+          { key: "en_tramite", label: "En Trámite", count: enTramite },
           { key: "reservado", label: "Reservados", count: reservados },
         ].map(s => (
           <button
