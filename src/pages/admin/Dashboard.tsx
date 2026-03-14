@@ -209,7 +209,7 @@ const Dashboard = () => {
               </div>
               <span className="text-[10px] uppercase tracking-wide font-semibold text-muted-foreground">{stat.label}</span>
             </div>
-            <p className="text-2xl font-black text-foreground">{stat.value}</p>
+            <p className="text-xl sm:text-2xl font-black text-foreground">{stat.value}</p>
           </Link>
         ))}
       </div>
