@@ -30,7 +30,7 @@ const HeroSection = () => {
 
       <div className="relative container py-16 md:py-20">
         <div className="max-w-2xl">
-          <span className="inline-block bg-primary text-primary-foreground text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded mb-6 animate-fade-up">
+          <span className="inline-block bg-primary text-primary-foreground text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3 sm:px-4 py-1.5 rounded mb-4 sm:mb-6 animate-fade-up">
             Consignataria de vehículos usados en Cartagena - Colombia
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary-foreground leading-tight mb-6 animate-fade-up-delay-1">
