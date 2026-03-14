@@ -4,8 +4,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Car, LogIn, Eye, EyeOff } from "lucide-react";
+import { LogIn, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import logoWhite from "@/assets/logo-white-horizontal.png";
 
 const Login = () => {
   const { user, loading, signIn } = useAuth();
@@ -38,12 +39,7 @@ const Login = () => {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary mb-4">
-            <Car className="h-8 w-8 text-primary-foreground" />
-          </div>
-          <h1 className="text-2xl font-black text-secondary-foreground uppercase tracking-wide" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-            LM Autos
-          </h1>
+          <img src={logoWhite} alt="LM Autos" className="h-14 w-auto mx-auto mb-4" />
           <p className="text-secondary-foreground/60 text-sm mt-1">Panel de Administración</p>
         </div>
 

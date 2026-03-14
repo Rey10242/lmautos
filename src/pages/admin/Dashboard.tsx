@@ -187,7 +187,7 @@ const Dashboard = () => {
                 <Tooltip
                   contentStyle={{ background: 'hsl(0, 0%, 100%)', border: '1px solid hsl(220, 13%, 91%)', borderRadius: 8, fontSize: 12 }}
                 />
-                <Bar dataKey="value" fill="hsl(33, 100%, 50%)" radius={[0, 4, 4, 0]} barSize={16} />
+                <Bar dataKey="value" fill="hsl(40, 95%, 50%)" radius={[0, 4, 4, 0]} barSize={16} />
               </BarChart>
             </ResponsiveContainer>
           ) : (
