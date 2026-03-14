@@ -87,7 +87,7 @@ const Navbar = () => {
 
           <div className="hidden lg:flex items-center gap-3">
             <Button asChild size="sm" className="font-bold uppercase text-xs tracking-wide">
-              <a href="https://wa.me/573150000990" target="_blank" rel="noopener noreferrer">
+              <a href="https://wa.me/573157525555" target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="mr-1.5 h-4 w-4" />
                 WhatsApp
               </a>
