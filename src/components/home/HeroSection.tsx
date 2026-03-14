@@ -33,7 +33,7 @@ const HeroSection = () => {
           <span className="inline-block bg-primary text-primary-foreground text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3 sm:px-4 py-1.5 rounded mb-4 sm:mb-6 animate-fade-up">
             Consignataria de vehículos usados en Cartagena - Colombia
           </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-secondary-foreground leading-tight mb-6 animate-fade-up-delay-1">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-secondary-foreground leading-tight mb-4 sm:mb-6 animate-fade-up-delay-1">
             Encuentra tu <span className="text-primary">vehículo ideal</span> al mejor precio
           </h1>
           <p className="text-secondary-foreground/80 text-lg mb-8 leading-relaxed max-w-lg animate-fade-up-delay-2">
