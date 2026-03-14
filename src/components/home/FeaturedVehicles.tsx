@@ -9,14 +9,27 @@ const FeaturedVehicles = () => {
   const { data: vehicles, isLoading } = useQuery({
     queryKey: ["featured-vehicles"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      // First try to get featured vehicles
+      const { data: featured, error: fErr } = await supabase
+        .from("vehicles")
+        .select("*")
+        .eq("status", "disponible")
+        .eq("destacado", true)
+        .order("created_at", { ascending: false })
+        .limit(6);
+      if (fErr) throw fErr;
+      
+      // If not enough featured, fill with latest available
+      if (featured && featured.length >= 3) return featured;
+      
+      const { data: latest, error: lErr } = await supabase
         .from("vehicles")
         .select("*")
         .eq("status", "disponible")
         .order("created_at", { ascending: false })
         .limit(6);
-      if (error) throw error;
-      return data;
+      if (lErr) throw lErr;
+      return latest;
     },
   });
 

@@ -210,7 +210,7 @@ const VehiculoForm = () => {
         </div>
         {isEdit && (
           <Button variant="outline" size="sm" asChild>
-            <a href={`/vehiculo/${(vehicle as any)?.slug || id}`} target="_blank" rel="noopener noreferrer">
+            <a href={`/vehiculo/${vehicle?.slug || id}`} target="_blank" rel="noopener noreferrer">
               <ExternalLink className="h-4 w-4 mr-1" /> Ver en sitio
             </a>
           </Button>
