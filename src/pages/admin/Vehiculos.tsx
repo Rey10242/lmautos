@@ -154,11 +154,11 @@ const Vehiculos = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black uppercase tracking-wide text-foreground" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-wide text-foreground" style={{ fontFamily: 'Montserrat, sans-serif' }}>
             Inventario de Vehículos
           </h1>
-          <p className="text-muted-foreground text-sm mt-1">
-            {totalVehicles} total · {disponibles} disponibles · {consignados} consignados · {vendidos} vendidos · {enTramite} en trámite · {reservados} reservados
+          <p className="text-muted-foreground text-xs sm:text-sm mt-1 leading-relaxed">
+            {totalVehicles} total · {disponibles} disp. · {consignados} consig. · {vendidos} vend. · {enTramite} trámite · {reservados} reserv.
           </p>
         </div>
         <Button asChild className="font-bold uppercase tracking-wide">
