@@ -15,7 +15,7 @@ const VehicleCard = ({ vehicle }: Props) => {
 
   return (
     <Link
-      to={`/vehiculo/${vehicle.id}`}
+      to={`/vehiculo/${(vehicle as any).slug || vehicle.id}`}
       className="group bg-card border border-border rounded-xl overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all duration-300"
     >
       {/* Image */}

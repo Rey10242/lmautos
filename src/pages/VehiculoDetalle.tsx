@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import PageBanner from "@/components/layout/PageBanner";
 import FadeInSection from "@/components/shared/FadeInSection";
+import SEOHead from "@/components/shared/SEOHead";
 import VehicleCard from "@/components/vehicles/VehicleCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,32 +12,35 @@ import { formatPrice, formatKm } from "@/lib/formatPrice";
 import { Fuel, Gauge, Calendar, Settings2, Car, Palette, DoorOpen, Cog, MessageCircle, Share2, Copy, ChevronLeft, ChevronRight, X, MapPin } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import usePageTitle from "@/hooks/usePageTitle";
 
 const VehiculoDetalle = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const { toast } = useToast();
   const [selectedImage, setSelectedImage] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const { data: vehicle, isLoading } = useQuery({
-    queryKey: ["vehicle", id],
+    queryKey: ["vehicle", slug],
     queryFn: async () => {
-      const { data, error } = await supabase.from("vehicles").select("*").eq("id", id!).single();
+      // Try slug first, fallback to id for backwards compatibility
+      let { data, error } = await supabase.from("vehicles").select("*").eq("slug", slug!).maybeSingle();
+      if (!data) {
+        ({ data, error } = await supabase.from("vehicles").select("*").eq("id", slug!).maybeSingle());
+      }
       if (error) throw error;
       return data;
     },
-    enabled: !!id,
+    enabled: !!slug,
   });
 
   const { data: similarVehicles } = useQuery({
-    queryKey: ["similar-vehicles", vehicle?.marca, id],
+    queryKey: ["similar-vehicles", vehicle?.marca, vehicle?.id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("vehicles")
         .select("*")
         .eq("marca", vehicle!.marca)
-        .neq("id", id!)
+        .neq("id", vehicle!.id)
         .eq("status", "disponible")
         .limit(3);
       if (error) throw error;
@@ -46,7 +50,10 @@ const VehiculoDetalle = () => {
   });
 
   const title = vehicle ? `${vehicle.marca} ${vehicle.modelo} ${vehicle.version || ""} ${vehicle.year}`.trim() : "";
-  usePageTitle(title || "Detalle del Vehículo");
+  const images = vehicle ? ((vehicle.images as string[]) || []) : [];
+  const displayImages = images.length > 0 ? images : ["https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80"];
+  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+  const canonicalUrl = vehicle ? `https://lmautos.lovable.app/vehiculo/${(vehicle as any).slug || vehicle.id}` : undefined;
 
   if (isLoading) {
     return (
@@ -71,10 +78,7 @@ const VehiculoDetalle = () => {
     );
   }
 
-  const images = (vehicle.images as string[]) || [];
-  const displayImages = images.length > 0 ? images : ["https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80"];
   const whatsappMsg = encodeURIComponent(`Hola, estoy interesado en el ${title}. ¿Está disponible?`);
-  const shareUrl = window.location.href;
 
   const specs = [
     { icon: Calendar, label: "Año", value: vehicle.year },
@@ -109,8 +113,50 @@ const VehiculoDetalle = () => {
     }
   };
 
+  const seoDescription = `${title} - ${formatPrice(vehicle.price)} | ${formatKm(vehicle.kilometraje)} km | ${vehicle.combustible} | ${vehicle.transmision}. Disponible en LM Autos, Cartagena Colombia.`;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Car",
+    name: title,
+    description: vehicle.descripcion || seoDescription,
+    image: images[0] || undefined,
+    brand: { "@type": "Brand", name: vehicle.marca },
+    model: vehicle.modelo,
+    vehicleModelDate: String(vehicle.year),
+    mileageFromOdometer: {
+      "@type": "QuantitativeValue",
+      value: vehicle.kilometraje,
+      unitCode: "KMT",
+    },
+    fuelType: vehicle.combustible,
+    vehicleTransmission: vehicle.transmision,
+    color: vehicle.color || undefined,
+    offers: {
+      "@type": "Offer",
+      price: vehicle.price,
+      priceCurrency: "COP",
+      availability: vehicle.status === "disponible" ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      seller: {
+        "@type": "AutoDealer",
+        name: "LM Autos",
+        url: "https://lmautos.lovable.app",
+      },
+    },
+    url: canonicalUrl,
+  };
+
   return (
     <>
+      <SEOHead
+        title={title}
+        description={seoDescription}
+        canonical={canonicalUrl}
+        ogImage={images[0]}
+        ogType="product"
+        jsonLd={jsonLd}
+      />
+
       <PageBanner
         title={title}
         breadcrumbs={[
