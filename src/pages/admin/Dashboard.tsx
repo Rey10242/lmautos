@@ -153,11 +153,11 @@ const Dashboard = () => {
           </h1>
           <p className="text-muted-foreground text-xs sm:text-sm mt-1">Resumen general del inventario y actividad</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <div className="flex items-center gap-2">
-            <CalendarRange className="h-4 w-4 text-muted-foreground" />
+            <CalendarRange className="h-4 w-4 text-muted-foreground shrink-0" />
             <Select value={dateRange} onValueChange={(v) => setDateRange(v as DateRange)}>
-              <SelectTrigger className="w-[180px] h-9 text-xs">
+              <SelectTrigger className="w-full sm:w-[180px] h-9 text-xs">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -167,7 +167,7 @@ const Dashboard = () => {
               </SelectContent>
             </Select>
           </div>
-          <Button asChild>
+          <Button asChild className="w-full sm:w-auto">
             <Link to="/admin/vehiculos/nuevo">
               <Plus className="mr-2 h-4 w-4" /> Nuevo Vehículo
             </Link>
