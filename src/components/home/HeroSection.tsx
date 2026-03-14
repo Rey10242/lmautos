@@ -58,16 +58,16 @@ const HeroSection = () => {
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
-            <Button asChild size="lg" className="text-sm sm:text-base font-bold uppercase tracking-wide">
+          <div className="hidden sm:flex flex-row flex-wrap gap-4">
+            <Button asChild size="lg" className="text-base font-bold uppercase tracking-wide">
               <Link to="/catalogo">
-                <Search className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                <Search className="mr-2 h-5 w-5" />
                 Ver Catálogo
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="text-sm sm:text-base font-bold uppercase tracking-wide border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+            <Button asChild size="lg" variant="outline" className="text-base font-bold uppercase tracking-wide border-primary text-primary hover:bg-primary hover:text-primary-foreground">
               <Link to="/consignacion">
-                <Car className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                <Car className="mr-2 h-5 w-5" />
                 Vender mi Vehículo
               </Link>
             </Button>
