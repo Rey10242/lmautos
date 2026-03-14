@@ -27,7 +27,7 @@ const Index = () => {
       <SEOHead
         title="Compra y Venta de Vehículos Usados en Cartagena"
         description="Consignataria de vehículos usados y seminuevos en Cartagena, Colombia. Compra, vende o consigna tu carro con total confianza."
-        canonical="https://lmautos.lovable.app/"
+        canonical={`${SITE_URL}/`}
         jsonLd={jsonLd}
       />
       <HeroSection />

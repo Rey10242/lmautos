@@ -54,7 +54,7 @@ const Catalogo = () => {
       <SEOHead
         title="Catálogo de Vehículos Usados"
         description="Explora nuestro catálogo de vehículos usados y seminuevos disponibles en Cartagena, Colombia. Filtra por marca, precio, año y más."
-        canonical="https://lmautos.lovable.app/catalogo"
+        canonical={`${SITE_URL}/catalogo`}
       />
       <PageBanner
         title="Vehículos Disponibles"

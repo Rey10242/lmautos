@@ -141,7 +141,7 @@ const VehiculoDetalle = () => {
       seller: {
         "@type": "AutoDealer",
         name: "LM Autos",
-        url: "https://lmautos.lovable.app",
+        url: SITE_URL,
       },
     },
     url: canonicalUrl,
