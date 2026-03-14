@@ -48,8 +48,8 @@ const Dashboard = () => {
 
   // Computed stats
   const disponibles = vehicles?.filter(v => v.status === "disponible") || [];
-  const totalValue = disponibles.reduce((sum, v) => sum + Number(v.price), 0);
-  const avgPrice = disponibles.length ? totalValue / disponibles.length : 0;
+  const vendidos = vehicles?.filter(v => v.status === "vendido").length || 0;
+  const reservados = vehicles?.filter(v => v.status === "reservado").length || 0;
   const recentCount = vehicles?.filter(v => {
     const d = new Date(v.created_at);
     return (Date.now() - d.getTime()) < 7 * 24 * 60 * 60 * 1000;
