@@ -121,25 +121,35 @@ const Dashboard = () => {
         ))}
       </div>
 
-      {/* Value cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-gradient-to-br from-primary to-primary/80 rounded-xl p-6 text-primary-foreground">
+      {/* Summary cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-gradient-to-br from-primary to-primary/80 rounded-xl p-5 text-primary-foreground">
           <div className="flex items-center gap-2 mb-2 opacity-80">
-            <DollarSign className="h-4 w-4" />
-            <span className="text-xs uppercase tracking-wide font-semibold">Valor Total Inventario</span>
+            <ShoppingCart className="h-4 w-4" />
+            <span className="text-[10px] uppercase tracking-wide font-semibold">Vendidos</span>
           </div>
-          <p className="text-3xl font-black">{formatPrice(totalValue)}</p>
-          <p className="text-sm opacity-70 mt-2">{disponibles.length} disponibles · {recentCount} agregados esta semana</p>
+          <p className="text-3xl font-black">{vendidos}</p>
         </div>
-        <div className="bg-card border border-border rounded-xl p-6">
+        <div className="bg-card border border-border rounded-xl p-5">
           <div className="flex items-center gap-2 mb-2 text-muted-foreground">
-            <BarChart3 className="h-4 w-4" />
-            <span className="text-xs uppercase tracking-wide font-semibold">Precio Promedio</span>
+            <Clock className="h-4 w-4" />
+            <span className="text-[10px] uppercase tracking-wide font-semibold">Reservados</span>
           </div>
-          <p className="text-3xl font-black text-foreground">{formatPrice(avgPrice)}</p>
-          <p className="text-sm text-muted-foreground mt-2">
-            Rango: {formatPrice(Math.min(...(disponibles.map(v => Number(v.price)) || [0])))} – {formatPrice(Math.max(...(disponibles.map(v => Number(v.price)) || [0])))}
-          </p>
+          <p className="text-3xl font-black text-foreground">{reservados}</p>
+        </div>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <div className="flex items-center gap-2 mb-2 text-muted-foreground">
+            <CalendarPlus className="h-4 w-4" />
+            <span className="text-[10px] uppercase tracking-wide font-semibold">Esta Semana</span>
+          </div>
+          <p className="text-3xl font-black text-foreground">{recentCount}</p>
+        </div>
+        <div className="bg-card border border-border rounded-xl p-5">
+          <div className="flex items-center gap-2 mb-2 text-muted-foreground">
+            <Layers className="h-4 w-4" />
+            <span className="text-[10px] uppercase tracking-wide font-semibold">Consignaciones</span>
+          </div>
+          <p className="text-3xl font-black text-foreground">{consignmentCount ?? "—"}</p>
         </div>
       </div>
 
