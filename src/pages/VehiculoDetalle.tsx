@@ -226,7 +226,7 @@ const VehiculoDetalle = () => {
 
             {/* WhatsApp CTA */}
             <Button asChild size="lg" className="w-full font-bold uppercase text-base">
-              <a href={`https://wa.me/573150000990?text=${whatsappMsg}`} target="_blank" rel="noopener noreferrer">
+              <a href={`https://wa.me/573157525555?text=${whatsappMsg}`} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="mr-2 h-5 w-5" />
                 Consultar por WhatsApp
               </a>

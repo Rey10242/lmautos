@@ -146,7 +146,7 @@ const Servicios = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="font-bold uppercase">
-                  <a href="https://wa.me/573150000990" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/573157525555" target="_blank" rel="noopener noreferrer">
                     <Phone className="mr-2 h-5 w-5" />
                     Contactar por WhatsApp
                   </a>

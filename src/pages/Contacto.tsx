@@ -23,7 +23,8 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 const contactInfo = [
-  { icon: Phone, label: "Teléfono", value: "+57 315 000 0990", href: "tel:+573150000990" },
+  { icon: Phone, label: "Línea Comercial", value: "+57 315 752 5555", href: "tel:+573157525555" },
+  { icon: Phone, label: "Créditos y Asistencia", value: "+57 315 000 0990", href: "tel:+573150000990" },
   { icon: Mail, label: "Correo", value: "autos.luismejia@gmail.com", href: "mailto:autos.luismejia@gmail.com" },
   { icon: MapPin, label: "Ubicación", value: "Colombia", href: null },
 ];
@@ -111,7 +112,7 @@ const Contacto = () => {
 
               <FadeInSection delay={200}>
                 <Button asChild size="lg" className="w-full font-bold uppercase">
-                  <a href="https://wa.me/573150000990" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/573157525555" target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="mr-2 h-5 w-5" />
                     Escribir por WhatsApp
                   </a>
