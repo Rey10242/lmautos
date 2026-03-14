@@ -104,6 +104,8 @@ export type Database = {
           descripcion: string | null
           destacado: boolean | null
           estado_vehiculo: string | null
+          fecha_ingreso: string | null
+          fecha_venta: string | null
           id: string
           images: Json | null
           kilometraje: number
@@ -114,6 +116,7 @@ export type Database = {
           recien_ingresado: boolean | null
           status: string | null
           traccion: string | null
+          transito: string | null
           transmision: string
           updated_at: string
           user_id: string
@@ -128,6 +131,8 @@ export type Database = {
           descripcion?: string | null
           destacado?: boolean | null
           estado_vehiculo?: string | null
+          fecha_ingreso?: string | null
+          fecha_venta?: string | null
           id?: string
           images?: Json | null
           kilometraje: number
@@ -138,6 +143,7 @@ export type Database = {
           recien_ingresado?: boolean | null
           status?: string | null
           traccion?: string | null
+          transito?: string | null
           transmision: string
           updated_at?: string
           user_id: string
@@ -152,6 +158,8 @@ export type Database = {
           descripcion?: string | null
           destacado?: boolean | null
           estado_vehiculo?: string | null
+          fecha_ingreso?: string | null
+          fecha_venta?: string | null
           id?: string
           images?: Json | null
           kilometraje?: number
@@ -162,6 +170,7 @@ export type Database = {
           recien_ingresado?: boolean | null
           status?: string | null
           traccion?: string | null
+          transito?: string | null
           transmision?: string
           updated_at?: string
           user_id?: string
