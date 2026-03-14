@@ -53,7 +53,7 @@ const VehicleCard = ({ vehicle }: Props) => {
           <p className="text-xs text-muted-foreground mt-0.5">{vehicle.version}</p>
         )}
 
-        <div className="text-2xl font-black text-primary mt-2">
+        <div className="text-xl sm:text-2xl font-black text-primary mt-2">
           {formatPrice(vehicle.price)}
         </div>
 
