@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Mail, Phone, Menu, X, MessageCircle, Car } from "lucide-react";
+import { Mail, Phone, Menu, X, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoOrange from "@/assets/logo-orange.png";
 
 const navLinks = [
   { label: "Inicio", path: "/" },
