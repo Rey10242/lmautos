@@ -145,13 +145,13 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between flex-wrap gap-4">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black uppercase tracking-wide text-foreground" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-wide text-foreground" style={{ fontFamily: 'Montserrat, sans-serif' }}>
             Dashboard
           </h1>
-          <p className="text-muted-foreground text-sm mt-1">Resumen general del inventario y actividad</p>
+          <p className="text-muted-foreground text-xs sm:text-sm mt-1">Resumen general del inventario y actividad</p>
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
