@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Mail, Phone, Menu, X, MessageCircle, Car } from "lucide-react";
+import { Mail, Phone, Menu, X, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import logoOrange from "@/assets/logo-orange.png";
 
 const navLinks = [
   { label: "Inicio", path: "/" },
@@ -59,19 +60,8 @@ const Navbar = () => {
       {/* Main nav */}
       <div className={`bg-background/95 backdrop-blur-md border-b border-border transition-shadow duration-300 ${scrolled ? "shadow-md" : "shadow-sm"}`}>
         <div className="container flex items-center justify-between py-3">
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center group-hover:scale-105 transition-transform">
-              <Car className="h-6 w-6 text-primary-foreground" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-black tracking-tight leading-none">
-                <span className="text-primary">LM</span>
-                <span className="text-foreground">autos</span>
-              </span>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-wider hidden sm:block">
-                Consignataria de Vehículos
-              </span>
-            </div>
+          <Link to="/" className="group">
+            <img src={logoOrange} alt="LM Autos" className="h-10 sm:h-12 w-auto group-hover:scale-105 transition-transform" />
           </Link>
 
           {/* Desktop nav */}
