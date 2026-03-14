@@ -49,9 +49,12 @@ const Footer = () => {
               Contacto
             </h4>
             <ul className="space-y-3 text-sm">
-              <li className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-primary" />
-                <a href="tel:+573150000990" className="hover:text-primary transition-colors">+57 315 000 0990</a>
+              <li className="flex items-start gap-2">
+                <Phone className="h-4 w-4 text-primary mt-0.5" />
+                <div className="space-y-1">
+                  <a href="tel:+573157525555" className="hover:text-primary transition-colors block">+57 315 752 5555 <span className="text-secondary-foreground/50 text-xs">(Comercial)</span></a>
+                  <a href="tel:+573150000990" className="hover:text-primary transition-colors block">+57 315 000 0990 <span className="text-secondary-foreground/50 text-xs">(Créditos)</span></a>
+                </div>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary" />
