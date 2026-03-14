@@ -129,7 +129,27 @@ const VehiculoForm = () => {
 
   const saveMutation = useMutation({
     mutationFn: async () => {
-      const slug = generateSlug(form.marca, form.modelo, form.version, form.year);
+      let slug = generateSlug(form.marca, form.modelo, form.version, form.year);
+      
+      // Check for slug collision (exclude current vehicle if editing)
+      const { data: existing } = await supabase
+        .from("vehicles")
+        .select("id, slug")
+        .ilike("slug", `${slug}%`);
+      
+      if (existing && existing.length > 0) {
+        const isOwnSlug = isEdit && existing.length === 1 && existing[0].id === id;
+        if (!isOwnSlug) {
+          // Find next available suffix
+          const existingSlugs = new Set(existing.map(v => v.slug));
+          if (existingSlugs.has(slug)) {
+            let counter = 2;
+            while (existingSlugs.has(`${slug}-${counter}`)) counter++;
+            slug = `${slug}-${counter}`;
+          }
+        }
+      }
+
       const payload: Record<string, any> = {
         marca: form.marca, modelo: form.modelo, version: form.version || null,
         year: parseInt(form.year), price: parseInt(form.price), kilometraje: parseInt(form.kilometraje),
