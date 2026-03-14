@@ -17,7 +17,7 @@ const schema = z.object({
   correo: z.string().trim().email("Correo inválido").max(255),
   marca: z.string().trim().min(1, "Requerido").max(50),
   modelo: z.string().trim().min(1, "Requerido").max(50),
-  year: z.coerce.number().min(1981, "Año inválido").max(new Date().getFullYear()),
+  year: z.coerce.number().min(1981, "Año inválido").max(new Date().getFullYear() + 1, "Año inválido"),
   kilometraje: z.coerce.number().min(0, "Kilometraje inválido"),
   ciudad: z.string().trim().min(1, "Requerido").max(100),
   precio_esperado: z.coerce.number().min(0).optional().or(z.literal("")),
