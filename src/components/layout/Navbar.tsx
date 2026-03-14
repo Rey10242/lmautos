@@ -38,9 +38,9 @@ const Navbar = () => {
               <Mail className="h-4 w-4" />
               <span className="hidden sm:inline">autos.luismejia@gmail.com</span>
             </a>
-            <a href="tel:+573150000990" className="flex items-center gap-2 hover:text-primary transition-colors">
+            <a href="tel:+573157525555" className="flex items-center gap-2 hover:text-primary transition-colors">
               <Phone className="h-4 w-4" />
-              <span className="hidden sm:inline">+57 315 000 0990</span>
+              <span className="hidden sm:inline">+57 315 752 5555</span>
             </a>
           </div>
           <div className="flex items-center gap-3">
