@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Car, FileText, MessageSquare, TrendingUp, Eye, Clock, DollarSign, BarChart3, Plus } from "lucide-react";
+import { Car, FileText, MessageSquare, TrendingUp, Eye, Clock, ShoppingCart, CalendarPlus, Layers, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { formatPrice } from "@/lib/formatPrice";
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
