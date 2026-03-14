@@ -41,7 +41,7 @@ const HeroSection = () => {
           </p>
 
           {/* Quick search bar */}
-          <div className="bg-background/10 backdrop-blur-sm border border-secondary-foreground/20 rounded-xl p-4 mb-8 max-w-lg animate-fade-up-delay-2">
+          <div className="bg-background/10 backdrop-blur-sm border border-secondary-foreground/20 rounded-xl p-3 sm:p-4 mb-6 sm:mb-8 max-w-lg animate-fade-up-delay-2">
             <div className="flex flex-col sm:flex-row gap-3">
               <Select value={marca} onValueChange={setMarca}>
                 <SelectTrigger className="flex-1 bg-background text-foreground border-border">
