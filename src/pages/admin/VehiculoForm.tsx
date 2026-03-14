@@ -77,7 +77,7 @@ const VehiculoForm = () => {
         traccion: vehicle.traccion || "", estado_vehiculo: vehicle.estado_vehiculo || "",
         descripcion: vehicle.descripcion || "", status: vehicle.status || "disponible",
         destacado: vehicle.destacado || false, recien_ingresado: vehicle.recien_ingresado || false,
-        transito: (vehicle as any).transito || "", fecha_venta: (vehicle as any).fecha_venta ? new Date((vehicle as any).fecha_venta).toISOString().split("T")[0] : "",
+        transito: vehicle.transito || "", fecha_venta: vehicle.fecha_venta ? new Date(vehicle.fecha_venta).toISOString().split("T")[0] : "",
       });
       setImages((vehicle.images as string[]) || []);
     }
