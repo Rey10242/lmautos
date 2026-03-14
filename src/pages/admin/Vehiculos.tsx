@@ -158,7 +158,7 @@ const Vehiculos = () => {
             Inventario de Vehículos
           </h1>
           <p className="text-muted-foreground text-sm mt-1">
-            {totalVehicles} total · {disponibles} disponibles · {vendidos} vendidos · {reservados} reservados
+            {totalVehicles} total · {disponibles} disponibles · {consignados} consignados · {vendidos} vendidos · {enTramite} en trámite · {reservados} reservados
           </p>
         </div>
         <Button asChild className="font-bold uppercase tracking-wide">
