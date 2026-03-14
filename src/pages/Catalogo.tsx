@@ -9,6 +9,8 @@ import PageBanner from "@/components/layout/PageBanner";
 import VehicleCard from "@/components/vehicles/VehicleCard";
 import VehicleFilters, { defaultFilters, type VehicleFilterValues } from "@/components/vehicles/VehicleFilters";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { SlidersHorizontal, X } from "lucide-react";
 
 const Catalogo = () => {
   usePageTitle("Catálogo de Vehículos");
