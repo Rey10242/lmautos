@@ -217,8 +217,14 @@ const Vehiculos = () => {
                 <DropdownMenuItem onClick={() => bulkStatusMutation.mutate({ ids: [...selectedIds], status: "disponible" })}>
                   Marcar Disponible
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => bulkStatusMutation.mutate({ ids: [...selectedIds], status: "consignado" })}>
+                  Marcar Consignado
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => bulkStatusMutation.mutate({ ids: [...selectedIds], status: "vendido" })}>
                   Marcar Vendido
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => bulkStatusMutation.mutate({ ids: [...selectedIds], status: "en_tramite" })}>
+                  Marcar En Trámite
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => bulkStatusMutation.mutate({ ids: [...selectedIds], status: "reservado" })}>
                   Marcar Reservado
