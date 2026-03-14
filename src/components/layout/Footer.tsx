@@ -104,8 +104,12 @@ const Footer = () => {
         </div>
       </div>
       <div className="border-t border-secondary-foreground/10">
-        <div className="container py-4 text-center text-xs text-secondary-foreground/50">
-          © {new Date().getFullYear()} LM Autos SAS. Todos los derechos reservados.
+        <div className="container py-4 flex items-center justify-center gap-2 text-xs text-secondary-foreground/50">
+          <span>© {new Date().getFullYear()} LM Autos SAS. Todos los derechos reservados.</span>
+          <span>·</span>
+          <Link to="/admin/login" className="hover:text-primary transition-colors">
+            Acceso Admin
+          </Link>
         </div>
       </div>
     </footer>
