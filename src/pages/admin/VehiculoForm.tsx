@@ -31,6 +31,7 @@ interface FormData {
   kilometraje: string; combustible: string; transmision: string; color: string;
   cilindrada: string; num_puertas: string; traccion: string; estado_vehiculo: string;
   descripcion: string; status: string; destacado: boolean; recien_ingresado: boolean;
+  transito: string; fecha_venta: string;
 }
 
 const defaultForm: FormData = {
