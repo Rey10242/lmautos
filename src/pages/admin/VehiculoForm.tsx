@@ -38,7 +38,7 @@ const defaultForm: FormData = {
   marca: "", modelo: "", version: "", year: "", price: "", kilometraje: "",
   combustible: "", transmision: "", color: "", cilindrada: "", num_puertas: "4",
   traccion: "", estado_vehiculo: "", descripcion: "", status: "disponible",
-  destacado: false, recien_ingresado: false,
+  destacado: false, recien_ingresado: false, transito: "", fecha_venta: "",
 };
 
 const VehiculoForm = () => {
