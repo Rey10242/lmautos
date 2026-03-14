@@ -322,7 +322,7 @@ const Vehiculos = () => {
                                 onClick={() => changeStatus.mutate({ id: v.id, status: key })}
                                 className={v.status === key ? "font-bold" : ""}
                               >
-                                <span className={`w-2 h-2 rounded-full mr-2 ${key === 'disponible' ? 'bg-emerald-500' : key === 'vendido' ? 'bg-red-500' : key === 'reservado' ? 'bg-amber-500' : 'bg-muted-foreground'}`} />
+                                <span className={`w-2 h-2 rounded-full mr-2 ${key === 'disponible' ? 'bg-emerald-500' : key === 'vendido' ? 'bg-red-500' : key === 'reservado' ? 'bg-amber-500' : key === 'consignado' ? 'bg-blue-500' : key === 'en_tramite' ? 'bg-purple-500' : 'bg-muted-foreground'}`} />
                                 {cfg.label}
                               </DropdownMenuItem>
                             ))}
