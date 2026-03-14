@@ -53,7 +53,7 @@ const VehiculoDetalle = () => {
   const images = vehicle ? ((vehicle.images as string[]) || []) : [];
   const displayImages = images.length > 0 ? images : ["https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80"];
   const shareUrl = typeof window !== "undefined" ? window.location.href : "";
-  const canonicalUrl = vehicle ? `https://lmautos.lovable.app/vehiculo/${(vehicle as any).slug || vehicle.id}` : undefined;
+  const canonicalUrl = vehicle ? `https://lmautos.lovable.app/vehiculo/${vehicle.slug || vehicle.id}` : undefined;
 
   if (isLoading) {
     return (
@@ -89,7 +89,7 @@ const VehiculoDetalle = () => {
     { icon: Car, label: "Tracción", value: vehicle.traccion || "N/A" },
     { icon: Palette, label: "Color", value: vehicle.color || "N/A" },
     { icon: DoorOpen, label: "Puertas", value: vehicle.num_puertas || "N/A" },
-    ...((vehicle as any).transito ? [{ icon: MapPin, label: "Tránsito", value: (vehicle as any).transito }] : []),
+    ...(vehicle.transito ? [{ icon: MapPin, label: "Tránsito", value: vehicle.transito }] : []),
   ];
 
   const handleCopyLink = () => {

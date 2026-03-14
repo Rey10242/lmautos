@@ -77,7 +77,7 @@ const VehiculoForm = () => {
         traccion: vehicle.traccion || "", estado_vehiculo: vehicle.estado_vehiculo || "",
         descripcion: vehicle.descripcion || "", status: vehicle.status || "disponible",
         destacado: vehicle.destacado || false, recien_ingresado: vehicle.recien_ingresado || false,
-        transito: (vehicle as any).transito || "", fecha_venta: (vehicle as any).fecha_venta ? new Date((vehicle as any).fecha_venta).toISOString().split("T")[0] : "",
+        transito: vehicle.transito || "", fecha_venta: vehicle.fecha_venta ? new Date(vehicle.fecha_venta).toISOString().split("T")[0] : "",
       });
       setImages((vehicle.images as string[]) || []);
     }
@@ -129,7 +129,27 @@ const VehiculoForm = () => {
 
   const saveMutation = useMutation({
     mutationFn: async () => {
-      const slug = generateSlug(form.marca, form.modelo, form.version, form.year);
+      let slug = generateSlug(form.marca, form.modelo, form.version, form.year);
+      
+      // Check for slug collision (exclude current vehicle if editing)
+      const { data: existing } = await supabase
+        .from("vehicles")
+        .select("id, slug")
+        .ilike("slug", `${slug}%`);
+      
+      if (existing && existing.length > 0) {
+        const isOwnSlug = isEdit && existing.length === 1 && existing[0].id === id;
+        if (!isOwnSlug) {
+          // Find next available suffix
+          const existingSlugs = new Set(existing.map(v => v.slug));
+          if (existingSlugs.has(slug)) {
+            let counter = 2;
+            while (existingSlugs.has(`${slug}-${counter}`)) counter++;
+            slug = `${slug}-${counter}`;
+          }
+        }
+      }
+
       const payload: Record<string, any> = {
         marca: form.marca, modelo: form.modelo, version: form.version || null,
         year: parseInt(form.year), price: parseInt(form.price), kilometraje: parseInt(form.kilometraje),
@@ -190,7 +210,7 @@ const VehiculoForm = () => {
         </div>
         {isEdit && (
           <Button variant="outline" size="sm" asChild>
-            <a href={`/vehiculo/${(vehicle as any)?.slug || id}`} target="_blank" rel="noopener noreferrer">
+            <a href={`/vehiculo/${vehicle?.slug || id}`} target="_blank" rel="noopener noreferrer">
               <ExternalLink className="h-4 w-4 mr-1" /> Ver en sitio
             </a>
           </Button>
