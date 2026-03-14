@@ -20,6 +20,7 @@ const Catalogo = () => {
     marca: searchParams.get("marca") || "",
   }));
   const [sort, setSort] = useState("recientes");
+  const [showFilters, setShowFilters] = useState(false);
 
   const { data: vehicles, isLoading } = useQuery({
     queryKey: ["vehicles", filters, sort],
