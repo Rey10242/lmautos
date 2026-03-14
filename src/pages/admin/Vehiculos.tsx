@@ -144,8 +144,10 @@ const Vehiculos = () => {
   // Stats
   const totalVehicles = vehicles?.length || 0;
   const disponibles = vehicles?.filter(v => v.status === "disponible").length || 0;
+  const consignados = vehicles?.filter(v => v.status === "consignado").length || 0;
   const vendidos = vehicles?.filter(v => v.status === "vendido").length || 0;
   const reservados = vehicles?.filter(v => v.status === "reservado").length || 0;
+  const enTramite = vehicles?.filter(v => v.status === "en_tramite").length || 0;
 
   return (
     <div className="space-y-6">
