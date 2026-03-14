@@ -94,9 +94,9 @@ const Footer = () => {
         </div>
       </div>
       <div className="border-t border-secondary-foreground/10">
-        <div className="container py-4 flex items-center justify-center gap-2 text-xs text-secondary-foreground/50">
+        <div className="container py-4 flex flex-col sm:flex-row items-center justify-center gap-2 text-xs text-secondary-foreground/50 text-center">
           <span>© {new Date().getFullYear()} LM Autos SAS. Todos los derechos reservados.</span>
-          <span>·</span>
+          <span className="hidden sm:inline">·</span>
           <Link to="/admin/login" className="hover:text-primary transition-colors">
             Acceso Admin
           </Link>

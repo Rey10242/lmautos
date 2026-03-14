@@ -145,19 +145,19 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between flex-wrap gap-4">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black uppercase tracking-wide text-foreground" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-wide text-foreground" style={{ fontFamily: 'Montserrat, sans-serif' }}>
             Dashboard
           </h1>
-          <p className="text-muted-foreground text-sm mt-1">Resumen general del inventario y actividad</p>
+          <p className="text-muted-foreground text-xs sm:text-sm mt-1">Resumen general del inventario y actividad</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <div className="flex items-center gap-2">
-            <CalendarRange className="h-4 w-4 text-muted-foreground" />
+            <CalendarRange className="h-4 w-4 text-muted-foreground shrink-0" />
             <Select value={dateRange} onValueChange={(v) => setDateRange(v as DateRange)}>
-              <SelectTrigger className="w-[180px] h-9 text-xs">
+              <SelectTrigger className="w-full sm:w-[180px] h-9 text-xs">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -167,7 +167,7 @@ const Dashboard = () => {
               </SelectContent>
             </Select>
           </div>
-          <Button asChild>
+          <Button asChild className="w-full sm:w-auto">
             <Link to="/admin/vehiculos/nuevo">
               <Plus className="mr-2 h-4 w-4" /> Nuevo Vehículo
             </Link>
@@ -189,8 +189,8 @@ const Dashboard = () => {
               </div>
               <TrendingUp className="h-4 w-4 text-muted-foreground/30 group-hover:text-primary transition-colors" />
             </div>
-            <div className="text-3xl font-black text-foreground">{stat.value}</div>
-            <div className="text-xs text-muted-foreground uppercase tracking-wide mt-1">{stat.label}</div>
+            <div className="text-2xl sm:text-3xl font-black text-foreground">{stat.value}</div>
+            <div className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wide mt-1">{stat.label}</div>
           </Link>
         ))}
       </div>
@@ -209,7 +209,7 @@ const Dashboard = () => {
               </div>
               <span className="text-[10px] uppercase tracking-wide font-semibold text-muted-foreground">{stat.label}</span>
             </div>
-            <p className="text-2xl font-black text-foreground">{stat.value}</p>
+            <p className="text-xl sm:text-2xl font-black text-foreground">{stat.value}</p>
           </Link>
         ))}
       </div>

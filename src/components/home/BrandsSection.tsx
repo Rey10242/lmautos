@@ -35,7 +35,7 @@ const BrandsSection = () => {
             <Link
               key={`${brand}-${i}`}
               to={`/catalogo?marca=${encodeURIComponent(brand)}`}
-              className="shrink-0 text-xl font-bold text-muted-foreground/50 hover:text-primary hover:scale-110 transition-all duration-300 px-4 py-2"
+              className="shrink-0 text-base sm:text-xl font-bold text-muted-foreground/50 hover:text-primary hover:scale-110 transition-all duration-300 px-3 sm:px-4 py-2"
             >
               {brand}
             </Link>

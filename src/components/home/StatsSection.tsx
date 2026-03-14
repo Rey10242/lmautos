@@ -14,8 +14,8 @@ const StatsSection = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, i) => (
             <div key={i} className="text-center">
-              <stat.icon className="h-10 w-10 text-primary mx-auto mb-3" />
-              <div className="text-3xl font-black text-secondary-foreground" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+              <stat.icon className="h-8 w-8 sm:h-10 sm:w-10 text-primary mx-auto mb-2 sm:mb-3" />
+              <div className="text-2xl sm:text-3xl font-black text-secondary-foreground" style={{ fontFamily: 'Montserrat, sans-serif' }}>
                 {stat.value}
               </div>
               <div className="text-sm text-secondary-foreground/70 mt-1">{stat.label}</div>

@@ -160,7 +160,7 @@ const VehiculoDetalle = () => {
             <div>
               {vehicle.recien_ingresado && <Badge className="bg-primary text-primary-foreground mb-2">Recién Ingresado</Badge>}
               <h2 className="text-2xl font-black text-foreground">{title}</h2>
-              <div className="text-3xl font-black text-primary mt-2">
+              <div className="text-2xl sm:text-3xl font-black text-primary mt-2">
                 {formatPrice(vehicle.price)}
               </div>
             </div>

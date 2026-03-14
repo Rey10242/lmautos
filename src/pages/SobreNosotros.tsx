@@ -74,9 +74,9 @@ const SobreNosotros = () => {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 rounded-xl shadow-lg">
-                  <div className="text-4xl font-black">10+</div>
-                  <div className="text-sm">Años de experiencia</div>
+                <div className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 bg-primary text-primary-foreground p-4 sm:p-6 rounded-xl shadow-lg">
+                  <div className="text-3xl sm:text-4xl font-black">10+</div>
+                  <div className="text-xs sm:text-sm">Años de experiencia</div>
                 </div>
               </div>
             </FadeInSection>
