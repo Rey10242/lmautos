@@ -36,7 +36,7 @@ const HeroSection = () => {
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-secondary-foreground leading-tight mb-4 sm:mb-6 animate-fade-up-delay-1">
             Encuentra tu <span className="text-primary">vehículo ideal</span> al mejor precio
           </h1>
-          <p className="text-secondary-foreground/80 text-lg mb-8 leading-relaxed max-w-lg animate-fade-up-delay-2">
+          <p className="text-secondary-foreground/80 text-base sm:text-lg mb-6 sm:mb-8 leading-relaxed max-w-lg animate-fade-up-delay-2">
             Compra, vende o consigna tu vehículo con total confianza. Los mejores autos usados y seminuevos en Colombia.
           </p>
 
