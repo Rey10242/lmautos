@@ -16,7 +16,7 @@ const Index = () => {
     "@type": "AutoDealer",
     name: "LM Autos",
     description: "Consignataria de vehículos usados y seminuevos en Cartagena, Colombia",
-    url: "https://lmautos.lovable.app",
+    url: SITE_URL,
     address: { "@type": "PostalAddress", addressLocality: "Cartagena", addressCountry: "CO" },
     telephone: "+573157525555",
     email: "autos.luismejia@gmail.com",
