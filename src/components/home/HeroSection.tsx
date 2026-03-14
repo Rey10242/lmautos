@@ -17,7 +17,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative bg-secondary min-h-[540px] flex items-center overflow-hidden">
+    <section className="relative bg-secondary min-h-[420px] md:min-h-[540px] flex items-center overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-secondary via-secondary/95 to-secondary/70" />
       <div
         className="absolute inset-0 opacity-20"
