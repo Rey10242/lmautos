@@ -55,6 +55,7 @@ const Catalogo = () => {
         description="Explora nuestro catálogo de vehículos usados y seminuevos disponibles en Cartagena, Colombia. Filtra por marca, precio, año y más."
         canonical="https://lmautos.lovable.app/catalogo"
       />
+      <PageBanner
         title="Vehículos Disponibles"
         breadcrumbs={[
           { label: "Inicio", path: "/" },
