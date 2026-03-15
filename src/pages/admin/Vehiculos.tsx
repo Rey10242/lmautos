@@ -10,7 +10,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { formatPrice, formatKm } from "@/lib/formatPrice";
 import {
   Plus, Search, Trash2, Edit, Star, Sparkles, Car, Image as ImageIcon,
-  ArrowUpDown, ArrowUp, ArrowDown, Copy, ExternalLink, MoreHorizontal, CheckCircle2
+  ArrowUpDown, ArrowUp, ArrowDown, Copy, ExternalLink, MoreHorizontal, CheckCircle2,
+  Building2, CalendarClock, Handshake
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -299,7 +300,19 @@ const Vehiculos = () => {
                             <Link to={`/admin/vehiculos/${v.id}`} className="font-semibold text-foreground hover:text-primary transition-colors truncate block">
                               {v.marca} {v.modelo} {v.version || ""}
                             </Link>
-                            <p className="text-xs text-muted-foreground">{v.combustible} · {v.transmision} {v.color ? `· ${v.color}` : ""}</p>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <p className="text-xs text-muted-foreground">{v.combustible} · {v.transmision} {v.color ? `· ${v.color}` : ""}</p>
+                              {(v as any).tipo_propiedad === "tercero" && (
+                                <span className="inline-flex items-center gap-0.5 text-[9px] font-bold uppercase bg-blue-500/10 text-blue-700 border border-blue-200 px-1.5 py-0.5 rounded-full">
+                                  <Handshake className="h-2.5 w-2.5" /> Tercero
+                                </span>
+                              )}
+                              {(v as any).ubicacion === "cita_previa" && (
+                                <span className="inline-flex items-center gap-0.5 text-[9px] font-bold uppercase bg-amber-500/10 text-amber-700 border border-amber-200 px-1.5 py-0.5 rounded-full">
+                                  <CalendarClock className="h-2.5 w-2.5" /> Cita
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </td>

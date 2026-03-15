@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice, formatKm } from "@/lib/formatPrice";
-import { Fuel, Gauge, Calendar, Settings2, Eye } from "lucide-react";
+import { Fuel, Gauge, Calendar, Settings2, Eye, Building2, CalendarClock } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
 interface Props {
@@ -75,6 +75,21 @@ const VehicleCard = ({ vehicle }: Props) => {
             <Settings2 className="h-3.5 w-3.5 text-primary/70" />
             <span>{vehicle.transmision}</span>
           </div>
+        </div>
+
+        {/* Location indicator */}
+        <div className="mt-2 pt-2 border-t border-border">
+          {(vehicle as any).ubicacion === "cita_previa" ? (
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-600">
+              <CalendarClock className="h-3.5 w-3.5" />
+              <span>Con cita previa</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600">
+              <Building2 className="h-3.5 w-3.5" />
+              <span>En sala de ventas</span>
+            </div>
+          )}
         </div>
       </div>
     </Link>

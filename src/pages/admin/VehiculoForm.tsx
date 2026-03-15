@@ -33,6 +33,9 @@ interface FormData {
   cilindrada: string; num_puertas: string; traccion: string; estado_vehiculo: string;
   descripcion: string; status: string; destacado: boolean; recien_ingresado: boolean;
   transito: string; fecha_venta: string;
+  ubicacion: string; tipo_propiedad: string;
+  propietario_nombre: string; propietario_telefono: string;
+  propietario_cedula: string; propietario_notas: string;
 }
 
 const defaultForm: FormData = {
@@ -40,6 +43,9 @@ const defaultForm: FormData = {
   combustible: "", transmision: "", color: "", cilindrada: "", num_puertas: "4",
   traccion: "", estado_vehiculo: "", descripcion: "", status: "disponible",
   destacado: false, recien_ingresado: false, transito: "", fecha_venta: "",
+  ubicacion: "sala", tipo_propiedad: "propio",
+  propietario_nombre: "", propietario_telefono: "",
+  propietario_cedula: "", propietario_notas: "",
 };
 
 const VehiculoForm = () => {
@@ -78,6 +84,11 @@ const VehiculoForm = () => {
         descripcion: vehicle.descripcion || "", status: vehicle.status || "disponible",
         destacado: vehicle.destacado || false, recien_ingresado: vehicle.recien_ingresado || false,
         transito: vehicle.transito || "", fecha_venta: vehicle.fecha_venta ? new Date(vehicle.fecha_venta).toISOString().split("T")[0] : "",
+        ubicacion: (vehicle as any).ubicacion || "sala", tipo_propiedad: (vehicle as any).tipo_propiedad || "propio",
+        propietario_nombre: (vehicle as any).propietario_nombre || "",
+        propietario_telefono: (vehicle as any).propietario_telefono || "",
+        propietario_cedula: (vehicle as any).propietario_cedula || "",
+        propietario_notas: (vehicle as any).propietario_notas || "",
       });
       setImages((vehicle.images as string[]) || []);
     }
@@ -161,6 +172,12 @@ const VehiculoForm = () => {
         transito: form.transito || null,
         fecha_venta: (form.status === "vendido" || form.status === "en_tramite") && form.fecha_venta ? form.fecha_venta : null,
         slug,
+        ubicacion: form.ubicacion,
+        tipo_propiedad: form.tipo_propiedad,
+        propietario_nombre: form.tipo_propiedad === "tercero" ? form.propietario_nombre || null : null,
+        propietario_telefono: form.tipo_propiedad === "tercero" ? form.propietario_telefono || null : null,
+        propietario_cedula: form.tipo_propiedad === "tercero" ? form.propietario_cedula || null : null,
+        propietario_notas: form.tipo_propiedad === "tercero" ? form.propietario_notas || null : null,
       };
       if (isEdit) {
         const { error } = await supabase.from("vehicles").update(payload as any).eq("id", id);
@@ -365,6 +382,71 @@ const VehiculoForm = () => {
             rows={5}
           />
           <p className="text-xs text-muted-foreground mt-2">{form.descripcion.length} caracteres</p>
+        </div>
+
+        {/* Propiedad y Ubicación */}
+        <div className="bg-card border border-border rounded-xl p-6">
+          <h2 className="font-bold text-sm uppercase tracking-wide text-foreground mb-4">Propiedad y Ubicación</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label className="text-xs uppercase text-muted-foreground font-semibold">Ubicación del vehículo</Label>
+              <Select value={form.ubicacion} onValueChange={(v) => update("ubicacion", v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="sala">
+                    <span className="flex items-center gap-2">🏢 En Sala de Ventas</span>
+                  </SelectItem>
+                  <SelectItem value="cita_previa">
+                    <span className="flex items-center gap-2">📅 Con Cita Previa</span>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-[10px] text-muted-foreground mt-1">
+                {form.ubicacion === "sala" ? "El cliente puede verlo directamente en la sala" : "Se necesita agendar día y hora para mostrar"}
+              </p>
+            </div>
+            <div>
+              <Label className="text-xs uppercase text-muted-foreground font-semibold">Tipo de propiedad</Label>
+              <Select value={form.tipo_propiedad} onValueChange={(v) => update("tipo_propiedad", v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="propio">
+                    <span className="flex items-center gap-2">🚗 Propio (LM Autos)</span>
+                  </SelectItem>
+                  <SelectItem value="tercero">
+                    <span className="flex items-center gap-2">🤝 De Tercero (Intermediación)</span>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {form.tipo_propiedad === "tercero" && (
+            <div className="mt-4 p-4 bg-muted/50 rounded-lg border border-border space-y-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-sm font-bold text-foreground">🔒 Datos del Propietario</span>
+                <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded-full">Solo visible en admin</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Nombre del propietario</Label>
+                  <Input value={form.propietario_nombre} onChange={e => update("propietario_nombre", e.target.value)} placeholder="Nombre completo" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Teléfono</Label>
+                  <Input value={form.propietario_telefono} onChange={e => update("propietario_telefono", e.target.value)} placeholder="300 123 4567" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Cédula / NIT</Label>
+                  <Input value={form.propietario_cedula} onChange={e => update("propietario_cedula", e.target.value)} placeholder="1.234.567.890" />
+                </div>
+              </div>
+              <div>
+                <Label className="text-xs uppercase text-muted-foreground font-semibold">Notas internas</Label>
+                <Textarea value={form.propietario_notas} onChange={e => update("propietario_notas", e.target.value)} placeholder="Notas sobre acuerdos, comisión, condiciones..." rows={3} />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Status & Flags */}
