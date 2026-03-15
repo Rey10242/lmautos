@@ -81,8 +81,8 @@ export default {
           "100%": { transform: "translateX(-50%)" },
         },
         "whatsapp-pulse": {
-          "0%": { boxShadow: "0 0 0 0 rgba(37, 211, 102, 0.5)" },
-          "70%": { boxShadow: "0 0 0 14px rgba(37, 211, 102, 0)" },
+          "0%": { boxShadow: "0 0 0 0 rgba(37, 211, 102, 0.35)" },
+          "70%": { boxShadow: "0 0 0 10px rgba(37, 211, 102, 0)" },
           "100%": { boxShadow: "0 0 0 0 rgba(37, 211, 102, 0)" },
         },
       },
