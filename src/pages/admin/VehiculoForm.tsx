@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
-import { Save, ArrowLeft, Upload, X, Loader2, GripVertical, ExternalLink } from "lucide-react";
+import { Save, ArrowLeft, Upload, X, Loader2, GripVertical, ExternalLink, Building2, CalendarClock, Car, Handshake, ShieldCheck } from "lucide-react";
 
 const marcas = ["Chevrolet", "Renault", "Mazda", "Toyota", "Nissan", "Hyundai", "Kia", "Ford", "Volkswagen", "BMW", "Mercedes-Benz", "Audi", "Honda", "Suzuki", "Mitsubishi", "Jeep", "Dodge", "Fiat", "Peugeot", "Citroën"];
 const combustibles = ["Gasolina", "Diesel", "Híbrido", "Eléctrico", "Gas"];
@@ -394,10 +394,14 @@ const VehiculoForm = () => {
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="sala">
-                    <span className="flex items-center gap-2">🏢 En Sala de Ventas</span>
+                    <span className="flex items-center gap-2">
+                      <Building2 className="h-3.5 w-3.5 text-emerald-600" /> En Sala de Ventas
+                    </span>
                   </SelectItem>
                   <SelectItem value="cita_previa">
-                    <span className="flex items-center gap-2">📅 Con Cita Previa</span>
+                    <span className="flex items-center gap-2">
+                      <CalendarClock className="h-3.5 w-3.5 text-amber-600" /> Con Cita Previa
+                    </span>
                   </SelectItem>
                 </SelectContent>
               </Select>
@@ -411,10 +415,14 @@ const VehiculoForm = () => {
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="propio">
-                    <span className="flex items-center gap-2">🚗 Propio (LM Autos)</span>
+                    <span className="flex items-center gap-2">
+                      <Car className="h-3.5 w-3.5 text-primary" /> Propio (LM Autos)
+                    </span>
                   </SelectItem>
                   <SelectItem value="tercero">
-                    <span className="flex items-center gap-2">🤝 De Tercero (Intermediación)</span>
+                    <span className="flex items-center gap-2">
+                      <Handshake className="h-3.5 w-3.5 text-blue-600" /> De Tercero (Intermediación)
+                    </span>
                   </SelectItem>
                 </SelectContent>
               </Select>
@@ -422,10 +430,15 @@ const VehiculoForm = () => {
           </div>
 
           {form.tipo_propiedad === "tercero" && (
-            <div className="mt-4 p-4 bg-muted/50 rounded-lg border border-border space-y-4">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-sm font-bold text-foreground">🔒 Datos del Propietario</span>
-                <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded-full">Solo visible en admin</span>
+            <div className="mt-5 p-5 bg-blue-500/5 rounded-xl border border-blue-200 dark:border-blue-800 space-y-4">
+              <div className="flex items-center gap-2.5">
+                <div className="h-8 w-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                  <ShieldCheck className="h-4 w-4 text-blue-600" />
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-foreground block">Datos del Propietario</span>
+                  <span className="text-[10px] text-muted-foreground">Información privada · Solo visible para administradores</span>
+                </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
