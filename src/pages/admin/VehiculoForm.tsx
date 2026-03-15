@@ -452,7 +452,11 @@ const VehiculoForm = () => {
                   <Input value={form.propietario_telefono} onChange={e => update("propietario_telefono", e.target.value)} placeholder="300 123 4567" />
                 </div>
                 <div>
-                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Cédula / NIT</Label>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Placa del vehículo</Label>
+                  <Input value={form.propietario_placa} onChange={e => update("propietario_placa", e.target.value)} placeholder="ABC 123" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Cédula en tarjeta de propiedad</Label>
                   <Input value={form.propietario_cedula} onChange={e => update("propietario_cedula", e.target.value)} placeholder="1.234.567.890" />
                 </div>
               </div>
