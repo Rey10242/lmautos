@@ -1,5 +1,7 @@
 import PageBanner from "@/components/layout/PageBanner";
 import FadeInSection from "@/components/shared/FadeInSection";
+import SEOHead from "@/components/shared/SEOHead";
+import { SITE_URL } from "@/lib/constants";
 import { Shield, Users, Award, Handshake, Target, Heart, CheckCircle } from "lucide-react";
 import usePageTitle from "@/hooks/usePageTitle";
 
