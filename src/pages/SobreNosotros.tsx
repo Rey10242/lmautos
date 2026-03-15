@@ -31,6 +31,24 @@ const SobreNosotros = () => {
 
   return (
     <>
+      <SEOHead
+        title="Sobre Nosotros"
+        description="Conoce a LM Autos: más de 10 años de experiencia en compra, venta y consignación de vehículos usados en Cartagena. Transparencia, confianza y servicio personalizado."
+        canonical={`${SITE_URL}/sobre-nosotros`}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          mainEntity: {
+            "@type": "AutoDealer",
+            name: "LM Autos",
+            description: "Consignataria de vehículos usados con más de 10 años de experiencia en Cartagena, Colombia",
+            foundingDate: "2014",
+            url: SITE_URL,
+            numberOfEmployees: { "@type": "QuantitativeValue", value: 5 },
+            address: { "@type": "PostalAddress", addressLocality: "Cartagena de Indias", addressCountry: "CO" },
+          },
+        }}
+      />
       <PageBanner title="Sobre Nosotros" breadcrumbs={[{ label: "Inicio", path: "/" }, { label: "Sobre Nosotros" }]} />
       
       {/* Hero section */}
