@@ -35,7 +35,7 @@ interface FormData {
   transito: string; fecha_venta: string;
   ubicacion: string; tipo_propiedad: string;
   propietario_nombre: string; propietario_telefono: string;
-  propietario_cedula: string; propietario_notas: string;
+  propietario_placa: string; propietario_cedula: string; propietario_notas: string;
 }
 
 const defaultForm: FormData = {
@@ -45,7 +45,7 @@ const defaultForm: FormData = {
   destacado: false, recien_ingresado: false, transito: "", fecha_venta: "",
   ubicacion: "sala", tipo_propiedad: "propio",
   propietario_nombre: "", propietario_telefono: "",
-  propietario_cedula: "", propietario_notas: "",
+  propietario_placa: "", propietario_cedula: "", propietario_notas: "",
 };
 
 const VehiculoForm = () => {
@@ -87,6 +87,7 @@ const VehiculoForm = () => {
         ubicacion: (vehicle as any).ubicacion || "sala", tipo_propiedad: (vehicle as any).tipo_propiedad || "propio",
         propietario_nombre: (vehicle as any).propietario_nombre || "",
         propietario_telefono: (vehicle as any).propietario_telefono || "",
+        propietario_placa: (vehicle as any).propietario_placa || "",
         propietario_cedula: (vehicle as any).propietario_cedula || "",
         propietario_notas: (vehicle as any).propietario_notas || "",
       });
@@ -176,6 +177,7 @@ const VehiculoForm = () => {
         tipo_propiedad: form.tipo_propiedad,
         propietario_nombre: form.tipo_propiedad === "tercero" ? form.propietario_nombre || null : null,
         propietario_telefono: form.tipo_propiedad === "tercero" ? form.propietario_telefono || null : null,
+        propietario_placa: form.tipo_propiedad === "tercero" ? form.propietario_placa || null : null,
         propietario_cedula: form.tipo_propiedad === "tercero" ? form.propietario_cedula || null : null,
         propietario_notas: form.tipo_propiedad === "tercero" ? form.propietario_notas || null : null,
       };
@@ -450,7 +452,11 @@ const VehiculoForm = () => {
                   <Input value={form.propietario_telefono} onChange={e => update("propietario_telefono", e.target.value)} placeholder="300 123 4567" />
                 </div>
                 <div>
-                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Cédula / NIT</Label>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Placa del vehículo</Label>
+                  <Input value={form.propietario_placa} onChange={e => update("propietario_placa", e.target.value)} placeholder="ABC 123" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Cédula en tarjeta de propiedad</Label>
                   <Input value={form.propietario_cedula} onChange={e => update("propietario_cedula", e.target.value)} placeholder="1.234.567.890" />
                 </div>
               </div>

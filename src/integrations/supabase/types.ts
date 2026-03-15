@@ -116,6 +116,7 @@ export type Database = {
           propietario_cedula: string | null
           propietario_nombre: string | null
           propietario_notas: string | null
+          propietario_placa: string | null
           propietario_telefono: string | null
           recien_ingresado: boolean | null
           slug: string
@@ -150,6 +151,7 @@ export type Database = {
           propietario_cedula?: string | null
           propietario_nombre?: string | null
           propietario_notas?: string | null
+          propietario_placa?: string | null
           propietario_telefono?: string | null
           recien_ingresado?: boolean | null
           slug: string
@@ -184,6 +186,7 @@ export type Database = {
           propietario_cedula?: string | null
           propietario_nombre?: string | null
           propietario_notas?: string | null
+          propietario_placa?: string | null
           propietario_telefono?: string | null
           recien_ingresado?: boolean | null
           slug?: string
