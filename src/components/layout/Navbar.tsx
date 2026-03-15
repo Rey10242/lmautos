@@ -65,7 +65,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav aria-label="Navegación principal" className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => {
               const isActive = link.path === "/" ? location.pathname === "/" : location.pathname.startsWith(link.path);
               return (
