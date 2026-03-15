@@ -35,7 +35,7 @@ interface FormData {
   transito: string; fecha_venta: string;
   ubicacion: string; tipo_propiedad: string;
   propietario_nombre: string; propietario_telefono: string;
-  propietario_cedula: string; propietario_notas: string;
+  propietario_placa: string; propietario_cedula: string; propietario_notas: string;
 }
 
 const defaultForm: FormData = {
@@ -45,7 +45,7 @@ const defaultForm: FormData = {
   destacado: false, recien_ingresado: false, transito: "", fecha_venta: "",
   ubicacion: "sala", tipo_propiedad: "propio",
   propietario_nombre: "", propietario_telefono: "",
-  propietario_cedula: "", propietario_notas: "",
+  propietario_placa: "", propietario_cedula: "", propietario_notas: "",
 };
 
 const VehiculoForm = () => {
