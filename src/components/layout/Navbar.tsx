@@ -112,7 +112,7 @@ const Navbar = () => {
             mobileOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <nav className="border-t border-border bg-background pb-4">
+          <nav aria-label="Navegación móvil" className="border-t border-border bg-background pb-4">
             {navLinks.map((link) => {
               const isActive = link.path === "/" ? location.pathname === "/" : location.pathname.startsWith(link.path);
               return (
