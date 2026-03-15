@@ -113,12 +113,18 @@ export type Database = {
           modelo: string
           num_puertas: number | null
           price: number
+          propietario_cedula: string | null
+          propietario_nombre: string | null
+          propietario_notas: string | null
+          propietario_telefono: string | null
           recien_ingresado: boolean | null
           slug: string
           status: string | null
+          tipo_propiedad: string
           traccion: string | null
           transito: string | null
           transmision: string
+          ubicacion: string
           updated_at: string
           user_id: string
           version: string | null
@@ -141,12 +147,18 @@ export type Database = {
           modelo: string
           num_puertas?: number | null
           price: number
+          propietario_cedula?: string | null
+          propietario_nombre?: string | null
+          propietario_notas?: string | null
+          propietario_telefono?: string | null
           recien_ingresado?: boolean | null
           slug: string
           status?: string | null
+          tipo_propiedad?: string
           traccion?: string | null
           transito?: string | null
           transmision: string
+          ubicacion?: string
           updated_at?: string
           user_id: string
           version?: string | null
@@ -169,12 +181,18 @@ export type Database = {
           modelo?: string
           num_puertas?: number | null
           price?: number
+          propietario_cedula?: string | null
+          propietario_nombre?: string | null
+          propietario_notas?: string | null
+          propietario_telefono?: string | null
           recien_ingresado?: boolean | null
           slug?: string
           status?: string | null
+          tipo_propiedad?: string
           traccion?: string | null
           transito?: string | null
           transmision?: string
+          ubicacion?: string
           updated_at?: string
           user_id?: string
           version?: string | null
