@@ -177,6 +177,7 @@ const VehiculoForm = () => {
         tipo_propiedad: form.tipo_propiedad,
         propietario_nombre: form.tipo_propiedad === "tercero" ? form.propietario_nombre || null : null,
         propietario_telefono: form.tipo_propiedad === "tercero" ? form.propietario_telefono || null : null,
+        propietario_placa: form.tipo_propiedad === "tercero" ? form.propietario_placa || null : null,
         propietario_cedula: form.tipo_propiedad === "tercero" ? form.propietario_cedula || null : null,
         propietario_notas: form.tipo_propiedad === "tercero" ? form.propietario_notas || null : null,
       };
