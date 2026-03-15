@@ -84,6 +84,11 @@ const VehiculoForm = () => {
         descripcion: vehicle.descripcion || "", status: vehicle.status || "disponible",
         destacado: vehicle.destacado || false, recien_ingresado: vehicle.recien_ingresado || false,
         transito: vehicle.transito || "", fecha_venta: vehicle.fecha_venta ? new Date(vehicle.fecha_venta).toISOString().split("T")[0] : "",
+        ubicacion: (vehicle as any).ubicacion || "sala", tipo_propiedad: (vehicle as any).tipo_propiedad || "propio",
+        propietario_nombre: (vehicle as any).propietario_nombre || "",
+        propietario_telefono: (vehicle as any).propietario_telefono || "",
+        propietario_cedula: (vehicle as any).propietario_cedula || "",
+        propietario_notas: (vehicle as any).propietario_notas || "",
       });
       setImages((vehicle.images as string[]) || []);
     }
