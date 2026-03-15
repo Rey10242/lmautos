@@ -97,6 +97,18 @@ const VehiculoForm = () => {
 
   const update = (key: keyof FormData, value: string | boolean) => setForm(prev => ({ ...prev, [key]: value }));
 
+  const formatThousands = (val: string) => {
+    const digits = val.replace(/\D/g, "");
+    return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
+  const handleNumericField = (key: keyof FormData, raw: string) => {
+    const digits = raw.replace(/\D/g, "");
+    update(key, digits);
+  };
+
+  const displayFormatted = (val: string) => formatThousands(val);
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -314,11 +326,11 @@ const VehiculoForm = () => {
             </div>
             <div>
               <Label className="text-xs uppercase text-muted-foreground font-semibold">Precio (COP) *</Label>
-              <Input type="number" value={form.price} onChange={e => update("price", e.target.value)} placeholder="45000000" />
+              <Input value={displayFormatted(form.price)} onChange={e => handleNumericField("price", e.target.value)} placeholder="45.000.000" />
             </div>
             <div>
               <Label className="text-xs uppercase text-muted-foreground font-semibold">Kilometraje *</Label>
-              <Input type="number" value={form.kilometraje} onChange={e => update("kilometraje", e.target.value)} placeholder="15000" />
+              <Input value={displayFormatted(form.kilometraje)} onChange={e => handleNumericField("kilometraje", e.target.value)} placeholder="15.000" />
             </div>
             <div>
               <Label className="text-xs uppercase text-muted-foreground font-semibold">Tránsito</Label>
