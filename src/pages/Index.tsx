@@ -15,11 +15,38 @@ const Index = () => {
     "@context": "https://schema.org",
     "@type": "AutoDealer",
     name: "LM Autos",
-    description: "Consignataria de vehículos usados y seminuevos en Cartagena, Colombia",
+    description: "Consignataria de vehículos usados y seminuevos en Cartagena, Colombia. Compra, vende o consigna tu carro con total confianza.",
     url: SITE_URL,
-    address: { "@type": "PostalAddress", addressLocality: "Cartagena", addressCountry: "CO" },
-    telephone: "+573157525555",
+    logo: `${SITE_URL}/favicon.png`,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Cartagena de Indias",
+      addressRegion: "Bolívar",
+      addressCountry: "CO",
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: "10.3910",
+      longitude: "-75.5144",
+    },
+    telephone: ["+573157525555", "+573150000990"],
     email: "autos.luismejia@gmail.com",
+    openingHoursSpecification: [
+      { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday"], opens: "08:00", closes: "18:00" },
+      { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "09:00", closes: "14:00" },
+    ],
+    sameAs: [
+      "https://www.facebook.com/autos.luismejia",
+      "https://www.instagram.com/lmautos.ctg/",
+    ],
+    priceRange: "$$",
+    currenciesAccepted: "COP",
+    paymentAccepted: "Efectivo, Transferencia, Financiación",
+    areaServed: {
+      "@type": "GeoCircle",
+      geoMidpoint: { "@type": "GeoCoordinates", latitude: "10.3910", longitude: "-75.5144" },
+      geoRadius: "200000",
+    },
   };
 
   return (
