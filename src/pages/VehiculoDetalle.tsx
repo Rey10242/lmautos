@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { formatPrice, formatKm } from "@/lib/formatPrice";
-import { Fuel, Gauge, Calendar, Settings2, Car, Palette, DoorOpen, Cog, MessageCircle, Share2, Copy, ChevronLeft, ChevronRight, X, MapPin } from "lucide-react";
+import { Fuel, Gauge, Calendar, Settings2, Car, Palette, DoorOpen, Cog, MessageCircle, Share2, Copy, ChevronLeft, ChevronRight, X, MapPin, Building2, CalendarClock } from "lucide-react";
 import { useState } from "react";
 import { SITE_URL } from "@/lib/constants";
 import { useToast } from "@/hooks/use-toast";
