@@ -97,6 +97,18 @@ const VehiculoForm = () => {
 
   const update = (key: keyof FormData, value: string | boolean) => setForm(prev => ({ ...prev, [key]: value }));
 
+  const formatThousands = (val: string) => {
+    const digits = val.replace(/\D/g, "");
+    return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
+  const handleNumericField = (key: keyof FormData, raw: string) => {
+    const digits = raw.replace(/\D/g, "");
+    update(key, digits);
+  };
+
+  const displayFormatted = (val: string) => formatThousands(val);
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
