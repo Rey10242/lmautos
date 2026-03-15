@@ -326,11 +326,11 @@ const VehiculoForm = () => {
             </div>
             <div>
               <Label className="text-xs uppercase text-muted-foreground font-semibold">Precio (COP) *</Label>
-              <Input type="number" value={form.price} onChange={e => update("price", e.target.value)} placeholder="45000000" />
+              <Input value={displayFormatted(form.price)} onChange={e => handleNumericField("price", e.target.value)} placeholder="45.000.000" />
             </div>
             <div>
               <Label className="text-xs uppercase text-muted-foreground font-semibold">Kilometraje *</Label>
-              <Input type="number" value={form.kilometraje} onChange={e => update("kilometraje", e.target.value)} placeholder="15000" />
+              <Input value={displayFormatted(form.kilometraje)} onChange={e => handleNumericField("kilometraje", e.target.value)} placeholder="15.000" />
             </div>
             <div>
               <Label className="text-xs uppercase text-muted-foreground font-semibold">Tránsito</Label>
