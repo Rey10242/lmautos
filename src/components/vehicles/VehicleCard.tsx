@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice, formatKm } from "@/lib/formatPrice";
-import { Fuel, Gauge, Calendar, Settings2, Eye } from "lucide-react";
+import { Fuel, Gauge, Calendar, Settings2, Eye, Building2, CalendarClock } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
 
 interface Props {
