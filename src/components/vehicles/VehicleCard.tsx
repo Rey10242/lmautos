@@ -76,6 +76,21 @@ const VehicleCard = ({ vehicle }: Props) => {
             <span>{vehicle.transmision}</span>
           </div>
         </div>
+
+        {/* Location indicator */}
+        <div className="mt-2 pt-2 border-t border-border">
+          {(vehicle as any).ubicacion === "cita_previa" ? (
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-600">
+              <CalendarClock className="h-3.5 w-3.5" />
+              <span>Con cita previa</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600">
+              <Building2 className="h-3.5 w-3.5" />
+              <span>En sala de ventas</span>
+            </div>
+          )}
+        </div>
       </div>
     </Link>
   );

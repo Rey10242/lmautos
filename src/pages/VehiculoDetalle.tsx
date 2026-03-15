@@ -225,6 +225,31 @@ const VehiculoDetalle = () => {
               ))}
             </div>
 
+            {/* Location badge */}
+            {(vehicle as any).ubicacion === "cita_previa" ? (
+              <div className="rounded-xl border-2 border-amber-300 bg-amber-50 dark:bg-amber-950/30 p-4 space-y-2">
+                <div className="flex items-center gap-2">
+                  <CalendarClock className="h-5 w-5 text-amber-600" />
+                  <span className="font-bold text-amber-800 dark:text-amber-300">Disponible con Cita Previa</span>
+                </div>
+                <p className="text-sm text-amber-700 dark:text-amber-400">Este vehículo no se encuentra en nuestra sala. Agenda tu visita para verlo.</p>
+                <Button asChild size="lg" className="w-full font-bold uppercase text-base bg-amber-600 hover:bg-amber-700 text-white">
+                  <a href={`https://wa.me/573157525555?text=${encodeURIComponent(`Hola, quiero agendar una cita para ver el ${title}. ¿Qué día y hora tienen disponible?`)}`} target="_blank" rel="noopener noreferrer">
+                    <CalendarClock className="mr-2 h-5 w-5" />
+                    Agendar Cita
+                  </a>
+                </Button>
+              </div>
+            ) : (
+              <div className="rounded-xl border-2 border-emerald-300 bg-emerald-50 dark:bg-emerald-950/30 p-4 space-y-1">
+                <div className="flex items-center gap-2">
+                  <Building2 className="h-5 w-5 text-emerald-600" />
+                  <span className="font-bold text-emerald-800 dark:text-emerald-300">Disponible en Sala de Ventas</span>
+                </div>
+                <p className="text-sm text-emerald-700 dark:text-emerald-400">¡Visítanos sin cita! Este vehículo te espera en nuestra sala.</p>
+              </div>
+            )}
+
             {/* WhatsApp CTA */}
             <Button asChild size="lg" className="w-full font-bold uppercase text-base">
               <a href={`https://wa.me/573157525555?text=${whatsappMsg}`} target="_blank" rel="noopener noreferrer">

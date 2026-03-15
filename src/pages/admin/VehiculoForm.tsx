@@ -384,6 +384,71 @@ const VehiculoForm = () => {
           <p className="text-xs text-muted-foreground mt-2">{form.descripcion.length} caracteres</p>
         </div>
 
+        {/* Propiedad y Ubicación */}
+        <div className="bg-card border border-border rounded-xl p-6">
+          <h2 className="font-bold text-sm uppercase tracking-wide text-foreground mb-4">Propiedad y Ubicación</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label className="text-xs uppercase text-muted-foreground font-semibold">Ubicación del vehículo</Label>
+              <Select value={form.ubicacion} onValueChange={(v) => update("ubicacion", v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="sala">
+                    <span className="flex items-center gap-2">🏢 En Sala de Ventas</span>
+                  </SelectItem>
+                  <SelectItem value="cita_previa">
+                    <span className="flex items-center gap-2">📅 Con Cita Previa</span>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-[10px] text-muted-foreground mt-1">
+                {form.ubicacion === "sala" ? "El cliente puede verlo directamente en la sala" : "Se necesita agendar día y hora para mostrar"}
+              </p>
+            </div>
+            <div>
+              <Label className="text-xs uppercase text-muted-foreground font-semibold">Tipo de propiedad</Label>
+              <Select value={form.tipo_propiedad} onValueChange={(v) => update("tipo_propiedad", v)}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="propio">
+                    <span className="flex items-center gap-2">🚗 Propio (LM Autos)</span>
+                  </SelectItem>
+                  <SelectItem value="tercero">
+                    <span className="flex items-center gap-2">🤝 De Tercero (Intermediación)</span>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {form.tipo_propiedad === "tercero" && (
+            <div className="mt-4 p-4 bg-muted/50 rounded-lg border border-border space-y-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-sm font-bold text-foreground">🔒 Datos del Propietario</span>
+                <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded-full">Solo visible en admin</span>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Nombre del propietario</Label>
+                  <Input value={form.propietario_nombre} onChange={e => update("propietario_nombre", e.target.value)} placeholder="Nombre completo" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Teléfono</Label>
+                  <Input value={form.propietario_telefono} onChange={e => update("propietario_telefono", e.target.value)} placeholder="300 123 4567" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Cédula / NIT</Label>
+                  <Input value={form.propietario_cedula} onChange={e => update("propietario_cedula", e.target.value)} placeholder="1.234.567.890" />
+                </div>
+              </div>
+              <div>
+                <Label className="text-xs uppercase text-muted-foreground font-semibold">Notas internas</Label>
+                <Textarea value={form.propietario_notas} onChange={e => update("propietario_notas", e.target.value)} placeholder="Notas sobre acuerdos, comisión, condiciones..." rows={3} />
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* Status & Flags */}
         <div className="bg-card border border-border rounded-xl p-6">
           <h2 className="font-bold text-sm uppercase tracking-wide text-foreground mb-4">Publicación</h2>
