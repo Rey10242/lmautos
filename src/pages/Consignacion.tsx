@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import PageBanner from "@/components/layout/PageBanner";
+import SEOHead from "@/components/shared/SEOHead";
+import { SITE_URL } from "@/lib/constants";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -57,6 +59,19 @@ const Consignacion = () => {
 
   return (
     <>
+      <SEOHead
+        title="Consigna tu Vehículo"
+        description="Consigna tu vehículo en LM Autos Cartagena. Nos encargamos de la venta: fotografía profesional, publicación, negociación y trámites. Sin complicaciones."
+        canonical={`${SITE_URL}/consignacion`}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: "Consignación de Vehículos",
+          description: "Servicio de consignación de vehículos usados en Cartagena, Colombia",
+          provider: { "@type": "AutoDealer", name: "LM Autos", url: SITE_URL },
+          areaServed: { "@type": "City", name: "Cartagena de Indias" },
+        }}
+      />
       <PageBanner title="Consignación de Vehículos" breadcrumbs={[{ label: "Inicio", path: "/" }, { label: "Consignación" }]} />
       <div className="container py-10 max-w-2xl">
         {submitted ? (

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { SITE_URL } from "@/lib/constants";
 
 interface SEOProps {
   title: string;
@@ -7,14 +8,14 @@ interface SEOProps {
   ogImage?: string;
   ogType?: string;
   jsonLd?: Record<string, any>;
+  noIndex?: boolean;
 }
 
-const SEOHead = ({ title, description, canonical, ogImage, ogType = "website", jsonLd }: SEOProps) => {
+const SEOHead = ({ title, description, canonical, ogImage, ogType = "website", jsonLd, noIndex }: SEOProps) => {
   useEffect(() => {
-    // Title
-    document.title = `${title} | LM Autos`;
+    const fullTitle = `${title} | LM Autos`;
+    document.title = fullTitle;
 
-    // Meta tags
     const setMeta = (name: string, content: string, property = false) => {
       const attr = property ? "property" : "name";
       let el = document.querySelector(`meta[${attr}="${name}"]`) as HTMLMetaElement;
@@ -26,21 +27,31 @@ const SEOHead = ({ title, description, canonical, ogImage, ogType = "website", j
       el.content = content;
     };
 
+    // Primary meta
     setMeta("description", description);
-    setMeta("og:title", title, true);
+    setMeta("robots", noIndex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1");
+
+    // Open Graph
+    setMeta("og:title", fullTitle, true);
     setMeta("og:description", description, true);
     setMeta("og:type", ogType, true);
-    setMeta("twitter:title", title);
-    setMeta("twitter:description", description);
+    setMeta("og:locale", "es_CO", true);
+    setMeta("og:site_name", "LM Autos", true);
 
     if (canonical) {
       setMeta("og:url", canonical, true);
     }
 
-    if (ogImage) {
-      setMeta("og:image", ogImage, true);
-      setMeta("twitter:image", ogImage);
-    }
+    const imageUrl = ogImage || `${SITE_URL}/favicon.png`;
+    setMeta("og:image", imageUrl, true);
+    setMeta("og:image:alt", title, true);
+
+    // Twitter
+    setMeta("twitter:card", "summary_large_image");
+    setMeta("twitter:title", fullTitle);
+    setMeta("twitter:description", description);
+    setMeta("twitter:image", imageUrl);
+    setMeta("twitter:image:alt", title);
 
     // Canonical
     let canonicalEl = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
@@ -51,6 +62,8 @@ const SEOHead = ({ title, description, canonical, ogImage, ogType = "website", j
         document.head.appendChild(canonicalEl);
       }
       canonicalEl.href = canonical;
+    } else if (canonicalEl) {
+      canonicalEl.remove();
     }
 
     // JSON-LD
@@ -67,10 +80,8 @@ const SEOHead = ({ title, description, canonical, ogImage, ogType = "website", j
     return () => {
       const ld = document.querySelector('script[data-seo-jsonld]');
       if (ld) ld.remove();
-      const can = document.querySelector('link[rel="canonical"]');
-      if (can) can.remove();
     };
-  }, [title, description, canonical, ogImage, ogType, jsonLd]);
+  }, [title, description, canonical, ogImage, ogType, jsonLd, noIndex]);
 
   return null;
 };

@@ -1,5 +1,7 @@
 import PageBanner from "@/components/layout/PageBanner";
 import FadeInSection from "@/components/shared/FadeInSection";
+import SEOHead from "@/components/shared/SEOHead";
+import { SITE_URL } from "@/lib/constants";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Car, FileSearch, CreditCard, ShieldCheck, Wrench, ArrowRight, CheckCircle, Phone } from "lucide-react";
@@ -51,6 +53,22 @@ const Servicios = () => {
 
   return (
     <>
+      <SEOHead
+        title="Servicios Automotrices"
+        description="Servicios de consignación, inspección vehicular, financiación, trámites y peritaje en LM Autos Cartagena. Soluciones integrales para tu vehículo."
+        canonical={`${SITE_URL}/servicios`}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "Servicios de LM Autos",
+          itemListElement: [
+            { "@type": "Service", position: 1, name: "Consignación de Vehículos", description: "Dejamos tu vehículo a la venta sin que tengas que preocuparte por nada" },
+            { "@type": "Service", position: 2, name: "Inspección Vehicular", description: "Revisión completa del estado mecánico, legal y estético" },
+            { "@type": "Service", position: 3, name: "Financiación", description: "Opciones de financiación con las mejores entidades aliadas" },
+            { "@type": "Service", position: 4, name: "Trámites y Legalización", description: "Gestión completa de traspaso, impuestos y SOAT" },
+          ],
+        }}
+      />
       <PageBanner title="Nuestros Servicios" breadcrumbs={[{ label: "Inicio", path: "/" }, { label: "Servicios" }]} />
       
       {/* Services grid */}

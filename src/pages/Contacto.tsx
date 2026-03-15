@@ -5,6 +5,8 @@ import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import PageBanner from "@/components/layout/PageBanner";
 import FadeInSection from "@/components/shared/FadeInSection";
+import SEOHead from "@/components/shared/SEOHead";
+import { SITE_URL } from "@/lib/constants";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -61,6 +63,25 @@ const Contacto = () => {
 
   return (
     <>
+      <SEOHead
+        title="Contacto"
+        description="Contáctanos en LM Autos Cartagena. Línea comercial +57 315 752 5555. Asesoría en compra, venta y consignación de vehículos usados. Atención personalizada."
+        canonical={`${SITE_URL}/contacto`}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "AutoDealer",
+          name: "LM Autos",
+          url: SITE_URL,
+          telephone: ["+573157525555", "+573150000990"],
+          email: "autos.luismejia@gmail.com",
+          address: { "@type": "PostalAddress", addressLocality: "Cartagena de Indias", addressRegion: "Bolívar", addressCountry: "CO" },
+          openingHoursSpecification: [
+            { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday"], opens: "08:00", closes: "18:00" },
+            { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "09:00", closes: "14:00" },
+          ],
+          sameAs: ["https://www.facebook.com/autos.luismejia", "https://www.instagram.com/lmautos.ctg/"],
+        }}
+      />
       <PageBanner title="Contacto" breadcrumbs={[{ label: "Inicio", path: "/" }, { label: "Contacto" }]} />
       
       <section className="py-16">
