@@ -13,7 +13,7 @@ const FeaturedVehicles = () => {
       const { data: featured, error: fErr } = await supabase
         .from("vehicles")
         .select("*")
-        .eq("status", "disponible")
+        .in("status", ["disponible", "consignado", "reservado"])
         .eq("destacado", true)
         .order("created_at", { ascending: false })
         .limit(6);
