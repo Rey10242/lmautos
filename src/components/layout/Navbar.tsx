@@ -31,7 +31,7 @@ const Navbar = () => {
   return (
     <header className="w-full sticky top-0 z-50">
       {/* Top bar */}
-      <div className={`bg-secondary text-secondary-foreground transition-all duration-300 ${scrolled ? "hidden" : ""}`}>
+      <div className={`bg-secondary text-secondary-foreground overflow-hidden transition-all duration-300 ease-in-out ${scrolled ? "max-h-0 opacity-0 py-0" : "max-h-12 opacity-100 py-0"}`}>
         <div className="container flex items-center justify-between py-2 text-sm">
           <div className="flex items-center gap-6">
             <a href="mailto:autos.luismejia@gmail.com" className="flex items-center gap-2 hover:text-primary transition-colors">
