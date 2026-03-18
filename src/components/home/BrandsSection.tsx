@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const brands = [
   "Chevrolet", "Renault", "Mazda", "Toyota", "Nissan",
   "Hyundai", "Kia", "Ford", "Volkswagen", "BMW",
-  "Mercedes-Benz", "Audi",
+  "Mercedes-Benz", "Audi", "Subaru", "Chery", "SsangYong", "SEAT",
 ];
 
 const BrandsSection = () => {
