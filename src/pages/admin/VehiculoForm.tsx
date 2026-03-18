@@ -13,7 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { Save, ArrowLeft, Upload, X, Loader2, GripVertical, ExternalLink, Building2, CalendarClock, Car, Handshake, ShieldCheck } from "lucide-react";
 
-const marcas = ["Chevrolet", "Renault", "Mazda", "Toyota", "Nissan", "Hyundai", "Kia", "Ford", "Volkswagen", "BMW", "Mercedes-Benz", "Audi", "Honda", "Suzuki", "Mitsubishi", "Jeep", "Dodge", "Fiat", "Peugeot", "Citroën"];
+const marcas = ["Chevrolet", "Renault", "Mazda", "Toyota", "Nissan", "Hyundai", "Kia", "Ford", "Volkswagen", "BMW", "Mercedes-Benz", "Audi", "Honda", "Suzuki", "Mitsubishi", "Jeep", "Dodge", "Fiat", "Peugeot", "Citroën", "Subaru", "Chery", "SsangYong", "SEAT"];
 const combustibles = ["Gasolina", "Diesel", "Híbrido", "Eléctrico", "Gas"];
 const transmisiones = ["Automática", "Manual", "Automática secuencial"];
 const tracciones = ["4x2", "4x4", "AWD"];

@@ -27,7 +27,7 @@ const defaultFilters: VehicleFilterValues = {
   search: "",
 };
 
-const marcas = ["Chevrolet", "Renault", "Mazda", "Toyota", "Nissan", "Hyundai", "Kia", "Ford", "Volkswagen", "BMW", "Mercedes-Benz", "Audi"];
+const marcas = ["Chevrolet", "Renault", "Mazda", "Toyota", "Nissan", "Hyundai", "Kia", "Ford", "Volkswagen", "BMW", "Mercedes-Benz", "Audi", "Subaru", "Chery", "SsangYong", "SEAT"];
 const combustibles = ["Gasolina", "Diesel", "Híbrido", "Eléctrico", "Gas"];
 const transmisiones = ["Automática", "Manual", "Automática secuencial"];
 
