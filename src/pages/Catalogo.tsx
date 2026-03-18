@@ -25,7 +25,7 @@ const Catalogo = () => {
   const { data: vehicles, isLoading } = useQuery({
     queryKey: ["vehicles", filters, sort],
     queryFn: async () => {
-      let query = supabase.from("vehicles").select("*").eq("status", "disponible");
+      let query = supabase.from("vehicles").select("*").in("status", ["disponible", "consignado", "reservado"]);
 
       if (filters.marca) query = query.eq("marca", filters.marca);
       if (filters.combustible) query = query.eq("combustible", filters.combustible);
