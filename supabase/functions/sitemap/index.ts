@@ -24,7 +24,7 @@ Deno.serve(async () => {
   const { data: vehicles } = await supabase
     .from("vehicles")
     .select("slug, updated_at")
-    .eq("status", "disponible")
+    .in("status", ["disponible", "consignado", "reservado"])
     .order("updated_at", { ascending: false });
 
   const today = new Date().toISOString().split("T")[0];

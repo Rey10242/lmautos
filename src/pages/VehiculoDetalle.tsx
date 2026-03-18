@@ -42,7 +42,7 @@ const VehiculoDetalle = () => {
         .select("*")
         .eq("marca", vehicle!.marca)
         .neq("id", vehicle!.id)
-        .eq("status", "disponible")
+        .in("status", ["disponible", "consignado", "reservado"])
         .limit(3);
       if (error) throw error;
       return data;

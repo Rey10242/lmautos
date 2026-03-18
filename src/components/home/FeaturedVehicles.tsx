@@ -25,7 +25,7 @@ const FeaturedVehicles = () => {
       const { data: latest, error: lErr } = await supabase
         .from("vehicles")
         .select("*")
-        .eq("status", "disponible")
+        .in("status", ["disponible", "consignado", "reservado"])
         .order("created_at", { ascending: false })
         .limit(6);
       if (lErr) throw lErr;
