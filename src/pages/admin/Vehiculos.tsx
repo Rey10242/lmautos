@@ -90,6 +90,7 @@ const Vehiculos = () => {
       setSelectedIds(new Set());
       toast({ title: "Estado actualizado" });
     },
+    onError: (error: any) => toast({ title: "Error al cambiar estado", description: error?.message || "Intenta de nuevo", variant: "destructive" }),
   });
 
   const toggleField = useMutation({
