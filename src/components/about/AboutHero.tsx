@@ -57,7 +57,7 @@ const AboutHero = () => (
           <div className="relative">
             <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-muted">
               <img
-                src="https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&q=80"
+                src={showroomImg}
                 alt="Showroom LM Autos en Cartagena"
                 className="w-full h-full object-cover"
                 loading="lazy"
