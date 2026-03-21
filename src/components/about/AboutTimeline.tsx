@@ -23,11 +23,15 @@ const timeline = [
   },
   {
     year: "2024",
+    title: "Showroom propio",
+    desc: "Inauguramos nuestro espacio físico de exhibición de 60 m² en Cartagena, ofreciendo una experiencia presencial moderna y profesional.",
+  },
+  {
+    year: "2026",
     title: "Hoy",
-    desc: "Contamos con un espacio físico de exhibición moderno, más de 2.000 vehículos gestionados y una comunidad de clientes satisfechos que siguen confiando en nuestro trabajo.",
+    desc: "Contamos con más de 2.000 vehículos gestionados, presencia digital consolidada y una comunidad de clientes satisfechos que siguen confiando en nuestro trabajo.",
   },
 ];
-
 const AboutTimeline = () => (
   <section className="py-16 md:py-20 bg-muted/30">
     <div className="container">
