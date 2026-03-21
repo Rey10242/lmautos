@@ -2,10 +2,10 @@ import { Car, Users, Shield, ThumbsUp } from "lucide-react";
 import FadeInSection from "@/components/shared/FadeInSection";
 
 const stats = [
-  { icon: Car, value: "500+", label: "Vehículos Vendidos" },
-  { icon: Users, value: "1,200+", label: "Clientes Satisfechos" },
+  { icon: Car, value: "2.000+", label: "Vehículos Gestionados" },
+  { icon: Users, value: "98%", label: "Clientes Satisfechos" },
   { icon: Shield, value: "100%", label: "Transparencia" },
-  { icon: ThumbsUp, value: "10+", label: "Años de Experiencia" },
+  { icon: ThumbsUp, value: "15+", label: "Años de Experiencia" },
 ];
 
 const StatsSection = () => {
