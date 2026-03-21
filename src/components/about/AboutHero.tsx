@@ -1,5 +1,6 @@
 import FadeInSection from "@/components/shared/FadeInSection";
 import { CheckCircle } from "lucide-react";
+import showroomImg from "@/assets/showroom-lmautos.png";
 
 const highlights = [
   "Vehículos verificados",
