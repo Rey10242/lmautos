@@ -22,7 +22,7 @@ const timeline = [
     desc: "Lanzamos nuestros canales digitales para simplificar la experiencia de los usuarios y llevar nuestro servicio a todo el país.",
   },
   {
-    year: "2024",
+    year: "2025",
     title: "Showroom propio",
     desc: "Inauguramos nuestro espacio físico de exhibición de 60 m² en Cartagena, ofreciendo una experiencia presencial moderna y profesional.",
   },
