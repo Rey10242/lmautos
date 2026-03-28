@@ -289,6 +289,9 @@ const Vehiculos = () => {
                   </th>
                   <th className="text-center px-4 py-3 font-semibold text-muted-foreground uppercase text-xs tracking-wide">Estado</th>
                   <th className="text-center px-4 py-3 font-semibold text-muted-foreground uppercase text-xs tracking-wide hidden md:table-cell">Flags</th>
+                  <th className="text-center px-4 py-3 font-semibold text-muted-foreground uppercase text-xs tracking-wide hidden md:table-cell">
+                    <span className="inline-flex items-center gap-1"><Eye className="h-3 w-3" /> Visitas</span>
+                  </th>
                   <th className="text-right px-4 py-3 font-semibold text-muted-foreground uppercase text-xs tracking-wide w-16"></th>
                 </tr>
               </thead>
