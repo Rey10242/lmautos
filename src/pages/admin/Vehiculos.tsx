@@ -11,7 +11,7 @@ import { formatPrice, formatKm } from "@/lib/formatPrice";
 import {
   Plus, Search, Trash2, Edit, Star, Sparkles, Car, Image as ImageIcon,
   ArrowUpDown, ArrowUp, ArrowDown, Copy, ExternalLink, MoreHorizontal, CheckCircle2,
-  Building2, CalendarClock, Handshake
+  Building2, CalendarClock, Handshake, Eye
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
