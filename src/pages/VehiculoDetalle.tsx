@@ -23,7 +23,6 @@ const VehiculoDetalle = () => {
   const { data: vehicle, isLoading } = useQuery({
     queryKey: ["vehicle", slug],
     queryFn: async () => {
-      // Try slug first, fallback to id for backwards compatibility
       let { data, error } = await supabase.from("vehicles").select("*").eq("slug", slug!).maybeSingle();
       if (!data) {
         ({ data, error } = await supabase.from("vehicles").select("*").eq("id", slug!).maybeSingle());
@@ -33,6 +32,12 @@ const VehiculoDetalle = () => {
     },
     enabled: !!slug,
   });
+
+  // Track page view
+  useEffect(() => {
+    if (!vehicle?.id) return;
+    supabase.from("vehicle_views").insert({ vehicle_id: vehicle.id } as any).then();
+  }, [vehicle?.id]);
 
   const { data: similarVehicles } = useQuery({
     queryKey: ["similar-vehicles", vehicle?.marca, vehicle?.id],

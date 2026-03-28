@@ -56,6 +56,19 @@ const Vehiculos = () => {
     },
   });
 
+  // Fetch view counts
+  const { data: viewCounts } = useQuery({
+    queryKey: ["vehicle-view-counts"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("vehicle_view_counts" as any).select("*");
+      if (error) throw error;
+      return (data as any[])?.reduce((acc: Record<string, { total_views: number; views_last_7_days: number }>, row: any) => {
+        acc[row.vehicle_id] = { total_views: Number(row.total_views), views_last_7_days: Number(row.views_last_7_days) };
+        return acc;
+      }, {} as Record<string, { total_views: number; views_last_7_days: number }>);
+    },
+  });
+
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase.from("vehicles").delete().eq("id", id);
