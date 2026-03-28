@@ -1,3 +1,4 @@
+import PageBanner from "@/components/layout/PageBanner";
 import FadeInSection from "@/components/shared/FadeInSection";
 import SEOHead from "@/components/shared/SEOHead";
 import { SITE_URL } from "@/lib/constants";
