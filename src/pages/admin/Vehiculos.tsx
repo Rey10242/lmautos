@@ -11,7 +11,7 @@ import { formatPrice, formatKm } from "@/lib/formatPrice";
 import {
   Plus, Search, Trash2, Edit, Star, Sparkles, Car, Image as ImageIcon,
   ArrowUpDown, ArrowUp, ArrowDown, Copy, ExternalLink, MoreHorizontal, CheckCircle2,
-  Building2, CalendarClock, Handshake
+  Building2, CalendarClock, Handshake, Eye
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -53,6 +53,19 @@ const Vehiculos = () => {
       const { data, error } = await query;
       if (error) throw error;
       return data;
+    },
+  });
+
+  // Fetch view counts
+  const { data: viewCounts } = useQuery({
+    queryKey: ["vehicle-view-counts"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("vehicle_view_counts" as any).select("*");
+      if (error) throw error;
+      return (data as any[])?.reduce((acc: Record<string, { total_views: number; views_last_7_days: number }>, row: any) => {
+        acc[row.vehicle_id] = { total_views: Number(row.total_views), views_last_7_days: Number(row.views_last_7_days) };
+        return acc;
+      }, {} as Record<string, { total_views: number; views_last_7_days: number }>);
     },
   });
 
@@ -276,6 +289,9 @@ const Vehiculos = () => {
                   </th>
                   <th className="text-center px-4 py-3 font-semibold text-muted-foreground uppercase text-xs tracking-wide">Estado</th>
                   <th className="text-center px-4 py-3 font-semibold text-muted-foreground uppercase text-xs tracking-wide hidden md:table-cell">Flags</th>
+                  <th className="text-center px-4 py-3 font-semibold text-muted-foreground uppercase text-xs tracking-wide hidden md:table-cell">
+                    <span className="inline-flex items-center gap-1"><Eye className="h-3 w-3" /> Visitas</span>
+                  </th>
                   <th className="text-right px-4 py-3 font-semibold text-muted-foreground uppercase text-xs tracking-wide w-16"></th>
                 </tr>
               </thead>
@@ -369,6 +385,19 @@ const Vehiculos = () => {
                             <TooltipContent>Recién ingresado</TooltipContent>
                           </Tooltip>
                         </div>
+                      </td>
+                      <td className="px-4 py-3 text-center hidden md:table-cell">
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="inline-flex items-center gap-1 text-muted-foreground">
+                              <Eye className="h-3.5 w-3.5" />
+                              <span className="font-semibold text-foreground">{viewCounts?.[v.id]?.total_views || 0}</span>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{viewCounts?.[v.id]?.total_views || 0} totales · {viewCounts?.[v.id]?.views_last_7_days || 0} últimos 7 días</p>
+                          </TooltipContent>
+                        </Tooltip>
                       </td>
                       <td className="px-4 py-3">
                         <DropdownMenu>

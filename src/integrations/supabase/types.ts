@@ -95,6 +95,32 @@ export type Database = {
         }
         Relationships: []
       }
+      vehicle_views: {
+        Row: {
+          id: string
+          vehicle_id: string
+          viewed_at: string
+        }
+        Insert: {
+          id?: string
+          vehicle_id: string
+          viewed_at?: string
+        }
+        Update: {
+          id?: string
+          vehicle_id?: string
+          viewed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicle_views_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       vehicles: {
         Row: {
           cilindrada: string | null
@@ -205,7 +231,22 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      vehicle_view_counts: {
+        Row: {
+          total_views: number | null
+          vehicle_id: string | null
+          views_last_7_days: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vehicle_views_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       [_ in never]: never
