@@ -386,6 +386,19 @@ const Vehiculos = () => {
                           </Tooltip>
                         </div>
                       </td>
+                      <td className="px-4 py-3 text-center hidden md:table-cell">
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="inline-flex items-center gap-1 text-muted-foreground">
+                              <Eye className="h-3.5 w-3.5" />
+                              <span className="font-semibold text-foreground">{viewCounts?.[v.id]?.total_views || 0}</span>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{viewCounts?.[v.id]?.total_views || 0} totales · {viewCounts?.[v.id]?.views_last_7_days || 0} últimos 7 días</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </td>
                       <td className="px-4 py-3">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
