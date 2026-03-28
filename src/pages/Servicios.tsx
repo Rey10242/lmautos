@@ -1,3 +1,4 @@
+import PageBanner from "@/components/layout/PageBanner";
 import FadeInSection from "@/components/shared/FadeInSection";
 import SEOHead from "@/components/shared/SEOHead";
 import { SITE_URL } from "@/lib/constants";
@@ -135,57 +136,7 @@ const Servicios = () => {
         }}
       />
 
-      {/* Hero Section */}
-      <section className="relative bg-secondary overflow-hidden">
-        {/* Background pattern */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary to-secondary/80" />
-          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3" />
-        </div>
-        
-        <div className="relative container py-20 sm:py-28 md:py-32">
-          <div className="max-w-3xl">
-            <FadeInSection>
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-semibold mb-6">
-                <Sparkles className="h-4 w-4" />
-                Soluciones integrales
-              </span>
-            </FadeInSection>
-            <FadeInSection delay={100}>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-secondary-foreground leading-tight" style={{ fontFamily: 'Montserrat, sans-serif' }}>
-                Nuestros{" "}
-                <span className="text-primary relative">
-                  Servicios
-                  <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 200 12" fill="none">
-                    <path d="M2 8C40 2 100 2 198 8" stroke="hsl(var(--primary))" strokeWidth="3" strokeLinecap="round" opacity="0.5" />
-                  </svg>
-                </span>
-              </h1>
-            </FadeInSection>
-            <FadeInSection delay={200}>
-              <p className="text-lg sm:text-xl text-secondary-foreground/60 mt-6 max-w-xl leading-relaxed">
-                Todo lo que necesitas para comprar, vender o mantener tu vehículo en un solo lugar. Experiencia y confianza garantizada.
-              </p>
-            </FadeInSection>
-
-            {/* Breadcrumbs */}
-            <FadeInSection delay={300}>
-              <nav aria-label="Breadcrumb" className="mt-8">
-                <ol className="flex items-center gap-2 text-sm text-secondary-foreground/50">
-                  <li>
-                    <Link to="/" className="hover:text-primary transition-colors">Inicio</Link>
-                  </li>
-                  <li aria-hidden="true">›</li>
-                  <li>
-                    <span className="text-secondary-foreground/80" aria-current="page">Servicios</span>
-                  </li>
-                </ol>
-              </nav>
-            </FadeInSection>
-          </div>
-        </div>
-      </section>
+      <PageBanner title="Nuestros Servicios" breadcrumbs={[{ label: "Inicio", path: "/" }, { label: "Servicios" }]} />
 
       {/* Services Bento Grid */}
       <section className="py-20 md:py-28">
