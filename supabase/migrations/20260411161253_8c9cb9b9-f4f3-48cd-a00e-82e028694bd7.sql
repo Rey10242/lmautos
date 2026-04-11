@@ -1,0 +1,1 @@
+ALTER TABLE public.vehicles ADD COLUMN propietario_tipo_documento text;
