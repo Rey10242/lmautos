@@ -169,7 +169,7 @@ const Contacto = () => {
                     </p>
                     
                     <Form {...form}>
-                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5" onFocus={() => { if (!formStarted) { setFormStarted(true); trackFormStart('contacto_general'); } }}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <FormField control={form.control} name="nombre" render={({ field }) => (
                             <FormItem>
