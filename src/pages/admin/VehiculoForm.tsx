@@ -36,6 +36,7 @@ interface FormData {
   ubicacion: string; tipo_propiedad: string;
   propietario_nombre: string; propietario_telefono: string;
   propietario_placa: string; propietario_cedula: string; propietario_notas: string;
+  propietario_correo: string; propietario_direccion: string; comision_pactada: string;
 }
 
 const defaultForm: FormData = {
@@ -46,6 +47,7 @@ const defaultForm: FormData = {
   ubicacion: "sala", tipo_propiedad: "propio",
   propietario_nombre: "", propietario_telefono: "",
   propietario_placa: "", propietario_cedula: "", propietario_notas: "",
+  propietario_correo: "", propietario_direccion: "", comision_pactada: "",
 };
 
 const VehiculoForm = () => {
@@ -90,6 +92,9 @@ const VehiculoForm = () => {
         propietario_placa: (vehicle as any).propietario_placa || "",
         propietario_cedula: (vehicle as any).propietario_cedula || "",
         propietario_notas: (vehicle as any).propietario_notas || "",
+        propietario_correo: (vehicle as any).propietario_correo || "",
+        propietario_direccion: (vehicle as any).propietario_direccion || "",
+        comision_pactada: (vehicle as any).comision_pactada ? String((vehicle as any).comision_pactada) : "",
       });
       setImages((vehicle.images as string[]) || []);
     }
@@ -192,6 +197,9 @@ const VehiculoForm = () => {
         propietario_placa: form.tipo_propiedad === "tercero" ? form.propietario_placa || null : null,
         propietario_cedula: form.tipo_propiedad === "tercero" ? form.propietario_cedula || null : null,
         propietario_notas: form.tipo_propiedad === "tercero" ? form.propietario_notas || null : null,
+        propietario_correo: form.tipo_propiedad === "tercero" ? form.propietario_correo || null : null,
+        propietario_direccion: form.tipo_propiedad === "tercero" ? form.propietario_direccion || null : null,
+        comision_pactada: form.tipo_propiedad === "tercero" && form.comision_pactada ? parseInt(form.comision_pactada) : null,
       };
       if (isEdit) {
         const { error } = await supabase.from("vehicles").update(payload as any).eq("id", id);
@@ -471,10 +479,22 @@ const VehiculoForm = () => {
                   <Label className="text-xs uppercase text-muted-foreground font-semibold">Cédula en tarjeta de propiedad</Label>
                   <Input value={form.propietario_cedula} onChange={e => update("propietario_cedula", e.target.value)} placeholder="1.234.567.890" />
                 </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Correo electrónico</Label>
+                  <Input type="email" value={form.propietario_correo} onChange={e => update("propietario_correo", e.target.value)} placeholder="correo@ejemplo.com" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Dirección</Label>
+                  <Input value={form.propietario_direccion} onChange={e => update("propietario_direccion", e.target.value)} placeholder="Dirección del propietario" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Comisión pactada (COP)</Label>
+                  <Input value={displayFormatted(form.comision_pactada)} onChange={e => handleNumericField("comision_pactada", e.target.value)} placeholder="2.000.000" />
+                </div>
               </div>
               <div>
                 <Label className="text-xs uppercase text-muted-foreground font-semibold">Notas internas</Label>
-                <Textarea value={form.propietario_notas} onChange={e => update("propietario_notas", e.target.value)} placeholder="Notas sobre acuerdos, comisión, condiciones..." rows={3} />
+                <Textarea value={form.propietario_notas} onChange={e => update("propietario_notas", e.target.value)} placeholder="Notas sobre acuerdos, condiciones..." rows={3} />
               </div>
             </div>
           )}

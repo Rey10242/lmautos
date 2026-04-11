@@ -126,6 +126,7 @@ export type Database = {
           cilindrada: string | null
           color: string | null
           combustible: string
+          comision_pactada: number | null
           created_at: string
           descripcion: string | null
           destacado: boolean | null
@@ -140,6 +141,8 @@ export type Database = {
           num_puertas: number | null
           price: number
           propietario_cedula: string | null
+          propietario_correo: string | null
+          propietario_direccion: string | null
           propietario_nombre: string | null
           propietario_notas: string | null
           propietario_placa: string | null
@@ -161,6 +164,7 @@ export type Database = {
           cilindrada?: string | null
           color?: string | null
           combustible: string
+          comision_pactada?: number | null
           created_at?: string
           descripcion?: string | null
           destacado?: boolean | null
@@ -175,6 +179,8 @@ export type Database = {
           num_puertas?: number | null
           price: number
           propietario_cedula?: string | null
+          propietario_correo?: string | null
+          propietario_direccion?: string | null
           propietario_nombre?: string | null
           propietario_notas?: string | null
           propietario_placa?: string | null
@@ -196,6 +202,7 @@ export type Database = {
           cilindrada?: string | null
           color?: string | null
           combustible?: string
+          comision_pactada?: number | null
           created_at?: string
           descripcion?: string | null
           destacado?: boolean | null
@@ -210,6 +217,8 @@ export type Database = {
           num_puertas?: number | null
           price?: number
           propietario_cedula?: string | null
+          propietario_correo?: string | null
+          propietario_direccion?: string | null
           propietario_nombre?: string | null
           propietario_notas?: string | null
           propietario_placa?: string | null
