@@ -42,6 +42,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
+        <AnalyticsProvider gtmId={import.meta.env.VITE_GTM_ID}>
         <AuthProvider>
           <Suspense fallback={<PageLoader />}>
             <Routes>
