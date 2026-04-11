@@ -1,4 +1,5 @@
 import { MessageCircle, X, Phone, CreditCard } from "lucide-react";
+import { trackWhatsAppClick } from "@/lib/analytics";
 import { useState, useEffect, useRef } from "react";
 
 const lines = [
@@ -62,6 +63,7 @@ const WhatsAppFloat = () => {
               href={`https://wa.me/${line.phone}?text=${encodeURIComponent(line.message)}`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackWhatsAppClick('floating_button')}
               className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-accent transition-colors group"
             >
               <div className="w-10 h-10 rounded-full bg-[#25D366]/10 flex items-center justify-center shrink-0 group-hover:bg-[#25D366] transition-colors">
