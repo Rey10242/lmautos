@@ -3,12 +3,14 @@ import { Badge } from "@/components/ui/badge";
 import { formatPrice, formatKm } from "@/lib/formatPrice";
 import { Fuel, Gauge, Calendar, Settings2, Eye, Building2, CalendarClock } from "lucide-react";
 import type { Tables } from "@/integrations/supabase/types";
+import { trackVehicleClick, type VehicleData } from "@/lib/analytics";
 
 interface Props {
   vehicle: Tables<"vehicles">;
+  listName?: string;
 }
 
-const VehicleCard = ({ vehicle }: Props) => {
+const VehicleCard = ({ vehicle, listName = 'Catálogo' }: Props) => {
   const images = (vehicle.images as string[]) || [];
   const mainImage = images[0] || "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=80";
   const title = `${vehicle.marca} ${vehicle.modelo} ${vehicle.year}`;

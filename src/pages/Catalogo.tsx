@@ -114,7 +114,7 @@ const Catalogo = () => {
           </div>
 
           <aside className={`w-full lg:w-72 shrink-0 ${showFilters ? "block" : "hidden lg:block"}`}>
-            <VehicleFilters filters={filters} onFiltersChange={setFilters} />
+            <VehicleFilters filters={filters} onFiltersChange={handleFiltersChange} />
           </aside>
 
           <div className="flex-1">
@@ -122,7 +122,7 @@ const Catalogo = () => {
               <p className="text-sm text-muted-foreground">
                 {vehicles ? `${vehicles.length} vehículo(s) encontrado(s)` : "Cargando..."}
               </p>
-              <Select value={sort} onValueChange={setSort}>
+              <Select value={sort} onValueChange={handleSortChange}>
                 <SelectTrigger className="w-48">
                   <SelectValue />
                 </SelectTrigger>
