@@ -197,6 +197,9 @@ const VehiculoForm = () => {
         propietario_placa: form.tipo_propiedad === "tercero" ? form.propietario_placa || null : null,
         propietario_cedula: form.tipo_propiedad === "tercero" ? form.propietario_cedula || null : null,
         propietario_notas: form.tipo_propiedad === "tercero" ? form.propietario_notas || null : null,
+        propietario_correo: form.tipo_propiedad === "tercero" ? form.propietario_correo || null : null,
+        propietario_direccion: form.tipo_propiedad === "tercero" ? form.propietario_direccion || null : null,
+        comision_pactada: form.tipo_propiedad === "tercero" && form.comision_pactada ? parseInt(form.comision_pactada) : null,
       };
       if (isEdit) {
         const { error } = await supabase.from("vehicles").update(payload as any).eq("id", id);
