@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,6 +11,7 @@ import VehicleFilters, { defaultFilters, type VehicleFilterValues } from "@/comp
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { SlidersHorizontal, X } from "lucide-react";
+import { trackVehicleListView, trackCatalogFilter, trackCatalogSort, type VehicleData } from "@/lib/analytics";
 
 const Catalogo = () => {
   usePageTitle("Catálogo de Vehículos");
@@ -52,6 +53,37 @@ const Catalogo = () => {
     },
   });
 
+  useEffect(() => {
+    if (!vehicles || vehicles.length === 0) return;
+    const items: VehicleData[] = vehicles.slice(0, 20).map((v) => ({
+      id: v.id, marca: v.marca, modelo: v.modelo, version: v.version,
+      year: v.year, price: v.price, kilometraje: v.kilometraje,
+      combustible: v.combustible, transmision: v.transmision,
+      status: v.status, ubicacion: v.ubicacion,
+    }));
+    trackVehicleListView(items, 'Catálogo');
+  }, [vehicles]);
+
+  const handleFiltersChange = (newFilters: VehicleFilterValues) => {
+    const changedKeys = (Object.keys(newFilters) as (keyof VehicleFilterValues)[]).filter(
+      (k) => newFilters[k] !== filters[k] && newFilters[k] !== ""
+    );
+    changedKeys.forEach((k) => trackCatalogFilter(k, String(newFilters[k])));
+    setFilters(newFilters);
+  };
+
+  const handleSortChange = (value: string) => {
+    const map: Record<string, [string, string]> = {
+      recientes: ['created_at', 'desc'],
+      'precio-asc': ['price', 'asc'],
+      'precio-desc': ['price', 'desc'],
+      'año-desc': ['year', 'desc'],
+      'km-asc': ['kilometraje', 'asc'],
+    };
+    const [sortBy, sortOrder] = map[value] || ['created_at', 'desc'];
+    trackCatalogSort(sortBy, sortOrder);
+    setSort(value);
+  };
   return (
     <>
       <SEOHead
@@ -82,7 +114,7 @@ const Catalogo = () => {
           </div>
 
           <aside className={`w-full lg:w-72 shrink-0 ${showFilters ? "block" : "hidden lg:block"}`}>
-            <VehicleFilters filters={filters} onFiltersChange={setFilters} />
+            <VehicleFilters filters={filters} onFiltersChange={handleFiltersChange} />
           </aside>
 
           <div className="flex-1">
@@ -90,7 +122,7 @@ const Catalogo = () => {
               <p className="text-sm text-muted-foreground">
                 {vehicles ? `${vehicles.length} vehículo(s) encontrado(s)` : "Cargando..."}
               </p>
-              <Select value={sort} onValueChange={setSort}>
+              <Select value={sort} onValueChange={handleSortChange}>
                 <SelectTrigger className="w-48">
                   <SelectValue />
                 </SelectTrigger>
