@@ -36,6 +36,7 @@ interface FormData {
   ubicacion: string; tipo_propiedad: string;
   propietario_nombre: string; propietario_telefono: string;
   propietario_placa: string; propietario_cedula: string; propietario_notas: string;
+  propietario_correo: string; propietario_direccion: string; comision_pactada: string;
 }
 
 const defaultForm: FormData = {
