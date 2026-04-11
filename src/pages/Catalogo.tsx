@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,6 +11,7 @@ import VehicleFilters, { defaultFilters, type VehicleFilterValues } from "@/comp
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { SlidersHorizontal, X } from "lucide-react";
+import { trackVehicleListView, trackCatalogFilter, trackCatalogSort, type VehicleData } from "@/lib/analytics";
 
 const Catalogo = () => {
   usePageTitle("Catálogo de Vehículos");
