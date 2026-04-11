@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Send, CheckCircle, Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 import usePageTitle from "@/hooks/usePageTitle";
+import { trackContactFormSubmit, trackFormStart, trackWhatsAppClick, trackPhoneClick } from "@/lib/analytics";
 
 const schema = z.object({
   nombre: z.string().trim().min(1, "Requerido").max(100),
