@@ -61,6 +61,7 @@ const Contacto = () => {
       return;
     }
     setSubmitted(true);
+    trackContactFormSubmit({ nombre: values.nombre, telefono: values.telefono, correo: values.correo || undefined });
   };
 
   return (
@@ -102,7 +103,11 @@ const Contacto = () => {
                         </div>
                         <div>
                           <p className="text-sm text-muted-foreground">{item.label}</p>
-                          {item.href ? (
+                          {item.href?.startsWith("tel:") ? (
+                            <a href={item.href} onClick={() => trackPhoneClick(item.value)} className="font-semibold text-foreground hover:text-primary transition-colors">
+                              {item.value}
+                            </a>
+                          ) : item.href ? (
                             <a href={item.href} className="font-semibold text-foreground hover:text-primary transition-colors">
                               {item.value}
                             </a>
