@@ -271,7 +271,7 @@ const VehiculoDetalle = () => {
                   <span className="font-bold text-amber-800 dark:text-amber-300">Disponible con Cita Previa</span>
                 </div>
                 <p className="text-sm text-amber-700 dark:text-amber-400">Este vehículo no se encuentra en nuestra sala. Agenda tu visita para verlo.</p>
-                <Button asChild size="lg" className="w-full font-bold uppercase text-base bg-amber-600 hover:bg-amber-700 text-white">
+                <Button asChild size="lg" className="w-full font-bold uppercase text-base bg-amber-600 hover:bg-amber-700 text-white" onClick={() => trackWhatsAppClick('vehicle_detail_appointment', vehicleData)}>
                   <a href={`https://wa.me/573157525555?text=${encodeURIComponent(`Hola, quiero agendar una cita para ver el ${title}. ¿Qué día y hora tienen disponible?`)}`} target="_blank" rel="noopener noreferrer">
                     <CalendarClock className="mr-2 h-5 w-5" />
                     Agendar Cita
