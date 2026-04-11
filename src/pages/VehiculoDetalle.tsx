@@ -13,6 +13,7 @@ import { Fuel, Gauge, Calendar, Settings2, Car, Palette, DoorOpen, Cog, MessageC
 import { useState, useEffect } from "react";
 import { SITE_URL } from "@/lib/constants";
 import { useToast } from "@/hooks/use-toast";
+import { trackVehicleView, trackWhatsAppClick, trackVehicleShare, trackGalleryOpen, type VehicleData } from "@/lib/analytics";
 
 const VehiculoDetalle = () => {
   const { slug } = useParams();
@@ -37,6 +38,21 @@ const VehiculoDetalle = () => {
   useEffect(() => {
     if (!vehicle?.id) return;
     supabase.from("vehicle_views").insert({ vehicle_id: vehicle.id } as any).then();
+
+    const vData: VehicleData = {
+      id: vehicle.id,
+      marca: vehicle.marca,
+      modelo: vehicle.modelo,
+      version: vehicle.version,
+      year: vehicle.year,
+      price: vehicle.price,
+      kilometraje: vehicle.kilometraje,
+      combustible: vehicle.combustible,
+      transmision: vehicle.transmision,
+      status: vehicle.status,
+      ubicacion: vehicle.ubicacion,
+    };
+    trackVehicleView(vData);
   }, [vehicle?.id]);
 
   const { data: similarVehicles } = useQuery({
@@ -84,6 +100,20 @@ const VehiculoDetalle = () => {
     );
   }
 
+  const vehicleData: VehicleData = {
+    id: vehicle.id,
+    marca: vehicle.marca,
+    modelo: vehicle.modelo,
+    version: vehicle.version,
+    year: vehicle.year,
+    price: vehicle.price,
+    kilometraje: vehicle.kilometraje,
+    combustible: vehicle.combustible,
+    transmision: vehicle.transmision,
+    status: vehicle.status,
+    ubicacion: vehicle.ubicacion,
+  };
+
   const whatsappMsg = encodeURIComponent(`Hola, estoy interesado en el ${title}. ¿Está disponible?`);
 
   const specs = [
@@ -101,14 +131,17 @@ const VehiculoDetalle = () => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareUrl);
     toast({ title: "¡Enlace copiado!", description: "El enlace ha sido copiado al portapapeles." });
+    trackVehicleShare(vehicleData, 'copy_link');
   };
 
   const handleShareWhatsApp = () => {
     window.open(`https://wa.me/?text=${encodeURIComponent(`Mira este vehículo: ${title} - ${shareUrl}`)}`, "_blank");
+    trackVehicleShare(vehicleData, 'whatsapp');
   };
 
   const handleShareFacebook = () => {
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, "_blank");
+    trackVehicleShare(vehicleData, 'facebook');
   };
 
   const navigateImage = (direction: "prev" | "next") => {
@@ -178,7 +211,7 @@ const VehiculoDetalle = () => {
           <FadeInSection className="lg:col-span-3">
             <div 
               className="aspect-[4/3] rounded-xl overflow-hidden bg-muted mb-3 cursor-pointer relative group"
-              onClick={() => setLightboxOpen(true)}
+              onClick={() => { setLightboxOpen(true); trackGalleryOpen(vehicle.id, selectedImage); }}
             >
               <img src={displayImages[selectedImage]} alt={title} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
@@ -238,7 +271,7 @@ const VehiculoDetalle = () => {
                   <span className="font-bold text-amber-800 dark:text-amber-300">Disponible con Cita Previa</span>
                 </div>
                 <p className="text-sm text-amber-700 dark:text-amber-400">Este vehículo no se encuentra en nuestra sala. Agenda tu visita para verlo.</p>
-                <Button asChild size="lg" className="w-full font-bold uppercase text-base bg-amber-600 hover:bg-amber-700 text-white">
+                <Button asChild size="lg" className="w-full font-bold uppercase text-base bg-amber-600 hover:bg-amber-700 text-white" onClick={() => trackWhatsAppClick('vehicle_detail_appointment', vehicleData)}>
                   <a href={`https://wa.me/573157525555?text=${encodeURIComponent(`Hola, quiero agendar una cita para ver el ${title}. ¿Qué día y hora tienen disponible?`)}`} target="_blank" rel="noopener noreferrer">
                     <CalendarClock className="mr-2 h-5 w-5" />
                     Agendar Cita
@@ -260,6 +293,7 @@ const VehiculoDetalle = () => {
               href={`https://wa.me/573157525555?text=${whatsappMsg}`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackWhatsAppClick('vehicle_detail_main', vehicleData)}
               className="group flex items-center justify-center gap-3 w-full rounded-xl px-8 py-4 font-bold uppercase text-base tracking-wide text-white transition-all duration-300 hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] animate-whatsapp-pulse"
               style={{ backgroundColor: "#25D366" }}
             >
