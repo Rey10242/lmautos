@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Send, CheckCircle, Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react";
 import usePageTitle from "@/hooks/usePageTitle";
+import { trackContactFormSubmit, trackFormStart, trackWhatsAppClick, trackPhoneClick } from "@/lib/analytics";
 
 const schema = z.object({
   nombre: z.string().trim().min(1, "Requerido").max(100),
@@ -41,6 +42,7 @@ const Contacto = () => {
   usePageTitle("Contacto");
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
+  const [formStarted, setFormStarted] = useState(false);
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { nombre: "", telefono: "", correo: "", mensaje: "" },
@@ -59,6 +61,7 @@ const Contacto = () => {
       return;
     }
     setSubmitted(true);
+    trackContactFormSubmit({ nombre: values.nombre, telefono: values.telefono, correo: values.correo || undefined });
   };
 
   return (
@@ -100,7 +103,11 @@ const Contacto = () => {
                         </div>
                         <div>
                           <p className="text-sm text-muted-foreground">{item.label}</p>
-                          {item.href ? (
+                          {item.href?.startsWith("tel:") ? (
+                            <a href={item.href} onClick={() => trackPhoneClick(item.value)} className="font-semibold text-foreground hover:text-primary transition-colors">
+                              {item.value}
+                            </a>
+                          ) : item.href ? (
                             <a href={item.href} className="font-semibold text-foreground hover:text-primary transition-colors">
                               {item.value}
                             </a>
@@ -132,7 +139,7 @@ const Contacto = () => {
               </FadeInSection>
 
               <FadeInSection delay={200}>
-                <Button asChild size="lg" className="w-full font-bold uppercase">
+                <Button asChild size="lg" className="w-full font-bold uppercase" onClick={() => trackWhatsAppClick('contact_page_cta')}>
                   <a href="https://wa.me/573157525555" target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="mr-2 h-5 w-5" />
                     Escribir por WhatsApp
@@ -162,7 +169,7 @@ const Contacto = () => {
                     </p>
                     
                     <Form {...form}>
-                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5" onFocus={() => { if (!formStarted) { setFormStarted(true); trackFormStart('contacto_general'); } }}>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <FormField control={form.control} name="nombre" render={({ field }) => (
                             <FormItem>

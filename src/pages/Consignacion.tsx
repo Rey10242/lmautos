@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Send, CheckCircle } from "lucide-react";
+import { trackConsignmentFormSubmit, trackFormStart } from "@/lib/analytics";
 
 const schema = z.object({
   nombre: z.string().trim().min(1, "Requerido").max(100),
@@ -31,6 +32,7 @@ type FormValues = z.infer<typeof schema>;
 const Consignacion = () => {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
+  const [formStarted, setFormStarted] = useState(false);
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { nombre: "", telefono: "", correo: "", marca: "", modelo: "", year: undefined as any, kilometraje: undefined as any, ciudad: "", precio_esperado: "" as any, descripcion: "" },
@@ -55,6 +57,14 @@ const Consignacion = () => {
       return;
     }
     setSubmitted(true);
+    trackConsignmentFormSubmit({
+      nombre: values.nombre,
+      telefono: values.telefono,
+      marca: values.marca,
+      modelo: values.modelo,
+      year: values.year,
+      precio_esperado: values.precio_esperado ? Number(values.precio_esperado) : undefined,
+    });
   };
 
   return (
@@ -86,7 +96,7 @@ const Consignacion = () => {
               Completa el formulario con los datos de tu vehículo y nos pondremos en contacto contigo para iniciar el proceso de consignación.
             </p>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5" onFocus={() => { if (!formStarted) { setFormStarted(true); trackFormStart('consignacion_vehiculo'); } }}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField control={form.control} name="nombre" render={({ field }) => (
                     <FormItem><FormLabel>Nombre Completo</FormLabel><FormControl><Input placeholder="Tu nombre" {...field} /></FormControl><FormMessage /></FormItem>
