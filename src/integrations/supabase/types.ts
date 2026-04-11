@@ -147,6 +147,7 @@ export type Database = {
           propietario_notas: string | null
           propietario_placa: string | null
           propietario_telefono: string | null
+          propietario_tipo_documento: string | null
           recien_ingresado: boolean | null
           slug: string
           status: string | null
@@ -185,6 +186,7 @@ export type Database = {
           propietario_notas?: string | null
           propietario_placa?: string | null
           propietario_telefono?: string | null
+          propietario_tipo_documento?: string | null
           recien_ingresado?: boolean | null
           slug: string
           status?: string | null
@@ -223,6 +225,7 @@ export type Database = {
           propietario_notas?: string | null
           propietario_placa?: string | null
           propietario_telefono?: string | null
+          propietario_tipo_documento?: string | null
           recien_ingresado?: boolean | null
           slug?: string
           status?: string | null
