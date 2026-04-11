@@ -42,6 +42,7 @@ const Contacto = () => {
   usePageTitle("Contacto");
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
+  const [formStarted, setFormStarted] = useState(false);
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { nombre: "", telefono: "", correo: "", mensaje: "" },
