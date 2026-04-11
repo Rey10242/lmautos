@@ -57,6 +57,14 @@ const Consignacion = () => {
       return;
     }
     setSubmitted(true);
+    trackConsignmentFormSubmit({
+      nombre: values.nombre,
+      telefono: values.telefono,
+      marca: values.marca,
+      modelo: values.modelo,
+      year: values.year,
+      precio_esperado: values.precio_esperado ? Number(values.precio_esperado) : undefined,
+    });
   };
 
   return (
