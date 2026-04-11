@@ -35,7 +35,7 @@ interface FormData {
   transito: string; fecha_venta: string;
   ubicacion: string; tipo_propiedad: string;
   propietario_nombre: string; propietario_telefono: string;
-  propietario_placa: string; propietario_cedula: string; propietario_notas: string;
+  propietario_placa: string; propietario_tipo_documento: string; propietario_cedula: string; propietario_notas: string;
   propietario_correo: string; propietario_direccion: string; comision_pactada: string;
 }
 
@@ -46,7 +46,7 @@ const defaultForm: FormData = {
   destacado: false, recien_ingresado: false, transito: "", fecha_venta: "",
   ubicacion: "sala", tipo_propiedad: "propio",
   propietario_nombre: "", propietario_telefono: "",
-  propietario_placa: "", propietario_cedula: "", propietario_notas: "",
+  propietario_placa: "", propietario_tipo_documento: "", propietario_cedula: "", propietario_notas: "",
   propietario_correo: "", propietario_direccion: "", comision_pactada: "",
 };
 
@@ -90,6 +90,7 @@ const VehiculoForm = () => {
         propietario_nombre: (vehicle as any).propietario_nombre || "",
         propietario_telefono: (vehicle as any).propietario_telefono || "",
         propietario_placa: (vehicle as any).propietario_placa || "",
+        propietario_tipo_documento: (vehicle as any).propietario_tipo_documento || "",
         propietario_cedula: (vehicle as any).propietario_cedula || "",
         propietario_notas: (vehicle as any).propietario_notas || "",
         propietario_correo: (vehicle as any).propietario_correo || "",
@@ -195,6 +196,7 @@ const VehiculoForm = () => {
         propietario_nombre: form.tipo_propiedad === "tercero" ? form.propietario_nombre || null : null,
         propietario_telefono: form.tipo_propiedad === "tercero" ? form.propietario_telefono || null : null,
         propietario_placa: form.tipo_propiedad === "tercero" ? form.propietario_placa || null : null,
+        propietario_tipo_documento: form.tipo_propiedad === "tercero" ? form.propietario_tipo_documento || null : null,
         propietario_cedula: form.tipo_propiedad === "tercero" ? form.propietario_cedula || null : null,
         propietario_notas: form.tipo_propiedad === "tercero" ? form.propietario_notas || null : null,
         propietario_correo: form.tipo_propiedad === "tercero" ? form.propietario_correo || null : null,
@@ -476,7 +478,20 @@ const VehiculoForm = () => {
                   <Input value={form.propietario_placa} onChange={e => update("propietario_placa", e.target.value)} placeholder="ABC 123" />
                 </div>
                 <div>
-                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Cédula en tarjeta de propiedad</Label>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Tipo de documento</Label>
+                  <Select value={form.propietario_tipo_documento} onValueChange={v => update("propietario_tipo_documento", v)}>
+                    <SelectTrigger><SelectValue placeholder="Seleccionar tipo" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Cédula Ciudadanía">Cédula Ciudadanía</SelectItem>
+                      <SelectItem value="Carnet Diplomático">Carnet Diplomático</SelectItem>
+                      <SelectItem value="Cédula de Extranjería">Cédula de Extranjería</SelectItem>
+                      <SelectItem value="Pasaporte">Pasaporte</SelectItem>
+                      <SelectItem value="Tarjeta de Identidad">Tarjeta de Identidad</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Número de documento</Label>
                   <Input value={form.propietario_cedula} onChange={e => update("propietario_cedula", e.target.value)} placeholder="1.234.567.890" />
                 </div>
                 <div>
