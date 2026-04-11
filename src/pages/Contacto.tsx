@@ -139,7 +139,7 @@ const Contacto = () => {
               </FadeInSection>
 
               <FadeInSection delay={200}>
-                <Button asChild size="lg" className="w-full font-bold uppercase">
+                <Button asChild size="lg" className="w-full font-bold uppercase" onClick={() => trackWhatsAppClick('contact_page_cta')}>
                   <a href="https://wa.me/573157525555" target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="mr-2 h-5 w-5" />
                     Escribir por WhatsApp
