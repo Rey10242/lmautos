@@ -131,14 +131,17 @@ const VehiculoDetalle = () => {
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareUrl);
     toast({ title: "¡Enlace copiado!", description: "El enlace ha sido copiado al portapapeles." });
+    trackVehicleShare(vehicleData, 'copy_link');
   };
 
   const handleShareWhatsApp = () => {
     window.open(`https://wa.me/?text=${encodeURIComponent(`Mira este vehículo: ${title} - ${shareUrl}`)}`, "_blank");
+    trackVehicleShare(vehicleData, 'whatsapp');
   };
 
   const handleShareFacebook = () => {
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, "_blank");
+    trackVehicleShare(vehicleData, 'facebook');
   };
 
   const navigateImage = (direction: "prev" | "next") => {
