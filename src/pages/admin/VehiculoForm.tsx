@@ -479,10 +479,22 @@ const VehiculoForm = () => {
                   <Label className="text-xs uppercase text-muted-foreground font-semibold">Cédula en tarjeta de propiedad</Label>
                   <Input value={form.propietario_cedula} onChange={e => update("propietario_cedula", e.target.value)} placeholder="1.234.567.890" />
                 </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Correo electrónico</Label>
+                  <Input type="email" value={form.propietario_correo} onChange={e => update("propietario_correo", e.target.value)} placeholder="correo@ejemplo.com" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Dirección</Label>
+                  <Input value={form.propietario_direccion} onChange={e => update("propietario_direccion", e.target.value)} placeholder="Dirección del propietario" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Comisión pactada (COP)</Label>
+                  <Input value={displayFormatted(form.comision_pactada)} onChange={e => handleNumericField("comision_pactada", e.target.value)} placeholder="2.000.000" />
+                </div>
               </div>
               <div>
                 <Label className="text-xs uppercase text-muted-foreground font-semibold">Notas internas</Label>
-                <Textarea value={form.propietario_notas} onChange={e => update("propietario_notas", e.target.value)} placeholder="Notas sobre acuerdos, comisión, condiciones..." rows={3} />
+                <Textarea value={form.propietario_notas} onChange={e => update("propietario_notas", e.target.value)} placeholder="Notas sobre acuerdos, condiciones..." rows={3} />
               </div>
             </div>
           )}
