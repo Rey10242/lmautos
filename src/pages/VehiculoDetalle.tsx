@@ -13,6 +13,7 @@ import { Fuel, Gauge, Calendar, Settings2, Car, Palette, DoorOpen, Cog, MessageC
 import { useState, useEffect } from "react";
 import { SITE_URL } from "@/lib/constants";
 import { useToast } from "@/hooks/use-toast";
+import { trackVehicleView, trackWhatsAppClick, trackVehicleShare, trackGalleryOpen, type VehicleData } from "@/lib/analytics";
 
 const VehiculoDetalle = () => {
   const { slug } = useParams();
