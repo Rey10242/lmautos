@@ -24,3 +24,11 @@ export {
   trackFormStart,
   trackFormError,
 } from './events';
+
+export {
+  captureAndPersistUtm,
+  getAttribution,
+  getAttributionForLead,
+} from './utm';
+
+export type { AttributionData } from './utm';
