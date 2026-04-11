@@ -1,34 +1,38 @@
 
 
-# Analytics de Visitas por Vehículo
+# Mejoras al Backoffice
 
-## Resumen
+## 1. Dashboard moderno y espectacular
 
-Registrar cada visita a la ficha de un vehículo y mostrar las estadísticas en el backoffice (lista de vehículos y detalle).
+Rediseñar el dashboard con gráficos más impactantes usando gradientes, animaciones y mejor diseño visual:
 
-## Plan
+- **Stat cards**: Agregar gradientes de fondo sutiles, sombras con color, y micro-animaciones hover (scale + shadow).
+- **Gráfico de dona (Distribución por Estado)**: Hacerlo más grande, agregar label central con el total, usar gradientes en los segmentos, y tooltips personalizados con el componente `ChartTooltipContent`.
+- **Gráfico de barras (Top Marcas)**: Barras con gradientes, bordes redondeados más pronunciados, labels mejorados, y un diseño horizontal más limpio.
+- **Agregar un nuevo gráfico**: Línea temporal de visitas de los últimos 7 días usando datos de `vehicle_views`, mostrando la tendencia de interés.
+- **Tabla de últimos vehículos**: Mejorar con avatares más grandes, badges de estado con mejor contraste, y hover effects más suaves.
+- **Layout general**: Mejorar spacing, usar glassmorphism sutil en las cards, y agregar decorative elements discretos.
 
-### 1. Crear tabla `vehicle_views`
-Nueva tabla para registrar cada visita:
-- `id` (uuid, PK)
-- `vehicle_id` (uuid, FK a vehicles)
-- `viewed_at` (timestamptz, default now())
+## 2. Nuevos campos del propietario en el formulario de vehículos
 
-RLS: INSERT abierto para anon+authenticated, SELECT solo para authenticated.
+Agregar 3 campos nuevos a la sección "Datos del Propietario" (solo visible cuando tipo_propiedad = "tercero"):
 
-### 2. Registrar visitas en la ficha del vehículo
-En `VehiculoDetalle.tsx`, al cargar un vehículo exitosamente, insertar un registro en `vehicle_views`. Se usa un `useEffect` para que solo se registre una vez por carga de página.
+### Migración de base de datos
+Agregar columnas a la tabla `vehicles`:
+- `propietario_correo` (text, nullable)
+- `propietario_direccion` (text, nullable)  
+- `comision_pactada` (numeric, nullable) — monto de la comisión acordada entre LM Autos y el dueño
 
-### 3. Mostrar contador de visitas en la lista de vehículos del backoffice
-En `admin/Vehiculos.tsx`, agregar una columna con un ícono de ojo y el conteo de visitas de cada vehículo. Se obtiene con una consulta agrupada o un view en la base de datos.
+### Cambios en `VehiculoForm.tsx`
+- Agregar los 3 campos al `FormData` interface y `defaultForm`
+- Agregar inputs en la sección de datos del propietario:
+  - Correo electrónico (input type email)
+  - Dirección (input text)
+  - Comisión pactada (input numérico con formato de miles, similar al precio)
+- Incluir los nuevos campos en el payload de guardado
 
-### 4. (Opcional) Vista de base de datos para eficiencia
-Crear una vista SQL `vehicle_view_counts` que agrupe por `vehicle_id` con `COUNT(*)` para hacer las consultas más simples desde el frontend.
-
-## Detalle técnico
-
-- La tabla `vehicle_views` no almacena datos personales, solo el ID del vehículo y timestamp
-- Se crea un índice en `vehicle_id` para consultas rápidas
-- El insert desde la página pública usa el rol `anon`, por lo que la política de INSERT debe permitirlo
-- En el backoffice se puede mostrar visitas totales y visitas de los últimos 7 días
+## Archivos a modificar
+- `src/pages/admin/Dashboard.tsx` — Rediseño visual completo
+- `src/pages/admin/VehiculoForm.tsx` — Agregar campos de correo, dirección y comisión
+- Nueva migración SQL — Agregar 3 columnas a `vehicles`
 
