@@ -100,6 +100,20 @@ const VehiculoDetalle = () => {
     );
   }
 
+  const vehicleData: VehicleData = {
+    id: vehicle.id,
+    marca: vehicle.marca,
+    modelo: vehicle.modelo,
+    version: vehicle.version,
+    year: vehicle.year,
+    price: vehicle.price,
+    kilometraje: vehicle.kilometraje,
+    combustible: vehicle.combustible,
+    transmision: vehicle.transmision,
+    status: vehicle.status,
+    ubicacion: vehicle.ubicacion,
+  };
+
   const whatsappMsg = encodeURIComponent(`Hola, estoy interesado en el ${title}. ¿Está disponible?`);
 
   const specs = [
