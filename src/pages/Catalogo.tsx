@@ -84,6 +84,7 @@ const Catalogo = () => {
     trackCatalogSort(sortBy, sortOrder);
     setSort(value);
   };
+  return (
     <>
       <SEOHead
         title="Catálogo de Vehículos Usados"
