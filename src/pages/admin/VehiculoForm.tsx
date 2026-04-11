@@ -92,6 +92,9 @@ const VehiculoForm = () => {
         propietario_placa: (vehicle as any).propietario_placa || "",
         propietario_cedula: (vehicle as any).propietario_cedula || "",
         propietario_notas: (vehicle as any).propietario_notas || "",
+        propietario_correo: (vehicle as any).propietario_correo || "",
+        propietario_direccion: (vehicle as any).propietario_direccion || "",
+        comision_pactada: (vehicle as any).comision_pactada ? String((vehicle as any).comision_pactada) : "",
       });
       setImages((vehicle.images as string[]) || []);
     }
