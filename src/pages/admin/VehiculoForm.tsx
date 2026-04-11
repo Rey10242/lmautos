@@ -47,6 +47,7 @@ const defaultForm: FormData = {
   ubicacion: "sala", tipo_propiedad: "propio",
   propietario_nombre: "", propietario_telefono: "",
   propietario_placa: "", propietario_cedula: "", propietario_notas: "",
+  propietario_correo: "", propietario_direccion: "", comision_pactada: "",
 };
 
 const VehiculoForm = () => {
