@@ -293,6 +293,7 @@ const VehiculoDetalle = () => {
               href={`https://wa.me/573157525555?text=${whatsappMsg}`}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackWhatsAppClick('vehicle_detail_main', vehicleData)}
               className="group flex items-center justify-center gap-3 w-full rounded-xl px-8 py-4 font-bold uppercase text-base tracking-wide text-white transition-all duration-300 hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] animate-whatsapp-pulse"
               style={{ backgroundColor: "#25D366" }}
             >
