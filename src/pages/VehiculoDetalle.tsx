@@ -211,7 +211,7 @@ const VehiculoDetalle = () => {
           <FadeInSection className="lg:col-span-3">
             <div 
               className="aspect-[4/3] rounded-xl overflow-hidden bg-muted mb-3 cursor-pointer relative group"
-              onClick={() => setLightboxOpen(true)}
+              onClick={() => { setLightboxOpen(true); trackGalleryOpen(vehicle.id, selectedImage); }}
             >
               <img src={displayImages[selectedImage]} alt={title} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
