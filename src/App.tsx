@@ -8,6 +8,7 @@ import Layout from "./components/layout/Layout";
 import ScrollToTop from "./components/layout/ScrollToTop";
 import { AuthProvider } from "./contexts/AuthContext";
 import AdminLayout from "./components/admin/AdminLayout";
+import AnalyticsProvider from "./components/analytics/AnalyticsProvider";
 
 const Index = lazy(() => import("./pages/Index"));
 const Catalogo = lazy(() => import("./pages/Catalogo"));
@@ -41,6 +42,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
+        <AnalyticsProvider gtmId={import.meta.env.VITE_GTM_ID}>
         <AuthProvider>
           <Suspense fallback={<PageLoader />}>
             <Routes>
@@ -70,6 +72,7 @@ const App = () => (
             </Routes>
           </Suspense>
         </AuthProvider>
+        </AnalyticsProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
