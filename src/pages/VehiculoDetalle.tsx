@@ -38,6 +38,21 @@ const VehiculoDetalle = () => {
   useEffect(() => {
     if (!vehicle?.id) return;
     supabase.from("vehicle_views").insert({ vehicle_id: vehicle.id } as any).then();
+
+    const vData: VehicleData = {
+      id: vehicle.id,
+      marca: vehicle.marca,
+      modelo: vehicle.modelo,
+      version: vehicle.version,
+      year: vehicle.year,
+      price: vehicle.price,
+      kilometraje: vehicle.kilometraje,
+      combustible: vehicle.combustible,
+      transmision: vehicle.transmision,
+      status: vehicle.status,
+      ubicacion: vehicle.ubicacion,
+    };
+    trackVehicleView(vData);
   }, [vehicle?.id]);
 
   const { data: similarVehicles } = useQuery({
