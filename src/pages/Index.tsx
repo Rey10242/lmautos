@@ -6,7 +6,7 @@ import WhyUs from "@/components/home/WhyUs";
 import StatsSection from "@/components/home/StatsSection";
 import BrandsSection from "@/components/home/BrandsSection";
 import ConsignacionCTA from "@/components/home/ConsignacionCTA";
-import TestimonialsSection from "@/components/home/TestimonialsSection";
+import GoogleReviewsSection from "@/components/home/GoogleReviewsSection";
 import FinalCTA from "@/components/home/FinalCTA";
 import FadeInSection from "@/components/shared/FadeInSection";
 
@@ -71,7 +71,7 @@ const Index = () => {
         <BrandsSection />
       </FadeInSection>
       <FadeInSection>
-        <TestimonialsSection />
+        <GoogleReviewsSection />
       </FadeInSection>
       <FadeInSection>
         <ConsignacionCTA />
