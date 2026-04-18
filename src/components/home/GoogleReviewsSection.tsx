@@ -180,7 +180,7 @@ const GoogleReviewsSection = () => {
             <div className="rounded-xl overflow-hidden border border-border shadow-lg aspect-[16/9] bg-muted">
               <iframe
                 title="Ubicación LM Autos en Cartagena"
-                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA8yTTfvr77cbiTHdbDkzvou1Scv9UFOfo&q=place_id:ChIJ11WYVgkv9o4RkzCpeJYG3jY&language=es&region=CO"
+                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD9xzhv7ti6VhDqJWz3-e9nrPpDKCOxSm0&q=place_id:ChIJ11WYVgkv9o4RkzCpeJYG3jY&language=es&region=CO"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
