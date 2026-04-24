@@ -56,7 +56,7 @@ const AdminSidebar = () => {
   const navItems = [
     { title: "Dashboard", url: "/admin", icon: LayoutDashboard, badge: 0 },
     { title: "Vehículos", url: "/admin/vehiculos", icon: Car, badge: 0 },
-    { title: "Ventas", url: "/admin/ventas", icon: Receipt, badge: salesThisMonth || 0 },
+    { title: "Ventas", url: "/admin/ventas", icon: Receipt, badge: 0 },
     { title: "Consignaciones", url: "/admin/consignaciones", icon: FileText, badge: pendingConsignments || 0 },
     { title: "Mensajes", url: "/admin/mensajes", icon: MessageSquare, badge: newMessages || 0 },
     ...(isSuperAdmin ? [{ title: "Auditoría", url: "/admin/auditoria", icon: ShieldCheck, badge: 0 }] : []),
