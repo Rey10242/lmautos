@@ -25,11 +25,10 @@ const statusConfig: Record<string, { label: string; class: string }> = {
 const Ventas = () => {
   const { toast } = useToast();
   const today = new Date();
-  const last30 = new Date();
-  last30.setDate(today.getDate() - 30);
+  const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
 
   const [statusFilter, setStatusFilter] = useState<string>("vendido");
-  const [dateFrom, setDateFrom] = useState<Date | undefined>(last30);
+  const [dateFrom, setDateFrom] = useState<Date | undefined>(monthStart);
   const [dateTo, setDateTo] = useState<Date | undefined>(today);
   const [buyerSearch, setBuyerSearch] = useState("");
   const [sellerSearch, setSellerSearch] = useState("");
@@ -67,8 +66,6 @@ const Ventas = () => {
   }, [sales, buyerSearch, sellerSearch, plateSearch]);
 
   const totalVentas = filtered.length;
-  const totalValor = filtered.reduce((acc: number, v: any) => acc + Number(v.valor_venta || v.price || 0), 0);
-  const ticketPromedio = totalVentas > 0 ? totalValor / totalVentas : 0;
 
   const exportData = () =>
     filtered.map((v: any) => ({
@@ -123,7 +120,7 @@ const Ventas = () => {
     setSellerSearch("");
     setPlateSearch("");
     setStatusFilter("vendido");
-    setDateFrom(last30);
+    setDateFrom(monthStart);
     setDateTo(today);
   };
 
@@ -147,11 +144,9 @@ const Ventas = () => {
         </div>
       </div>
 
-      {/* KPIs */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <KpiCard icon={<Receipt className="h-4 w-4 text-red-600" />} label="Ventas en rango" value={totalVentas.toString()} bg="bg-red-500/10" />
-        <KpiCard icon={<Wallet className="h-4 w-4 text-emerald-600" />} label="Valor total" value={formatPrice(totalValor)} bg="bg-emerald-500/10" />
-        <KpiCard icon={<TrendingUp className="h-4 w-4 text-blue-600" />} label="Ticket promedio" value={formatPrice(ticketPromedio)} bg="bg-blue-500/10" />
+      {/* KPI */}
+      <div className="grid grid-cols-1 sm:max-w-xs">
+        <KpiCard icon={<Receipt className="h-4 w-4 text-primary" />} label="Vehículos vendidos en rango" value={totalVentas.toString()} bg="bg-primary/10" />
       </div>
 
       {/* Filtros */}
