@@ -1,8 +1,9 @@
-import { Car, LayoutDashboard, MessageSquare, FileText, LogOut, Home, Receipt } from "lucide-react";
+import { Car, LayoutDashboard, MessageSquare, FileText, LogOut, Home, Receipt, ShieldCheck } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useUserRoles } from "@/hooks/useUserRole";
 import logoWhite from "@/assets/logo-white-horizontal.png";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
@@ -15,6 +16,7 @@ const AdminSidebar = () => {
   const collapsed = state === "collapsed";
   const location = useLocation();
   const { signOut } = useAuth();
+  const { isSuperAdmin } = useUserRoles();
 
   // Badge counts
   const { data: pendingConsignments } = useQuery({
@@ -57,6 +59,7 @@ const AdminSidebar = () => {
     { title: "Ventas", url: "/admin/ventas", icon: Receipt, badge: salesThisMonth || 0 },
     { title: "Consignaciones", url: "/admin/consignaciones", icon: FileText, badge: pendingConsignments || 0 },
     { title: "Mensajes", url: "/admin/mensajes", icon: MessageSquare, badge: newMessages || 0 },
+    ...(isSuperAdmin ? [{ title: "Auditoría", url: "/admin/auditoria", icon: ShieldCheck, badge: 0 }] : []),
   ];
 
   const isActive = (url: string) => {
