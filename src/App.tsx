@@ -27,6 +27,7 @@ const VehiculoForm = lazy(() => import("./pages/admin/VehiculoForm"));
 const Consignaciones = lazy(() => import("./pages/admin/Consignaciones"));
 const Mensajes = lazy(() => import("./pages/admin/Mensajes"));
 const Ventas = lazy(() => import("./pages/admin/Ventas"));
+const Auditoria = lazy(() => import("./pages/admin/Auditoria"));
 
 const queryClient = new QueryClient();
 
@@ -68,6 +69,7 @@ const App = () => (
                 <Route path="/admin/consignaciones" element={<Consignaciones />} />
                 <Route path="/admin/ventas" element={<Ventas />} />
                 <Route path="/admin/mensajes" element={<Mensajes />} />
+                <Route path="/admin/auditoria" element={<Auditoria />} />
               </Route>
 
               <Route path="*" element={<NotFound />} />
