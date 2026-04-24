@@ -199,6 +199,7 @@ export type Database = {
           estado_vehiculo: string | null
           fecha_ingreso: string | null
           fecha_venta: string | null
+          ganancia_propia: number | null
           id: string
           images: Json | null
           kilometraje: number
@@ -247,6 +248,7 @@ export type Database = {
           estado_vehiculo?: string | null
           fecha_ingreso?: string | null
           fecha_venta?: string | null
+          ganancia_propia?: number | null
           id?: string
           images?: Json | null
           kilometraje: number
@@ -295,6 +297,7 @@ export type Database = {
           estado_vehiculo?: string | null
           fecha_ingreso?: string | null
           fecha_venta?: string | null
+          ganancia_propia?: number | null
           id?: string
           images?: Json | null
           kilometraje?: number

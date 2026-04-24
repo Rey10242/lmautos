@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { format } from "date-fns";
-import { CalendarIcon, Download, FileSpreadsheet, Receipt, Search, Users, Wallet } from "lucide-react";
+import { CalendarIcon, Car, Download, FileSpreadsheet, Handshake, Receipt, Search, Users, Wallet } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -65,11 +65,10 @@ const Ventas = () => {
     });
   }, [sales, buyerSearch, sellerSearch, plateSearch]);
 
-  const totalVentas = filtered.length;
-  const totalComision = filtered.reduce(
-    (acc: number, v: any) => acc + (v.tipo_propiedad === "tercero" ? Number(v.comision_pactada || 0) : 0),
-    0
-  );
+  const propios = filtered.filter((v: any) => v.tipo_propiedad === "propio");
+  const terceros = filtered.filter((v: any) => v.tipo_propiedad === "tercero");
+  const totalGanancia = propios.reduce((acc: number, v: any) => acc + Number(v.ganancia_propia || 0), 0);
+  const totalComision = terceros.reduce((acc: number, v: any) => acc + Number(v.comision_pactada || 0), 0);
 
   const exportData = () =>
     filtered.map((v: any) => ({
@@ -87,6 +86,9 @@ const Ventas = () => {
       Dirección: v.comprador_direccion || "",
       Ciudad: v.comprador_ciudad || "",
       "Valor de venta": Number(v.valor_venta || v.price || 0),
+      "Tipo": v.tipo_propiedad === "tercero" ? "Consignado" : "Propio",
+      "Ganancia (propio)": v.tipo_propiedad === "propio" ? Number(v.ganancia_propia || 0) : "",
+      "Comisión (consignado)": v.tipo_propiedad === "tercero" ? Number(v.comision_pactada || 0) : "",
       Estado: statusConfig[v.status]?.label || v.status,
     }));
 
@@ -149,9 +151,11 @@ const Ventas = () => {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:max-w-2xl">
-        <KpiCard icon={<Receipt className="h-4 w-4 text-primary" />} label="Vehículos vendidos en rango" value={totalVentas.toString()} bg="bg-primary/10" />
-        <KpiCard icon={<Wallet className="h-4 w-4 text-emerald-600" />} label="Comisión ganada (consignados)" value={formatPrice(totalComision)} bg="bg-emerald-500/10" />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiCard icon={<Car className="h-4 w-4 text-primary" />} label="Propios vendidos" value={propios.length.toString()} bg="bg-primary/10" />
+        <KpiCard icon={<Handshake className="h-4 w-4 text-blue-600" />} label="Consignados vendidos" value={terceros.length.toString()} bg="bg-blue-500/10" />
+        <KpiCard icon={<Wallet className="h-4 w-4 text-emerald-600" />} label="Ganancias (propios)" value={formatPrice(totalGanancia)} bg="bg-emerald-500/10" />
+        <KpiCard icon={<Receipt className="h-4 w-4 text-amber-600" />} label="Comisión (consignados)" value={formatPrice(totalComision)} bg="bg-amber-500/10" />
       </div>
 
       {/* Filtros */}
@@ -193,7 +197,7 @@ const Ventas = () => {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-xs text-muted-foreground">{filtered.length} resultado(s)</span>
+          <span className="text-xs text-muted-foreground">{filtered.length} resultado(s) · {propios.length} propios · {terceros.length} consignados</span>
           <Button variant="ghost" size="sm" onClick={clearFilters} className="text-xs">Limpiar filtros</Button>
         </div>
       </div>

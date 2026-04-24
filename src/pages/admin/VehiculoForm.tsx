@@ -36,7 +36,7 @@ interface FormData {
   ubicacion: string; tipo_propiedad: string;
   propietario_nombre: string; propietario_telefono: string;
   propietario_placa: string; propietario_tipo_documento: string; propietario_cedula: string; propietario_notas: string;
-  propietario_correo: string; propietario_direccion: string; comision_pactada: string;
+  propietario_correo: string; propietario_direccion: string; comision_pactada: string; ganancia_propia: string;
   // Datos de venta
   comprador_nombre: string; comprador_cedula: string; comprador_telefono: string;
   comprador_correo: string; comprador_direccion: string; comprador_ciudad: string;
@@ -51,7 +51,7 @@ const defaultForm: FormData = {
   ubicacion: "sala", tipo_propiedad: "propio",
   propietario_nombre: "", propietario_telefono: "",
   propietario_placa: "", propietario_tipo_documento: "", propietario_cedula: "", propietario_notas: "",
-  propietario_correo: "", propietario_direccion: "", comision_pactada: "",
+  propietario_correo: "", propietario_direccion: "", comision_pactada: "", ganancia_propia: "",
   comprador_nombre: "", comprador_cedula: "", comprador_telefono: "",
   comprador_correo: "", comprador_direccion: "", comprador_ciudad: "",
   valor_venta: "", vendedor_nombre: "", placa: "",
@@ -103,6 +103,7 @@ const VehiculoForm = () => {
         propietario_correo: (vehicle as any).propietario_correo || "",
         propietario_direccion: (vehicle as any).propietario_direccion || "",
         comision_pactada: (vehicle as any).comision_pactada ? String((vehicle as any).comision_pactada) : "",
+        ganancia_propia: (vehicle as any).ganancia_propia ? String((vehicle as any).ganancia_propia) : "",
         comprador_nombre: (vehicle as any).comprador_nombre || "",
         comprador_cedula: (vehicle as any).comprador_cedula || "",
         comprador_telefono: (vehicle as any).comprador_telefono || "",
@@ -218,6 +219,7 @@ const VehiculoForm = () => {
         propietario_correo: form.tipo_propiedad === "tercero" ? form.propietario_correo || null : null,
         propietario_direccion: form.tipo_propiedad === "tercero" ? form.propietario_direccion || null : null,
         comision_pactada: form.tipo_propiedad === "tercero" && form.comision_pactada ? parseInt(form.comision_pactada) : null,
+        ganancia_propia: form.tipo_propiedad === "propio" && form.ganancia_propia ? parseInt(form.ganancia_propia) : null,
         // Datos de venta — siempre se persisten (no se borran al cambiar de estado por seguridad)
         comprador_nombre: form.comprador_nombre || null,
         comprador_cedula: form.comprador_cedula || null,
@@ -542,6 +544,27 @@ const VehiculoForm = () => {
               <div>
                 <Label className="text-xs uppercase text-muted-foreground font-semibold">Notas internas</Label>
                 <Textarea value={form.propietario_notas} onChange={e => update("propietario_notas", e.target.value)} placeholder="Notas sobre acuerdos, condiciones..." rows={3} />
+              </div>
+            </div>
+          )}
+
+          {form.tipo_propiedad === "propio" && (
+            <div className="mt-5 p-5 bg-primary/5 rounded-xl border border-primary/20 space-y-4">
+              <div className="flex items-center gap-2.5">
+                <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <Car className="h-4 w-4 text-primary" />
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-foreground block">Vehículo propio</span>
+                  <span className="text-[10px] text-muted-foreground">Información financiera interna</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Ganancia estimada (COP)</Label>
+                  <Input value={displayFormatted(form.ganancia_propia)} onChange={e => handleNumericField("ganancia_propia", e.target.value)} placeholder="3.000.000" />
+                  <p className="text-[10px] text-muted-foreground mt-1">Margen estimado o ganancia obtenida con la venta de este vehículo propio.</p>
+                </div>
               </div>
             </div>
           )}
