@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { format } from "date-fns";
-import { CalendarIcon, Download, FileSpreadsheet, Receipt, Search, Users } from "lucide-react";
+import { CalendarIcon, Download, FileSpreadsheet, Receipt, Search, Users, Wallet } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -66,6 +66,10 @@ const Ventas = () => {
   }, [sales, buyerSearch, sellerSearch, plateSearch]);
 
   const totalVentas = filtered.length;
+  const totalComision = filtered.reduce(
+    (acc: number, v: any) => acc + (v.tipo_propiedad === "tercero" ? Number(v.comision_pactada || 0) : 0),
+    0
+  );
 
   const exportData = () =>
     filtered.map((v: any) => ({
@@ -144,9 +148,10 @@ const Ventas = () => {
         </div>
       </div>
 
-      {/* KPI */}
-      <div className="grid grid-cols-1 sm:max-w-xs">
+      {/* KPIs */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:max-w-2xl">
         <KpiCard icon={<Receipt className="h-4 w-4 text-primary" />} label="Vehículos vendidos en rango" value={totalVentas.toString()} bg="bg-primary/10" />
+        <KpiCard icon={<Wallet className="h-4 w-4 text-emerald-600" />} label="Comisión ganada (consignados)" value={formatPrice(totalComision)} bg="bg-emerald-500/10" />
       </div>
 
       {/* Filtros */}
