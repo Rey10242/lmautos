@@ -86,6 +86,9 @@ const Ventas = () => {
       Dirección: v.comprador_direccion || "",
       Ciudad: v.comprador_ciudad || "",
       "Valor de venta": Number(v.valor_venta || v.price || 0),
+      "Tipo": v.tipo_propiedad === "tercero" ? "Consignado" : "Propio",
+      "Ganancia (propio)": v.tipo_propiedad === "propio" ? Number(v.ganancia_propia || 0) : "",
+      "Comisión (consignado)": v.tipo_propiedad === "tercero" ? Number(v.comision_pactada || 0) : "",
       Estado: statusConfig[v.status]?.label || v.status,
     }));
 
