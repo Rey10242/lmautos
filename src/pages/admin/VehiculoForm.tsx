@@ -590,7 +590,77 @@ const VehiculoForm = () => {
           </div>
         </div>
 
-        {/* Submit */}
+        {/* Datos de la venta — solo cuando status === vendido */}
+        {form.status === "vendido" && (
+          <div className="bg-card border border-border rounded-xl p-6">
+            <div className="flex items-center gap-2.5 mb-5">
+              <div className="h-9 w-9 rounded-lg bg-red-500/10 flex items-center justify-center">
+                <Receipt className="h-4 w-4 text-red-600" />
+              </div>
+              <div>
+                <h2 className="font-bold text-sm uppercase tracking-wide text-foreground">Datos de la Venta</h2>
+                <span className="text-[10px] text-muted-foreground">Cierre comercial · Información privada del CRM de ventas</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+              <div>
+                <Label className="text-xs uppercase text-muted-foreground font-semibold">Vendedor</Label>
+                <Input value={form.vendedor_nombre} onChange={e => update("vendedor_nombre", e.target.value)} placeholder="Nombre del asesor" />
+              </div>
+              <div>
+                <Label className="text-xs uppercase text-muted-foreground font-semibold">Placa del vehículo</Label>
+                <Input value={form.placa} onChange={e => update("placa", e.target.value.toUpperCase())} placeholder="ABC123" />
+              </div>
+              <div>
+                <Label className="text-xs uppercase text-muted-foreground font-semibold">Valor de venta (COP)</Label>
+                <Input value={displayFormatted(form.valor_venta)} onChange={e => handleNumericField("valor_venta", e.target.value)} placeholder={displayFormatted(form.price) || "45.000.000"} />
+                <p className="text-[10px] text-muted-foreground mt-1">Si se deja vacío se usará el precio publicado</p>
+              </div>
+            </div>
+
+            <div className="p-5 bg-red-500/5 rounded-xl border border-red-200 dark:border-red-900 space-y-4">
+              <div className="flex items-center gap-2.5">
+                <div className="h-8 w-8 rounded-lg bg-red-500/10 flex items-center justify-center">
+                  <UserCheck className="h-4 w-4 text-red-600" />
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-foreground block">Datos del Comprador</span>
+                  <span className="text-[10px] text-muted-foreground">Requeridos para registrar la venta</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Nombre completo *</Label>
+                  <Input value={form.comprador_nombre} onChange={e => update("comprador_nombre", e.target.value)} placeholder="Nombre y apellidos" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Cédula / NIT *</Label>
+                  <Input value={form.comprador_cedula} onChange={e => update("comprador_cedula", e.target.value)} placeholder="1.234.567.890" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Teléfono *</Label>
+                  <Input value={form.comprador_telefono} onChange={e => update("comprador_telefono", e.target.value)} placeholder="300 123 4567" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Correo electrónico</Label>
+                  <Input type="email" value={form.comprador_correo} onChange={e => update("comprador_correo", e.target.value)} placeholder="correo@ejemplo.com" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Dirección</Label>
+                  <Input value={form.comprador_direccion} onChange={e => update("comprador_direccion", e.target.value)} placeholder="Calle, carrera, número" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Ciudad</Label>
+                  <Input value={form.comprador_ciudad} onChange={e => update("comprador_ciudad", e.target.value)} placeholder="Cartagena" />
+                </div>
+              </div>
+              <p className="text-[10px] text-muted-foreground">* Campos requeridos para marcar el vehículo como Vendido.</p>
+            </div>
+          </div>
+        )}
+
+
         <div className="flex gap-3 justify-between items-center bg-card border border-border rounded-xl p-4">
           <div className="text-xs text-muted-foreground">
             {isEdit && vehicle && <>Última actualización: {new Date(vehicle.updated_at).toLocaleString('es-CO')}</>}
