@@ -1,4 +1,4 @@
-import { Car, LayoutDashboard, MessageSquare, FileText, LogOut, Home } from "lucide-react";
+import { Car, LayoutDashboard, MessageSquare, FileText, LogOut, Home, Receipt } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
@@ -35,9 +35,26 @@ const AdminSidebar = () => {
     refetchInterval: 30000,
   });
 
+  const { data: salesThisMonth } = useQuery({
+    queryKey: ["sidebar-sales-month"],
+    queryFn: async () => {
+      const start = new Date();
+      start.setDate(1);
+      start.setHours(0, 0, 0, 0);
+      const { count } = await supabase
+        .from("vehicles")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "vendido")
+        .gte("fecha_venta", start.toISOString());
+      return count || 0;
+    },
+    refetchInterval: 60000,
+  });
+
   const navItems = [
     { title: "Dashboard", url: "/admin", icon: LayoutDashboard, badge: 0 },
     { title: "Vehículos", url: "/admin/vehiculos", icon: Car, badge: 0 },
+    { title: "Ventas", url: "/admin/ventas", icon: Receipt, badge: salesThisMonth || 0 },
     { title: "Consignaciones", url: "/admin/consignaciones", icon: FileText, badge: pendingConsignments || 0 },
     { title: "Mensajes", url: "/admin/mensajes", icon: MessageSquare, badge: newMessages || 0 },
   ];
