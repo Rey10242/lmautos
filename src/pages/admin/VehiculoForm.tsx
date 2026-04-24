@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
-import { Save, ArrowLeft, Upload, X, Loader2, GripVertical, ExternalLink, Building2, CalendarClock, Car, Handshake, ShieldCheck } from "lucide-react";
+import { Save, ArrowLeft, Upload, X, Loader2, GripVertical, ExternalLink, Building2, CalendarClock, Car, Handshake, ShieldCheck, Receipt, UserCheck } from "lucide-react";
 
 const marcas = ["Chevrolet", "Renault", "Mazda", "Toyota", "Nissan", "Hyundai", "Kia", "Ford", "Volkswagen", "BMW", "Mercedes-Benz", "Audi", "Honda", "Suzuki", "Mitsubishi", "Jeep", "Dodge", "Fiat", "Peugeot", "Citroën", "Subaru", "Chery", "SsangYong", "SEAT"];
 const combustibles = ["Gasolina", "Diesel", "Híbrido", "Eléctrico", "Gas"];
@@ -37,6 +37,10 @@ interface FormData {
   propietario_nombre: string; propietario_telefono: string;
   propietario_placa: string; propietario_tipo_documento: string; propietario_cedula: string; propietario_notas: string;
   propietario_correo: string; propietario_direccion: string; comision_pactada: string;
+  // Datos de venta
+  comprador_nombre: string; comprador_cedula: string; comprador_telefono: string;
+  comprador_correo: string; comprador_direccion: string; comprador_ciudad: string;
+  valor_venta: string; vendedor_nombre: string; placa: string;
 }
 
 const defaultForm: FormData = {
@@ -48,6 +52,9 @@ const defaultForm: FormData = {
   propietario_nombre: "", propietario_telefono: "",
   propietario_placa: "", propietario_tipo_documento: "", propietario_cedula: "", propietario_notas: "",
   propietario_correo: "", propietario_direccion: "", comision_pactada: "",
+  comprador_nombre: "", comprador_cedula: "", comprador_telefono: "",
+  comprador_correo: "", comprador_direccion: "", comprador_ciudad: "",
+  valor_venta: "", vendedor_nombre: "", placa: "",
 };
 
 const VehiculoForm = () => {
@@ -96,6 +103,15 @@ const VehiculoForm = () => {
         propietario_correo: (vehicle as any).propietario_correo || "",
         propietario_direccion: (vehicle as any).propietario_direccion || "",
         comision_pactada: (vehicle as any).comision_pactada ? String((vehicle as any).comision_pactada) : "",
+        comprador_nombre: (vehicle as any).comprador_nombre || "",
+        comprador_cedula: (vehicle as any).comprador_cedula || "",
+        comprador_telefono: (vehicle as any).comprador_telefono || "",
+        comprador_correo: (vehicle as any).comprador_correo || "",
+        comprador_direccion: (vehicle as any).comprador_direccion || "",
+        comprador_ciudad: (vehicle as any).comprador_ciudad || "",
+        valor_venta: (vehicle as any).valor_venta ? String((vehicle as any).valor_venta) : "",
+        vendedor_nombre: (vehicle as any).vendedor_nombre || "",
+        placa: (vehicle as any).placa || "",
       });
       setImages((vehicle.images as string[]) || []);
     }
@@ -202,6 +218,16 @@ const VehiculoForm = () => {
         propietario_correo: form.tipo_propiedad === "tercero" ? form.propietario_correo || null : null,
         propietario_direccion: form.tipo_propiedad === "tercero" ? form.propietario_direccion || null : null,
         comision_pactada: form.tipo_propiedad === "tercero" && form.comision_pactada ? parseInt(form.comision_pactada) : null,
+        // Datos de venta — siempre se persisten (no se borran al cambiar de estado por seguridad)
+        comprador_nombre: form.comprador_nombre || null,
+        comprador_cedula: form.comprador_cedula || null,
+        comprador_telefono: form.comprador_telefono || null,
+        comprador_correo: form.comprador_correo || null,
+        comprador_direccion: form.comprador_direccion || null,
+        comprador_ciudad: form.comprador_ciudad || null,
+        valor_venta: form.valor_venta ? parseInt(form.valor_venta) : null,
+        vendedor_nombre: form.vendedor_nombre || null,
+        placa: form.placa || null,
       };
       if (isEdit) {
         const { error } = await supabase.from("vehicles").update(payload as any).eq("id", id);
@@ -226,6 +252,12 @@ const VehiculoForm = () => {
     if (!form.marca || !form.modelo || !form.year || !form.price || !form.kilometraje || !form.combustible || !form.transmision) {
       toast({ title: "Completa los campos requeridos", variant: "destructive" });
       return;
+    }
+    if (form.status === "vendido") {
+      if (!form.comprador_nombre || !form.comprador_cedula || !form.comprador_telefono || !form.fecha_venta) {
+        toast({ title: "Datos de venta incompletos", description: "Para marcar como Vendido se requiere nombre, cédula, teléfono del comprador y fecha de venta.", variant: "destructive" });
+        return;
+      }
     }
     saveMutation.mutate();
   };
