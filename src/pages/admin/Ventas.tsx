@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import * as XLSX from "xlsx";
 import { format } from "date-fns";
-import { CalendarIcon, Download, FileSpreadsheet, Receipt, Search, TrendingUp, Wallet, Users } from "lucide-react";
+import { CalendarIcon, Download, FileSpreadsheet, Receipt, Search, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
