@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
-import { Save, ArrowLeft, Upload, X, Loader2, GripVertical, ExternalLink, Building2, CalendarClock, Car, Handshake, ShieldCheck } from "lucide-react";
+import { Save, ArrowLeft, Upload, X, Loader2, GripVertical, ExternalLink, Building2, CalendarClock, Car, Handshake, ShieldCheck, Receipt, UserCheck } from "lucide-react";
 
 const marcas = ["Chevrolet", "Renault", "Mazda", "Toyota", "Nissan", "Hyundai", "Kia", "Ford", "Volkswagen", "BMW", "Mercedes-Benz", "Audi", "Honda", "Suzuki", "Mitsubishi", "Jeep", "Dodge", "Fiat", "Peugeot", "Citroën", "Subaru", "Chery", "SsangYong", "SEAT"];
 const combustibles = ["Gasolina", "Diesel", "Híbrido", "Eléctrico", "Gas"];
@@ -37,6 +37,10 @@ interface FormData {
   propietario_nombre: string; propietario_telefono: string;
   propietario_placa: string; propietario_tipo_documento: string; propietario_cedula: string; propietario_notas: string;
   propietario_correo: string; propietario_direccion: string; comision_pactada: string;
+  // Datos de venta
+  comprador_nombre: string; comprador_cedula: string; comprador_telefono: string;
+  comprador_correo: string; comprador_direccion: string; comprador_ciudad: string;
+  valor_venta: string; vendedor_nombre: string; placa: string;
 }
 
 const defaultForm: FormData = {
@@ -48,6 +52,9 @@ const defaultForm: FormData = {
   propietario_nombre: "", propietario_telefono: "",
   propietario_placa: "", propietario_tipo_documento: "", propietario_cedula: "", propietario_notas: "",
   propietario_correo: "", propietario_direccion: "", comision_pactada: "",
+  comprador_nombre: "", comprador_cedula: "", comprador_telefono: "",
+  comprador_correo: "", comprador_direccion: "", comprador_ciudad: "",
+  valor_venta: "", vendedor_nombre: "", placa: "",
 };
 
 const VehiculoForm = () => {
@@ -96,6 +103,15 @@ const VehiculoForm = () => {
         propietario_correo: (vehicle as any).propietario_correo || "",
         propietario_direccion: (vehicle as any).propietario_direccion || "",
         comision_pactada: (vehicle as any).comision_pactada ? String((vehicle as any).comision_pactada) : "",
+        comprador_nombre: (vehicle as any).comprador_nombre || "",
+        comprador_cedula: (vehicle as any).comprador_cedula || "",
+        comprador_telefono: (vehicle as any).comprador_telefono || "",
+        comprador_correo: (vehicle as any).comprador_correo || "",
+        comprador_direccion: (vehicle as any).comprador_direccion || "",
+        comprador_ciudad: (vehicle as any).comprador_ciudad || "",
+        valor_venta: (vehicle as any).valor_venta ? String((vehicle as any).valor_venta) : "",
+        vendedor_nombre: (vehicle as any).vendedor_nombre || "",
+        placa: (vehicle as any).placa || "",
       });
       setImages((vehicle.images as string[]) || []);
     }
@@ -202,6 +218,16 @@ const VehiculoForm = () => {
         propietario_correo: form.tipo_propiedad === "tercero" ? form.propietario_correo || null : null,
         propietario_direccion: form.tipo_propiedad === "tercero" ? form.propietario_direccion || null : null,
         comision_pactada: form.tipo_propiedad === "tercero" && form.comision_pactada ? parseInt(form.comision_pactada) : null,
+        // Datos de venta — siempre se persisten (no se borran al cambiar de estado por seguridad)
+        comprador_nombre: form.comprador_nombre || null,
+        comprador_cedula: form.comprador_cedula || null,
+        comprador_telefono: form.comprador_telefono || null,
+        comprador_correo: form.comprador_correo || null,
+        comprador_direccion: form.comprador_direccion || null,
+        comprador_ciudad: form.comprador_ciudad || null,
+        valor_venta: form.valor_venta ? parseInt(form.valor_venta) : null,
+        vendedor_nombre: form.vendedor_nombre || null,
+        placa: form.placa || null,
       };
       if (isEdit) {
         const { error } = await supabase.from("vehicles").update(payload as any).eq("id", id);
@@ -226,6 +252,12 @@ const VehiculoForm = () => {
     if (!form.marca || !form.modelo || !form.year || !form.price || !form.kilometraje || !form.combustible || !form.transmision) {
       toast({ title: "Completa los campos requeridos", variant: "destructive" });
       return;
+    }
+    if (form.status === "vendido") {
+      if (!form.comprador_nombre || !form.comprador_cedula || !form.comprador_telefono || !form.fecha_venta) {
+        toast({ title: "Datos de venta incompletos", description: "Para marcar como Vendido se requiere nombre, cédula, teléfono del comprador y fecha de venta.", variant: "destructive" });
+        return;
+      }
     }
     saveMutation.mutate();
   };
@@ -558,7 +590,77 @@ const VehiculoForm = () => {
           </div>
         </div>
 
-        {/* Submit */}
+        {/* Datos de la venta — solo cuando status === vendido */}
+        {form.status === "vendido" && (
+          <div className="bg-card border border-border rounded-xl p-6">
+            <div className="flex items-center gap-2.5 mb-5">
+              <div className="h-9 w-9 rounded-lg bg-red-500/10 flex items-center justify-center">
+                <Receipt className="h-4 w-4 text-red-600" />
+              </div>
+              <div>
+                <h2 className="font-bold text-sm uppercase tracking-wide text-foreground">Datos de la Venta</h2>
+                <span className="text-[10px] text-muted-foreground">Cierre comercial · Información privada del CRM de ventas</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+              <div>
+                <Label className="text-xs uppercase text-muted-foreground font-semibold">Vendedor</Label>
+                <Input value={form.vendedor_nombre} onChange={e => update("vendedor_nombre", e.target.value)} placeholder="Nombre del asesor" />
+              </div>
+              <div>
+                <Label className="text-xs uppercase text-muted-foreground font-semibold">Placa del vehículo</Label>
+                <Input value={form.placa} onChange={e => update("placa", e.target.value.toUpperCase())} placeholder="ABC123" />
+              </div>
+              <div>
+                <Label className="text-xs uppercase text-muted-foreground font-semibold">Valor de venta (COP)</Label>
+                <Input value={displayFormatted(form.valor_venta)} onChange={e => handleNumericField("valor_venta", e.target.value)} placeholder={displayFormatted(form.price) || "45.000.000"} />
+                <p className="text-[10px] text-muted-foreground mt-1">Si se deja vacío se usará el precio publicado</p>
+              </div>
+            </div>
+
+            <div className="p-5 bg-red-500/5 rounded-xl border border-red-200 dark:border-red-900 space-y-4">
+              <div className="flex items-center gap-2.5">
+                <div className="h-8 w-8 rounded-lg bg-red-500/10 flex items-center justify-center">
+                  <UserCheck className="h-4 w-4 text-red-600" />
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-foreground block">Datos del Comprador</span>
+                  <span className="text-[10px] text-muted-foreground">Requeridos para registrar la venta</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Nombre completo *</Label>
+                  <Input value={form.comprador_nombre} onChange={e => update("comprador_nombre", e.target.value)} placeholder="Nombre y apellidos" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Cédula / NIT *</Label>
+                  <Input value={form.comprador_cedula} onChange={e => update("comprador_cedula", e.target.value)} placeholder="1.234.567.890" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Teléfono *</Label>
+                  <Input value={form.comprador_telefono} onChange={e => update("comprador_telefono", e.target.value)} placeholder="300 123 4567" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Correo electrónico</Label>
+                  <Input type="email" value={form.comprador_correo} onChange={e => update("comprador_correo", e.target.value)} placeholder="correo@ejemplo.com" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Dirección</Label>
+                  <Input value={form.comprador_direccion} onChange={e => update("comprador_direccion", e.target.value)} placeholder="Calle, carrera, número" />
+                </div>
+                <div>
+                  <Label className="text-xs uppercase text-muted-foreground font-semibold">Ciudad</Label>
+                  <Input value={form.comprador_ciudad} onChange={e => update("comprador_ciudad", e.target.value)} placeholder="Cartagena" />
+                </div>
+              </div>
+              <p className="text-[10px] text-muted-foreground">* Campos requeridos para marcar el vehículo como Vendido.</p>
+            </div>
+          </div>
+        )}
+
+
         <div className="flex gap-3 justify-between items-center bg-card border border-border rounded-xl p-4">
           <div className="text-xs text-muted-foreground">
             {isEdit && vehicle && <>Última actualización: {new Date(vehicle.updated_at).toLocaleString('es-CO')}</>}

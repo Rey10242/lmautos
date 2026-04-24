@@ -127,6 +127,12 @@ export type Database = {
           color: string | null
           combustible: string
           comision_pactada: number | null
+          comprador_cedula: string | null
+          comprador_ciudad: string | null
+          comprador_correo: string | null
+          comprador_direccion: string | null
+          comprador_nombre: string | null
+          comprador_telefono: string | null
           created_at: string
           descripcion: string | null
           destacado: boolean | null
@@ -139,6 +145,7 @@ export type Database = {
           marca: string
           modelo: string
           num_puertas: number | null
+          placa: string | null
           price: number
           propietario_cedula: string | null
           propietario_correo: string | null
@@ -158,6 +165,8 @@ export type Database = {
           ubicacion: string
           updated_at: string
           user_id: string
+          valor_venta: number | null
+          vendedor_nombre: string | null
           version: string | null
           year: number
         }
@@ -166,6 +175,12 @@ export type Database = {
           color?: string | null
           combustible: string
           comision_pactada?: number | null
+          comprador_cedula?: string | null
+          comprador_ciudad?: string | null
+          comprador_correo?: string | null
+          comprador_direccion?: string | null
+          comprador_nombre?: string | null
+          comprador_telefono?: string | null
           created_at?: string
           descripcion?: string | null
           destacado?: boolean | null
@@ -178,6 +193,7 @@ export type Database = {
           marca: string
           modelo: string
           num_puertas?: number | null
+          placa?: string | null
           price: number
           propietario_cedula?: string | null
           propietario_correo?: string | null
@@ -197,6 +213,8 @@ export type Database = {
           ubicacion?: string
           updated_at?: string
           user_id: string
+          valor_venta?: number | null
+          vendedor_nombre?: string | null
           version?: string | null
           year: number
         }
@@ -205,6 +223,12 @@ export type Database = {
           color?: string | null
           combustible?: string
           comision_pactada?: number | null
+          comprador_cedula?: string | null
+          comprador_ciudad?: string | null
+          comprador_correo?: string | null
+          comprador_direccion?: string | null
+          comprador_nombre?: string | null
+          comprador_telefono?: string | null
           created_at?: string
           descripcion?: string | null
           destacado?: boolean | null
@@ -217,6 +241,7 @@ export type Database = {
           marca?: string
           modelo?: string
           num_puertas?: number | null
+          placa?: string | null
           price?: number
           propietario_cedula?: string | null
           propietario_correo?: string | null
@@ -236,6 +261,8 @@ export type Database = {
           ubicacion?: string
           updated_at?: string
           user_id?: string
+          valor_venta?: number | null
+          vendedor_nombre?: string | null
           version?: string | null
           year?: number
         }
