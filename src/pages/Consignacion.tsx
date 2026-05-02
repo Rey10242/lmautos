@@ -8,10 +8,11 @@ import SEOHead from "@/components/shared/SEOHead";
 import { SITE_URL } from "@/lib/constants";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, Upload, X, ImageIcon } from "lucide-react";
 import { trackConsignmentFormSubmit, trackFormStart } from "@/lib/analytics";
 
 const schema = z.object({
@@ -29,16 +30,73 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
+const MAX_PHOTOS = 10;
+const MAX_PHOTO_SIZE_MB = 8;
+
 const Consignacion = () => {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
   const [formStarted, setFormStarted] = useState(false);
+  const [photos, setPhotos] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { nombre: "", telefono: "", correo: "", marca: "", modelo: "", year: undefined as any, kilometraje: undefined as any, ciudad: "", precio_esperado: "" as any, descripcion: "" },
   });
 
+  const handlePhotosChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const remaining = MAX_PHOTOS - photos.length;
+    const accepted: File[] = [];
+    for (const f of files.slice(0, remaining)) {
+      if (!f.type.startsWith("image/")) continue;
+      if (f.size > MAX_PHOTO_SIZE_MB * 1024 * 1024) {
+        toast({ title: "Foto muy grande", description: `${f.name} supera ${MAX_PHOTO_SIZE_MB}MB`, variant: "destructive" });
+        continue;
+      }
+      accepted.push(f);
+    }
+    if (files.length > remaining) {
+      toast({ title: "Límite alcanzado", description: `Máximo ${MAX_PHOTOS} fotos.` });
+    }
+    setPhotos((prev) => [...prev, ...accepted]);
+    setPreviews((prev) => [...prev, ...accepted.map((f) => URL.createObjectURL(f))]);
+    e.target.value = "";
+  };
+
+  const removePhoto = (idx: number) => {
+    setPhotos((prev) => prev.filter((_, i) => i !== idx));
+    setPreviews((prev) => {
+      URL.revokeObjectURL(prev[idx]);
+      return prev.filter((_, i) => i !== idx);
+    });
+  };
+
   const onSubmit = async (values: FormValues) => {
+    let uploadedUrls: string[] = [];
+    if (photos.length > 0) {
+      setUploading(true);
+      const folder = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      for (const file of photos) {
+        const ext = file.name.split(".").pop() || "jpg";
+        const path = `${folder}/${crypto.randomUUID()}.${ext}`;
+        const { error: upErr } = await supabase.storage.from("consignment-photos").upload(path, file, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: file.type,
+        });
+        if (upErr) {
+          setUploading(false);
+          toast({ title: "Error subiendo fotos", description: upErr.message, variant: "destructive" });
+          return;
+        }
+        const { data: pub } = supabase.storage.from("consignment-photos").getPublicUrl(path);
+        uploadedUrls.push(pub.publicUrl);
+      }
+      setUploading(false);
+    }
+
     const { error } = await supabase.from("consignment_requests").insert({
       nombre: values.nombre,
       telefono: values.telefono,
@@ -50,6 +108,7 @@ const Consignacion = () => {
       ciudad: values.ciudad,
       precio_esperado: values.precio_esperado ? Number(values.precio_esperado) : null,
       descripcion: values.descripcion || null,
+      fotos: uploadedUrls,
     });
 
     if (error) {
@@ -137,9 +196,52 @@ const Consignacion = () => {
                   <FormItem><FormLabel>Descripción Adicional</FormLabel><FormControl><Textarea placeholder="Detalles adicionales del vehículo..." rows={4} {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
 
-                <Button type="submit" size="lg" className="w-full font-bold uppercase" style={{ fontFamily: 'Montserrat, sans-serif' }} disabled={form.formState.isSubmitting}>
+                <div className="space-y-2">
+                  <Label>Fotos del vehículo <span className="text-muted-foreground font-normal">(opcional, máximo {MAX_PHOTOS})</span></Label>
+                  <label
+                    htmlFor="consignment-photos-input"
+                    className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-border rounded-lg p-6 cursor-pointer hover:border-primary hover:bg-muted/30 transition-colors"
+                  >
+                    <Upload className="h-6 w-6 text-muted-foreground" />
+                    <span className="text-sm text-foreground font-medium">Sube fotos de tu vehículo</span>
+                    <span className="text-xs text-muted-foreground">JPG, PNG o WEBP · Máx {MAX_PHOTO_SIZE_MB}MB c/u</span>
+                    <input
+                      id="consignment-photos-input"
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className="hidden"
+                      onChange={handlePhotosChange}
+                      disabled={photos.length >= MAX_PHOTOS}
+                    />
+                  </label>
+                  {previews.length > 0 && (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 mt-3">
+                      {previews.map((src, idx) => (
+                        <div key={idx} className="relative group aspect-square rounded-md overflow-hidden border border-border bg-muted">
+                          <img src={src} alt={`Foto ${idx + 1}`} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => removePhoto(idx)}
+                            className="absolute top-1 right-1 bg-background/90 hover:bg-destructive hover:text-destructive-foreground rounded-full p-1 transition-colors shadow"
+                            aria-label="Eliminar foto"
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {photos.length > 0 && (
+                    <p className="text-xs text-muted-foreground flex items-center gap-1">
+                      <ImageIcon className="h-3 w-3" /> {photos.length} foto(s) seleccionada(s)
+                    </p>
+                  )}
+                </div>
+
+                <Button type="submit" size="lg" className="w-full font-bold uppercase" style={{ fontFamily: 'Montserrat, sans-serif' }} disabled={form.formState.isSubmitting || uploading}>
                   <Send className="mr-2 h-5 w-5" />
-                  {form.formState.isSubmitting ? "Enviando..." : "Enviar Solicitud"}
+                  {uploading ? "Subiendo fotos..." : form.formState.isSubmitting ? "Enviando..." : "Enviar Solicitud"}
                 </Button>
               </form>
             </Form>
