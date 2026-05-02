@@ -195,9 +195,52 @@ const Consignacion = () => {
                   <FormItem><FormLabel>Descripción Adicional</FormLabel><FormControl><Textarea placeholder="Detalles adicionales del vehículo..." rows={4} {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
 
-                <Button type="submit" size="lg" className="w-full font-bold uppercase" style={{ fontFamily: 'Montserrat, sans-serif' }} disabled={form.formState.isSubmitting}>
+                <div className="space-y-2">
+                  <Label>Fotos del vehículo <span className="text-muted-foreground font-normal">(opcional, máximo {MAX_PHOTOS})</span></Label>
+                  <label
+                    htmlFor="consignment-photos-input"
+                    className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-border rounded-lg p-6 cursor-pointer hover:border-primary hover:bg-muted/30 transition-colors"
+                  >
+                    <Upload className="h-6 w-6 text-muted-foreground" />
+                    <span className="text-sm text-foreground font-medium">Sube fotos de tu vehículo</span>
+                    <span className="text-xs text-muted-foreground">JPG, PNG o WEBP · Máx {MAX_PHOTO_SIZE_MB}MB c/u</span>
+                    <input
+                      id="consignment-photos-input"
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className="hidden"
+                      onChange={handlePhotosChange}
+                      disabled={photos.length >= MAX_PHOTOS}
+                    />
+                  </label>
+                  {previews.length > 0 && (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 mt-3">
+                      {previews.map((src, idx) => (
+                        <div key={idx} className="relative group aspect-square rounded-md overflow-hidden border border-border bg-muted">
+                          <img src={src} alt={`Foto ${idx + 1}`} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => removePhoto(idx)}
+                            className="absolute top-1 right-1 bg-background/90 hover:bg-destructive hover:text-destructive-foreground rounded-full p-1 transition-colors shadow"
+                            aria-label="Eliminar foto"
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {photos.length > 0 && (
+                    <p className="text-xs text-muted-foreground flex items-center gap-1">
+                      <ImageIcon className="h-3 w-3" /> {photos.length} foto(s) seleccionada(s)
+                    </p>
+                  )}
+                </div>
+
+                <Button type="submit" size="lg" className="w-full font-bold uppercase" style={{ fontFamily: 'Montserrat, sans-serif' }} disabled={form.formState.isSubmitting || uploading}>
                   <Send className="mr-2 h-5 w-5" />
-                  {form.formState.isSubmitting ? "Enviando..." : "Enviar Solicitud"}
+                  {uploading ? "Subiendo fotos..." : form.formState.isSubmitting ? "Enviando..." : "Enviar Solicitud"}
                 </Button>
               </form>
             </Form>
