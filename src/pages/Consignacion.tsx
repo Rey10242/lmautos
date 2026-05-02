@@ -29,16 +29,73 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
+const MAX_PHOTOS = 10;
+const MAX_PHOTO_SIZE_MB = 8;
+
 const Consignacion = () => {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
   const [formStarted, setFormStarted] = useState(false);
+  const [photos, setPhotos] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
+  const [uploading, setUploading] = useState(false);
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { nombre: "", telefono: "", correo: "", marca: "", modelo: "", year: undefined as any, kilometraje: undefined as any, ciudad: "", precio_esperado: "" as any, descripcion: "" },
   });
 
+  const handlePhotosChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const remaining = MAX_PHOTOS - photos.length;
+    const accepted: File[] = [];
+    for (const f of files.slice(0, remaining)) {
+      if (!f.type.startsWith("image/")) continue;
+      if (f.size > MAX_PHOTO_SIZE_MB * 1024 * 1024) {
+        toast({ title: "Foto muy grande", description: `${f.name} supera ${MAX_PHOTO_SIZE_MB}MB`, variant: "destructive" });
+        continue;
+      }
+      accepted.push(f);
+    }
+    if (files.length > remaining) {
+      toast({ title: "Límite alcanzado", description: `Máximo ${MAX_PHOTOS} fotos.` });
+    }
+    setPhotos((prev) => [...prev, ...accepted]);
+    setPreviews((prev) => [...prev, ...accepted.map((f) => URL.createObjectURL(f))]);
+    e.target.value = "";
+  };
+
+  const removePhoto = (idx: number) => {
+    setPhotos((prev) => prev.filter((_, i) => i !== idx));
+    setPreviews((prev) => {
+      URL.revokeObjectURL(prev[idx]);
+      return prev.filter((_, i) => i !== idx);
+    });
+  };
+
   const onSubmit = async (values: FormValues) => {
+    let uploadedUrls: string[] = [];
+    if (photos.length > 0) {
+      setUploading(true);
+      const folder = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      for (const file of photos) {
+        const ext = file.name.split(".").pop() || "jpg";
+        const path = `${folder}/${crypto.randomUUID()}.${ext}`;
+        const { error: upErr } = await supabase.storage.from("consignment-photos").upload(path, file, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: file.type,
+        });
+        if (upErr) {
+          setUploading(false);
+          toast({ title: "Error subiendo fotos", description: upErr.message, variant: "destructive" });
+          return;
+        }
+        const { data: pub } = supabase.storage.from("consignment-photos").getPublicUrl(path);
+        uploadedUrls.push(pub.publicUrl);
+      }
+      setUploading(false);
+    }
+
     const { error } = await supabase.from("consignment_requests").insert({
       nombre: values.nombre,
       telefono: values.telefono,
@@ -50,6 +107,7 @@ const Consignacion = () => {
       ciudad: values.ciudad,
       precio_esperado: values.precio_esperado ? Number(values.precio_esperado) : null,
       descripcion: values.descripcion || null,
+      fotos: uploadedUrls,
     });
 
     if (error) {
