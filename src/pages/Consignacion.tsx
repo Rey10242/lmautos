@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, Upload, X, ImageIcon } from "lucide-react";
 import { trackConsignmentFormSubmit, trackFormStart } from "@/lib/analytics";
 
 const schema = z.object({
